@@ -1,0 +1,35 @@
+{
+  "name": "angular-mask",
+  "version": "0.0.0",
+  "description": "Personalized input masks for AngularJS",
+  "main": "mask.js",
+  "scripts": {
+    "test": "grunt test"
+  },
+  "keywords": [
+    "input",
+    "mask",
+    "angularjs"
+  ],
+  "author": "igor.rafael@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "jshint-stylish": "~0.1.5",
+    "jit-grunt": "~0.2.0",
+    "grunt-contrib-jshint": "~0.8.0",
+    "karma-script-launcher": "~0.1.0",
+    "karma-chrome-launcher": "~0.1.2",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-html2js-preprocessor": "~0.1.0",
+    "karma-jasmine": "~0.1.5",
+    "requirejs": "~2.1.10",
+    "karma-requirejs": "~0.2.1",
+    "karma-coffee-preprocessor": "~0.1.2",
+    "karma-phantomjs-launcher": "~0.1.1",
+    "karma": "~0.10.9",
+    "grunt-karma": "~0.6.2",
+    "karma-coverage": "~0.1.4",
+    "grunt-contrib-watch": "~0.5.3"
+  }
+}

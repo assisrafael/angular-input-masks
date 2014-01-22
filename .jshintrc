@@ -1,0 +1,41 @@
+{
+  "bitwise": true,
+  "browser": true,
+  "camelcase": true,
+  "curly": true,
+  "eqeqeq": true,
+  "esnext": true,
+  "freeze": true,
+  "immed": true,
+  "indent": 2,
+  "latedef": true,
+  "maxdepth": 4,
+  "maxstatements": 60,
+  "newcap": true,
+  "noarg": true,
+  "node": true,
+  "quotmark": "single",
+  "regexp": true,
+  "smarttabs": true,
+  "strict": true,
+  "trailing": true,
+  "undef": true,
+  "unused": true,
+  "globals": {
+    "angular": false
+  },
+  "predef": [ // Extra globals.
+    "define",
+    "require",
+    "exports",
+    "module",
+    "inject",
+    "describe",
+    "before",
+    "beforeEach",
+    "after",
+    "afterEach",
+    "it",
+    "expect"
+  ]
+}
