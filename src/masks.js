@@ -4,18 +4,24 @@
 	var ZEROS = '00000000000000000000';
 	var rgxGroupDigits = /(\d+)(\d{3})/;
 
-	angular.module('inputMask', [])
+	angular.module('inputMasks', [])
 	.directive('imNumber', ['$locale', function ($locale) {
 		return {
 			restrict: 'A',
 			require: '?ngModel',
 			scope: {
-				decimals: '=imNumber'
+				decimals: '=?imNumber'
 			},
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
 					return;
 				}
+
+				if(typeof scope.decimals === 'undefined') {
+					scope.decimals = 2;
+				}
+				console.log(scope.decimals);
+
 
 				var minLength = scope.decimals + 1;
 				var rgxDecimalDelimiter = new RegExp('^(\\d+)(\\d{' + scope.decimals + '})$');
@@ -50,6 +56,10 @@
 				};
 
 				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					
 					var cleanValue = value.replace(/[^0-9]/g, '');
 					var zeroFilledValue = fillWithZeros(cleanValue);
 					var delimitedValue = addDefaultDelimiter(zeroFilledValue);

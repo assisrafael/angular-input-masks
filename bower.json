@@ -1,6 +1,8 @@
 {
   "name": "angular-mask",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "description": "Personalized input masks for AngularJS",
+  "author": "igor.rafael@gmail.com",
   "license": "MIT",
   "ignore": [
     "**/.*",
