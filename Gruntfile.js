@@ -36,6 +36,8 @@ module.exports = function(grunt) {
 				'jshint',
 				'karma'
 			]);
+			
+			return;
 		}
 
 		grunt.task.run([
