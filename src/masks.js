@@ -20,8 +20,6 @@
 				if(typeof scope.decimals === 'undefined') {
 					scope.decimals = 2;
 				}
-				console.log(scope.decimals);
-
 
 				var minLength = scope.decimals + 1;
 				var rgxDecimalDelimiter = new RegExp('^(\\d+)(\\d{' + scope.decimals + '})$');
@@ -54,6 +52,14 @@
 					var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
 					return genericNumberFormat(value, decimalDelimiter, thousandsDelimiter);
 				};
+
+				ctrl.$formatters.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					return localizedNumberFormat(value);
+				});
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {

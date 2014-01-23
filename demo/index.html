@@ -3,14 +3,19 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Angular Mask Demo</title>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.9/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
 	<script src="../src/masks.js"></script>
 	<script>
 		angular.module('demo', ['inputMasks']);
+
+		function ctrl($scope) {
+			$scope.field2 = 1234.56;
+		};
 	</script>
 </head>
 <body ng-app="demo">
-	<form name="form">
+	<form name="form" ng-controller="ctrl">
 		<input type="text" name="field" ng-model="field" im-number> <br>
 		{{field}} <br>
 		<input type="text" name="field2" ng-model="field2" im-number="2"> <br>
