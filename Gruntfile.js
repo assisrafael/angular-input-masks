@@ -26,10 +26,6 @@ module.exports = function(grunt) {
 
 	require('jit-grunt')(grunt);
 
-	grunt.registerTask('default', 'Log some stuff.', function() {
-		grunt.log.write('Logging some stuff...').ok();
-	});
-
 	grunt.registerTask('test', function (target) {
 		if (target === 'single') {
 			grunt.task.run([

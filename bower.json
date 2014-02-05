@@ -1,6 +1,6 @@
 {
   "name": "angular-mask",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Personalized input masks for AngularJS",
   "author": "igor.rafael@gmail.com",
   "license": "MIT",
@@ -11,8 +11,10 @@
     "test",
     "demo"
   ],
+  "dependencies": {
+    "angular": "1.2.9"
+  },
   "devDependencies": {
-    "angular": "1.2.9",
     "angular-mocks": "1.2.9"
   }
 }

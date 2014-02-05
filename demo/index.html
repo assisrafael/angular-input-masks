@@ -20,10 +20,10 @@
 		{{field}} <br>
 		<input type="text" name="field2" ng-model="field2" im-number="2"> <br>
 		{{field2}} <br>
-		<input type="text" name="field3" ng-model="field3" im-number="3"> <br>
-		{{field3}} <br>
+		<input type="text" name="field3" ng-model="field3" im-number="3" min="3.8" max="12"> <br>
+		{{field3}} - {{form.field3.$error}}<br>
 		<input type="text" name="field4" ng-model="field4" im-number="0"> <br>
-		{{field4}} <br>
+		{{field4}} - {{form.field4.$error}} <br>
 	</form>
 </body>
 </html>

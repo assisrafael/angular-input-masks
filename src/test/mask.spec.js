@@ -39,7 +39,7 @@
 			scope.field = '12';
 		}));
 
-		describe('initialisation', function() {
+		describe('initialization', function() {
 			beforeEach(function() {
 				compileDirective(getTemplate());
 			});
