@@ -27,8 +27,8 @@
 		return thousands + decimals;
 	};
 
-	angular.module('inputMasks', [])
-	.directive('imNumber', ['$locale', function ($locale) {
+	angular.module('ui.utils.masks', [])
+	.directive('uiNumberMask', ['$locale', function ($locale) {
 		var localizedNumberFormat = function(value) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
 			var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
@@ -39,7 +39,7 @@
 			restrict: 'A',
 			require: '?ngModel',
 			scope: {
-				decimals: '=?imNumber',
+				decimals: '=?uiNumberMask',
 				min: '=min',
 				max: '=max'
 			},
@@ -64,9 +64,6 @@
 				});
 
 				ctrl.$parsers.push(function(value) {
-					ctrl.$setValidity('min', true);
-					ctrl.$setValidity('max', true);
-
 					if(!value) {
 						return value;
 					}
@@ -81,17 +78,54 @@
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 
-						if(scope.min && scope.min > actualNumber) {
-							ctrl.$setValidity('min', false);
+						if(scope.min){
+							var isValid = true;
+							if(parseFloat(scope.min) > actualNumber) {
+								isValid = false;
+							}
+
+							ctrl.$setValidity('min', isValid);
 						}
 
-						if(scope.max && scope.max < actualNumber) {
-							ctrl.$setValidity('max', false);
+						if(scope.max){
+							var isValid = true;
+							if(parseFloat(scope.max) < actualNumber) {
+								isValid = false;
+							}
+
+							ctrl.$setValidity('max', isValid);
 						}
+
 					}
 
 					return actualNumber;
 				});
+
+				if(scope.min){
+					scope.$watch(function() {
+						return scope.min;
+					}, function() {
+						var isValid = true;
+						if(parseFloat(scope.min) > parseFloat(ctrl.$modelValue)) {
+							isValid = false;
+						}
+
+						ctrl.$setValidity('min', isValid);
+					});
+				}
+
+				if(scope.max) {
+					scope.$watch(function() {
+						return scope.max;
+					}, function() {
+						var isValid = true;
+						if(parseFloat(scope.max) < parseFloat(ctrl.$modelValue)) {
+							isValid = false;
+						}
+
+						ctrl.$setValidity('max', isValid);
+					});
+				}
 			}
 		};
 	}]);

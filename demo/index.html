@@ -7,7 +7,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
 	<script src="../src/masks.js"></script>
 	<script>
-		angular.module('demo', ['inputMasks']);
+		angular.module('demo', ['ui.utils.masks']);
 
 		function ctrl($scope) {
 			$scope.field2 = 1234.56;
@@ -16,13 +16,13 @@
 </head>
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
-		<input type="text" name="field" ng-model="field" im-number> <br>
+		<input type="text" name="field" ng-model="field" ui-number-mask> <br>
 		{{field}} <br>
-		<input type="text" name="field2" ng-model="field2" im-number="2"> <br>
+		<input type="text" name="field2" ng-model="field2" ui-number-mask="2"> <br>
 		{{field2}} <br>
-		<input type="text" name="field3" ng-model="field3" im-number="3" min="3.8" max="12"> <br>
+		<input type="text" name="field3" ng-model="field3" ui-number-mask="3" min="3.8" max="field2"> <br>
 		{{field3}} - {{form.field3.$error}}<br>
-		<input type="text" name="field4" ng-model="field4" im-number="0"> <br>
+		<input type="text" name="field4" ng-model="field4" ui-number-mask="0"> <br>
 		{{field4}} - {{form.field4.$error}} <br>
 	</form>
 </body>
