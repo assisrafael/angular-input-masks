@@ -82,7 +82,7 @@
 					return actualNumber;
 				});
 
-				if(scope.min){
+				if(attrs.min){
 					var minValidator = function(value) {
 						var min = parseFloat(scope.min);
 						var validity = ctrl.$isEmpty(value) || value >= min;
@@ -97,7 +97,7 @@
 					});
 				}
 
-				if(scope.max) {
+				if(attrs.max) {
 					var maxValidator = function(value) {
 						var max = parseFloat(scope.max);
 						var validity = ctrl.$isEmpty(value) || value <= max;
