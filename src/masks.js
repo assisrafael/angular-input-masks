@@ -40,8 +40,8 @@
 			require: '?ngModel',
 			scope: {
 				decimals: '=?uiNumberMask',
-				min: '=min',
-				max: '=max'
+				min: '=?min',
+				max: '=?max'
 			},
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
@@ -77,53 +77,38 @@
 					if (value !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
-
-						if(scope.min){
-							var isValid = true;
-							if(parseFloat(scope.min) > actualNumber) {
-								isValid = false;
-							}
-
-							ctrl.$setValidity('min', isValid);
-						}
-
-						if(scope.max){
-							var isValid = true;
-							if(parseFloat(scope.max) < actualNumber) {
-								isValid = false;
-							}
-
-							ctrl.$setValidity('max', isValid);
-						}
-
 					}
 
 					return actualNumber;
 				});
 
 				if(scope.min){
-					scope.$watch(function() {
-						return scope.min;
-					}, function() {
-						var isValid = true;
-						if(parseFloat(scope.min) > parseFloat(ctrl.$modelValue)) {
-							isValid = false;
-						}
+					var minValidator = function(value) {
+						var min = parseFloat(scope.min);
+						var validity = ctrl.$isEmpty(value) || value >= min;
+						ctrl.$setValidity('min', validity);
+						return value;
+					};
 
-						ctrl.$setValidity('min', isValid);
+					ctrl.$parsers.push(minValidator);
+
+					scope.$watch('min', function() {
+						minValidator(ctrl.$modelValue);
 					});
 				}
 
 				if(scope.max) {
-					scope.$watch(function() {
-						return scope.max;
-					}, function() {
-						var isValid = true;
-						if(parseFloat(scope.max) < parseFloat(ctrl.$modelValue)) {
-							isValid = false;
-						}
+					var maxValidator = function(value) {
+						var max = parseFloat(scope.max);
+						var validity = ctrl.$isEmpty(value) || value <= max;
+						ctrl.$setValidity('max', validity);
+						return value;
+					};
 
-						ctrl.$setValidity('max', isValid);
+					ctrl.$parsers.push(maxValidator);
+
+					scope.$watch('max', function() {
+						maxValidator(ctrl.$modelValue);
 					});
 				}
 			}
