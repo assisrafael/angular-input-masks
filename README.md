@@ -15,7 +15,7 @@ bower install --save angular-input-masks
 How to use
 ----------
 
-1. Include the module ```ui.bootstrap.validation``` in your angular app.
+1. Include the module ```ui.utils.masks``` in your angular app.
 
 2. Include the directive ```ui-number-mask``` in your form:
 
