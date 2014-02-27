@@ -22,7 +22,7 @@
 		{{field2}} <br>
 		<input type="text" name="field3" ng-model="field3" ui-number-mask="3" min="3.8" max="field2"> <br>
 		{{field3}} - {{form.field3.$error}}<br>
-		<input type="text" name="field4" ng-model="field4" ui-number-mask="0"> <br>
+		<input type="text" name="field4" ng-model="field4" ui-number-mask="0" min="field3"> <br>
 		{{field4}} - {{form.field4.$error}} <br>
 	</form>
 </body>

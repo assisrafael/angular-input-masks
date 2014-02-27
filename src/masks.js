@@ -85,7 +85,7 @@
 				if(attrs.min){
 					var minValidator = function(value) {
 						var min = parseFloat(scope.min);
-						var validity = ctrl.$isEmpty(value) || value >= min;
+						var validity = ctrl.$isEmpty(value) || isNaN(min) || value >= min;
 						ctrl.$setValidity('min', validity);
 						return value;
 					};
@@ -100,7 +100,7 @@
 				if(attrs.max) {
 					var maxValidator = function(value) {
 						var max = parseFloat(scope.max);
-						var validity = ctrl.$isEmpty(value) || value <= max;
+						var validity = ctrl.$isEmpty(value) || isNaN(max)|| value <= max;
 						ctrl.$setValidity('max', validity);
 						return value;
 					};
