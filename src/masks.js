@@ -60,7 +60,7 @@
 						return value;
 					}
 
-					return localizedNumberFormat(value.toFixed(scope.decimals));
+					return localizedNumberFormat(parseFloat(value).toFixed(scope.decimals));
 				});
 
 				ctrl.$parsers.push(function(value) {
