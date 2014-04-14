@@ -1,6 +1,6 @@
 {
   "name": "angular-mask",
-  "version": "1.0.7",
+  "version": "1.0.10",
   "description": "Personalized input masks for AngularJS",
   "main": "mask.js",
   "scripts": {

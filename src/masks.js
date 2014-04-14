@@ -71,7 +71,7 @@
 				}
 
 				var decimals = parseInt(attrs.uiPercentageMask);
-				if(!decimals) {
+				if(isNaN(decimals)) {
 					decimals = 2;
 				}
 				var numberDecimals = decimals + 2;
@@ -143,7 +143,7 @@
 				}
 
 				var decimals = parseInt(attrs.uiNumberMask);
-				if(!decimals) {
+				if(isNaN(decimals)) {
 					decimals = 2;
 				}
 
