@@ -142,7 +142,7 @@
 					return;
 				}
 
-				var decimals = parseInt(attrs.uiPercentageMask);
+				var decimals = parseInt(attrs.uiNumberMask);
 				if(!decimals) {
 					decimals = 2;
 				}
