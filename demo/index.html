@@ -11,11 +11,13 @@
 
 		function ctrl($scope) {
 			$scope.field2 = 1234.178;
+			$scope.field5 = 0.7654;
 		};
 	</script>
 </head>
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
+		<h2>ui-number-mask</h2>
 		<input type="text" name="field" ng-model="field" ui-number-mask> <br>
 		{{field}} <br>
 		<input type="text" name="field2" ng-model="field2" ui-number-mask="2"> <br>
@@ -24,6 +26,11 @@
 		{{field3}} - {{form.field3.$error}}<br>
 		<input type="text" name="field4" ng-model="field4" ui-number-mask="0" min="field3"> <br>
 		{{field4}} - {{form.field4.$error}} <br>
+		<h2>ui-percentage-mask</h2>
+		<input type="text" name="field5" ng-model="field5" ui-percentage-mask> <br>
+		{{field5}} <br>
+		<input type="text" name="field6" ng-model="field6" ui-percentage-mask="4" min="field5"> <br>
+		{{field6}} - {{form.field6.$error}} <br>
 	</form>
 </body>
 </html>
