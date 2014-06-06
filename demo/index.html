@@ -18,6 +18,8 @@
 			$scope.field9 = '13883875000120';
 			$scope.field11 = '56338332958';
 			$scope.field12 = '23212161000144';
+
+			$scope.field14 = '15312';
 		};
 	</script>
 </head>
@@ -57,6 +59,15 @@
 		{{field12}} - {{form.field12.$error}}<br>
 		<input type="text" name="field13" ng-model="field13" ui-cpfcnpj-mask> <br>
 		{{field13}} - {{form.field13.$error}}<br>
+
+		<h2>ui-money-mask</h2>
+		<input type="text" name="field14" ng-model="field14" ui-money-mask> <br>
+		{{field14}} - {{form.field14.$error}}<br>
+		<input type="text" name="field15" ng-model="field15" ui-money-mask="3"> <br>
+		{{field15}} - {{form.field15.$error}}<br>
+		<input type="text" name="field16" ng-model="field16" ui-money-mask="0"> <br>
+		{{field16}} - {{form.field16.$error}}<br>
+
 	</form>
 </body>
 </html>

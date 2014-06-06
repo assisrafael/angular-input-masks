@@ -50,7 +50,7 @@
 		return value;
 	}
 
-	var cnpjPattern = new StringMask('00.000.000\/0000-00', {stopWhenInvalid: true});
+	var cnpjPattern = new StringMask('00.000.000\/0000-00');
 	function validateCNPJ(c) {
 		var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
 		c = c.replace(/[^\d]/g,'').split('');
@@ -78,7 +78,7 @@
 		return true;
 	}
 
-	var cpfPattern = new StringMask('000.000.000-00', {stopWhenInvalid: true});
+	var cpfPattern = new StringMask('000.000.000-00');
 	function validateCPF(cpf) {
 		cpf = cpf.replace(/[^\d]+/g,'');
 		if (cpf === '' || cpf === '00000000000' || cpf.length !== 11) {
@@ -347,6 +347,54 @@
 						ctrl.$setValidity('cpf', validateCPF(formatedValue));
 						ctrl.$setValidity('cnpj', true);
 					}
+
+					if (value !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}])
+	.directive('uiMoneyMask', ['$locale', function ($locale) {
+		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
+		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+		var currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				var decimals = parseInt(attrs.uiMoneyMask);
+				if(isNaN(decimals)) {
+					decimals = decimalDelimiter+'00';
+				} else if(decimals > 0) {
+					decimals = decimalDelimiter+new Array(decimals + 1).join('0');
+				} else {
+					decimals = '';
+				}
+				var moneyMask = new StringMask(currencySym+' #'+thousandsDelimiter+'##0'+decimals, {reverse: true});
+
+				ctrl.$formatters.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					return moneyMask.apply(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					
+					var actualNumber = value.replace(/[^\d]+/g,'');
+					var formatedValue = moneyMask.apply(actualNumber);
 
 					if (value !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
