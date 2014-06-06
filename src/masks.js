@@ -50,6 +50,51 @@
 		return value;
 	}
 
+	var cnpjPattern = new StringMask('00.000.000\/0000-00', {stopWhenInvalid: true});
+	function validateCNPJ(c) {
+		var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+		c = c.replace(/[^\d]/g,'').split('');
+		if(c.length !== 14) {
+			return false;
+		}
+
+		for (var i = 0, n = 0; i < 12; i++) {
+			n += c[i] * b[i+1];
+		}
+		n = 11 - n%11;
+		n = n >= 10 ? 0 : n;
+		if (parseInt(c[12]) !== n)  {
+			return false;
+		}
+
+		for (i = 0, n = 0; i <= 12; i++) {
+			n += c[i] * b[i];
+		}
+		n = 11 - n%11;
+		n = n >= 10 ? 0 : n;
+		if (parseInt(c[13]) !== n)  {
+			return false;
+		}
+		return true;
+	}
+
+	var cpfPattern = new StringMask('000.000.000-00', {stopWhenInvalid: true});
+	function validateCPF(cpf) {
+		cpf = cpf.replace(/[^\d]+/g,'');
+		if (cpf === '' || cpf === '00000000000' || cpf.length !== 11) {
+			return false;
+		}
+		function validateDigit(digit) {
+			var add = 0;
+			var init = digit - 9;
+			for (var i = 0; i < 9; i ++) {
+				add += parseInt(cpf.charAt(i + init)) * (i+1);
+			}
+			return (add%11)%10 === parseInt(cpf.charAt(digit));
+		}
+		return validateDigit(9) && validateDigit(10);
+	}
+
 	angular.module('ui.utils.masks', [])
 	.directive('uiPercentageMask', ['$locale', function ($locale) {
 		function localizedNumberFormat(value) {
@@ -190,6 +235,126 @@
 						maxValidator(ctrl, ctrl.$modelValue, scope.max);
 					});
 				}
+			}
+		};
+	}])
+	.directive('uiCpfMask', [function () {
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					return cpfPattern.apply(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					
+					var actualNumber = value.replace(/[^\d]+/g,'');
+					var formatedValue = cpfPattern.apply(actualNumber);
+					ctrl.$setValidity('cpf', validateCPF(formatedValue));
+
+					if (value !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}])
+	.directive('uiCnpjMask', [function () {
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					return cnpjPattern.apply(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					
+					var actualNumber = value.replace(/[^\d]+/g,'');
+					var formatedValue = cnpjPattern.apply(actualNumber);
+					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+
+					if (value !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}])
+	.directive('uiCpfcnpjMask', [function () {
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					var actualNumber = value.replace(/[^\d]+/g,'');
+					if(actualNumber.length > 11) {
+						return cnpjPattern.apply(value);
+					}
+					return cpfPattern.apply(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					var actualNumber = value.replace(/[^\d]+/g,'');
+
+					//console.log(value);
+					var formatedValue = '';
+					if (actualNumber.length > 11) {
+						formatedValue = cnpjPattern.apply(actualNumber);
+						ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+						ctrl.$setValidity('cpf', true);
+					} else {
+						formatedValue = cpfPattern.apply(actualNumber);
+						ctrl.$setValidity('cpf', validateCPF(formatedValue));
+						ctrl.$setValidity('cnpj', true);
+					}
+
+					if (value !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
 			}
 		};
 	}]);

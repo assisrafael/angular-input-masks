@@ -3,8 +3,14 @@
   "version": "1.0.10",
   "description": "Personalized input masks for AngularJS",
   "main": "mask.js",
+  "repository" :{ 
+    "type" : "git",
+    "url" : "https://github.com/assisrafael/angular-input-masks.git"
+  },
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt test",
+    "postinstall": "bower install",
+    "postupdate": "bower update"
   },
   "keywords": [
     "input",
@@ -13,6 +19,7 @@
   ],
   "author": "igor.rafael@gmail.com",
   "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.2",
     "jshint-stylish": "~0.1.5",

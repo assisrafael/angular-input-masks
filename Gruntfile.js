@@ -5,8 +5,11 @@ module.exports = function(grunt) {
 		watch: {
 			jshint: {
 				files: ['src/**/*.js'],
-				tasks: ['jshint', 'karma']
+				tasks: ['jshint']
 			}
+		},
+		build: {
+			src: 'node_modules/'	
 		},
 		jshint: {
 			options: {
@@ -15,28 +18,29 @@ module.exports = function(grunt) {
 				ignores: ['node_modules']
 			},
 			all: ['src/**/*.js']
-		},
-		karma: {
-			unit: {
-				configFile: 'karma.conf.js',
-				singleRun: true
-			}
 		}
 	});
 
 	require('jit-grunt')(grunt);
 
+	grunt.registerTask('lib', function() {
+		grunt.file.copy('bower_components/string-mask/src/string-mask.js', 'lib/string-mask.js');
+	});
+
+	grunt.registerTask('default', ['lib', 'jshint']);
+
 	grunt.registerTask('test', function (target) {
 		if (target === 'single') {
 			grunt.task.run([
-				'jshint',
-				'karma'
+				'lib',
+				'jshint'
 			]);
 			
 			return;
 		}
 
 		grunt.task.run([
+			'lib',
 			'watch'
 		]);
 	});
