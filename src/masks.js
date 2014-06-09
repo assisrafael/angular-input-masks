@@ -371,28 +371,26 @@
 
 				var decimals = parseInt(attrs.uiMoneyMask);
 				if(isNaN(decimals)) {
-					decimals = decimalDelimiter+'00';
-				} else if(decimals > 0) {
-					decimals = decimalDelimiter+new Array(decimals + 1).join('0');
-				} else {
-					decimals = '';
+					decimals = 2;
 				}
-				var moneyMask = new StringMask(currencySym+' #'+thousandsDelimiter+'##0'+decimals, {reverse: true});
+				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+				var moneyMask = new StringMask(currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
 						return value;
 					}
 
-					return moneyMask.apply(value);
+					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
 				});
 
 				ctrl.$parsers.push(function(value) {
-					if(!value) {
+					if (!value) {
 						return value;
 					}
 					
 					var actualNumber = value.replace(/[^\d]+/g,'');
+					actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
 					var formatedValue = moneyMask.apply(actualNumber);
 
 					if (value !== formatedValue) {
@@ -400,7 +398,7 @@
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g,'');
+					return parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals);
 				});
 			}
 		};
