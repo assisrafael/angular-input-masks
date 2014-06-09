@@ -336,7 +336,6 @@
 					}
 					var actualNumber = value.replace(/[^\d]+/g,'');
 
-					//console.log(value);
 					var formatedValue = '';
 					if (actualNumber.length > 11) {
 						formatedValue = cnpjPattern.apply(actualNumber);
@@ -362,7 +361,6 @@
 		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
 		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
 		var currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
-		console.log($locale);
 		return {
 			restrict: 'A',
 			require: '?ngModel',
