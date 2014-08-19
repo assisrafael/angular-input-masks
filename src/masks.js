@@ -92,7 +92,7 @@
 
 	function clearDelimitersAndLeadingZeros (value) {
 		var cleanValue = value.replace(/^0*/, '');
-		cleanValue = cleanValue.replace(/[\.,]/g, '');
+		cleanValue = cleanValue.replace(/[^0-9]/g, '');
 		return cleanValue;
 	}
 
