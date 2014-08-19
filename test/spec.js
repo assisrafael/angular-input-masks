@@ -32,12 +32,13 @@ describe('ui.utils.masks', function() {
 				numberToFormat = numberToFormat.slice(0, -1);
 				if(!numberToFormat) {
 					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
-				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
 
@@ -66,12 +67,13 @@ describe('ui.utils.masks', function() {
 				numberToFormat = numberToFormat.slice(0, -1);
 				if(!numberToFormat) {
 					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
-				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
 
@@ -97,12 +99,13 @@ describe('ui.utils.masks', function() {
 				numberToFormat = numberToFormat.slice(0, -1);
 				if(!numberToFormat) {
 					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
-				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
 
@@ -171,13 +174,13 @@ describe('ui.utils.masks', function() {
 				numberToFormat = numberToFormat.slice(0, -1);
 				if(!numberToFormat) {
 					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
-
-				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
 
@@ -205,13 +208,13 @@ describe('ui.utils.masks', function() {
 				numberToFormat = numberToFormat.slice(0, -1);
 				if(!numberToFormat) {
 					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
-
-				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
 	});
