@@ -11,8 +11,8 @@
 		angular.module('demo', ['ui.utils.masks']);
 
 		function ctrl($scope) {
-			$scope.field2 = 1234.178;
-			$scope.field5 = 0.7654;
+			$scope.numberWith2Decimals = 1234.178;
+			$scope.percentageWithDefaultDecimals = 0.7654;
 
 			$scope.field7 = '35244457640';
 			$scope.field9 = '13883875000120';
@@ -20,25 +20,32 @@
 			$scope.field12 = '23212161000144';
 
 			$scope.field14 = 15312;
-		};
+		}
 	</script>
 </head>
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-number-mask</h2>
-		<input type="text" name="field" ng-model="field" ui-number-mask> <br>
-		{{field}} <br>
-		<input type="text" name="field2" ng-model="field2" ui-number-mask="2"> <br>
-		{{field2}} <br>
-		<input type="text" name="field3" ng-model="field3" ui-number-mask="3" min="3.8" max="field2"> <br>
-		{{field3}} - {{form.field3.$error}}<br>
-		<input type="text" name="field4" ng-model="field4" ui-number-mask="0" min="field3"> <br>
-		{{field4}} - {{form.field4.$error}} <br>
+		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ui-number-mask> <br>
+		<span ng-bind="numberWithDefaultDecimals"></span>
+		<br>
+		<input type="text" name="field2" ng-model="numberWith2Decimals" ui-number-mask="2"> <br>
+		<span ng-bind="numberWith2Decimals"></span>
+		<br>
+		<input type="text" name="field3" ng-model="numberWith3Decimals" ui-number-mask="3" min="3.8" max="numberWith2Decimals"> <br>
+		<span ng-bind="numberWith3Decimals"></span> {{form.field3.$error}}
+		<br>
+		<input type="text" name="field4" ng-model="numberWith0Decimals" ui-number-mask="0" min="numberWith3Decimals"> <br>
+		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
+		<br>
+
 		<h2>ui-percentage-mask</h2>
-		<input type="text" name="field5" ng-model="field5" ui-percentage-mask> <br>
-		{{field5}} <br>
-		<input type="text" name="field6" ng-model="field6" ui-percentage-mask="4" min="field5"> <br>
-		{{field6}} - {{form.field6.$error}} <br>
+		<input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>
+		<span ng-bind="percentageWithDefaultDecimals"></span>
+		<br>
+		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals"> <br>
+		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
+		<br>
 
 		<h2>ui-cpf-mask</h2>
 		<input type="text" name="field7" ng-model="field7" ui-cpf-mask> <br>
