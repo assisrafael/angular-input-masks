@@ -28,3 +28,14 @@ How to use
 ```html
 <input type="text" name="field" ng-model="field" ui-number-mask="3">
 ```
+
+Tests
+-----
+
+Uses [Protractor](https://github.com/angular/protractor).
+
+Run throug gulp:
+
+```
+gulp test
+```

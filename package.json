@@ -3,9 +3,9 @@
   "version": "1.0.10",
   "description": "Personalized input masks for AngularJS",
   "main": "mask.js",
-  "repository" :{ 
-    "type" : "git",
-    "url" : "https://github.com/assisrafael/angular-input-masks.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/assisrafael/angular-input-masks.git"
   },
   "scripts": {
     "test": "gulp",
@@ -21,10 +21,13 @@
   "license": "MIT",
   "dependencies": {},
   "devDependencies": {
+    "express": "^4.8.5",
     "gulp": "^3.7.0",
     "gulp-changed": "~0.3.0",
     "gulp-jshint": "^1.6.1",
+    "gulp-protractor": "0.0.11",
     "jshint-stylish": "~0.1.5",
+    "protractor": "^1.0.0",
     "requirejs": "~2.1.10"
   }
 }
