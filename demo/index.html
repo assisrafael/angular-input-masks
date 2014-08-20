@@ -20,6 +20,8 @@
 			$scope.field12 = '23212161000144';
 
 			$scope.field14 = 15312;
+
+			$scope.initializedPhoneNumber = '3133536767';
 		}
 	</script>
 </head>
@@ -75,6 +77,13 @@
 		<input type="text" name="field16" ng-model="field16" ui-money-mask="0"> <br>
 		{{field16}} - {{form.field16.$error}}<br>
 
+		<h2>ui-br-phone-number</h2>
+		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>
+		<span ng-bind="phoneNumber">-</span>
+		<br>
+		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ui-br-phone-number><br>
+		<span ng-bind="initializedPhoneNumber">-</span>
+		<br>
 	</form>
 </body>
 </html>

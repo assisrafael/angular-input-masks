@@ -35,7 +35,7 @@ How to use
 <input type="text" name="field" ng-model="field" ui-number-mask="3" ui-negative-number>
 ```
 
-5. See more masks and examples in ```demo/index.html```
+5. See more examples and other masks in ```demo/index.html```
 
 Tests
 -----
