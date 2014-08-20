@@ -1,6 +1,6 @@
 var StringMask = require('./../lib/string-mask.js');
 
-describe('ui.utils.masks', function() {
+describe('ui.utils.masks:', function() {
 	beforeEach(function() {
 		browser.get('/demo');
 	});
@@ -9,7 +9,7 @@ describe('ui.utils.masks', function() {
 		expect(browser.getTitle()).toEqual('Angular Mask Demo');
 	});
 
-	describe('ui-number-mask', function() {
+	describe('ui-number-mask:', function() {
 		it('deveria formatar números com 2 casas decimais (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
@@ -75,6 +75,39 @@ describe('ui.utils.masks', function() {
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
 			}
+		});
+
+		it('deveria aceitar números negativos quando o atributo ui-negative number estiver presente', function() {
+			var formatterView = new StringMask('#.##0,00', {reverse: true}),
+				formatterModel =  new StringMask('###0.00', {reverse: true}),
+				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('numberWith2Decimals')),
+				value = element(by.binding('numberWith2Decimals'));
+
+			expect(input.getAttribute('value')).toEqual('1.234,18');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-1.234,18');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('1.234,18');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-1.234,18');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('1.234,18');
+		});
+
+		it('não deveria aceitar números negativos quando o atributo ui-negative number estiver ausente', function() {
+			var formatterView = new StringMask('#.##0,000', {reverse: true}),
+				formatterModel =  new StringMask('###0.000', {reverse: true}),
+				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('numberWith3Decimals')),
+				value = element(by.binding('numberWith3Decimals'));
+
+			input.sendKeys('1234.178');
+			expect(input.getAttribute('value')).toEqual('1.234,178');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('1.234,178');
 		});
 
 		it('deveria formatar números com 3 casas decimais (parâmetro)', function() {
@@ -146,7 +179,7 @@ describe('ui.utils.masks', function() {
 		});
 	});
 
-	describe('ui-percentage-mask', function() {
+	describe('ui-percentage-mask:', function() {
 		it('deveria formatar porcentagens com 2 casas decimais (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.0000', {reverse: true}),

@@ -92,7 +92,7 @@
 
 	function clearDelimitersAndLeadingZeros (value) {
 		var cleanValue = value.replace(/^0*/, '');
-		cleanValue = cleanValue.replace(/[\.,]/g, '');
+		cleanValue = cleanValue.replace(/[^0-9]/g, '');
 		return cleanValue;
 	}
 
@@ -217,6 +217,17 @@
 					var valueToFormat = clearDelimitersAndLeadingZeros(value);
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+
+					if(angular.isDefined(attrs.uiNegativeNumber)){
+						var isNegative = (value[0] === '-'),
+							needsToInvertSign = (value.slice(-1) === '-');
+
+						//only apply the minus sign if is negative or(exclusive) needs to be negative
+						if(needsToInvertSign ^ isNegative) {
+							actualNumber *= -1;
+							formatedValue = '-' + formatedValue;
+						}
+					}
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
