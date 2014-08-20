@@ -29,8 +29,8 @@
 		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ui-number-mask> <br>
 		<span ng-bind="numberWithDefaultDecimals"></span>
 		<br>
-		<input type="text" name="field2" ng-model="numberWith2Decimals" ui-number-mask="2"> <br>
-		<span ng-bind="numberWith2Decimals"></span>
+		<input type="text" name="field2" ng-model="numberWith2Decimals" ui-number-mask="2" ui-negative-number> <br>
+		<span ng-bind="numberWith2Decimals"></span> - (accepts negative numbers. Press '-' to test)
 		<br>
 		<input type="text" name="field3" ng-model="numberWith3Decimals" ui-number-mask="3" min="3.8" max="numberWith2Decimals"> <br>
 		<span ng-bind="numberWith3Decimals"></span> {{form.field3.$error}}
