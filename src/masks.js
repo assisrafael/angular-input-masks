@@ -1,41 +1,6 @@
 (function() {
 	'use strict';
 
-	var ZEROS = '00000000000000000000';
-	var rgxGroupDigits = /(\d+)(\d{3})/;
-
-	function addDefaultDelimiter(value, rgxDecimalDelimiter) {
-		return value.replace(rgxDecimalDelimiter, '$1' + '.' + '$2');
-	}
-
-	function fillWithZeros(value, minLength) {
-		if(!value || value.length < minLength) {
-			value = (ZEROS + value).slice(-minLength);
-		}
-
-		return value;
-	}
-
-	function genericNumberFormat(number, decimalDelimiter, thousandsDelimiter) {
-		number = number.toString().split('.');
-		var thousands = number[0];
-		var decimals = number.length > 1 ? decimalDelimiter + number[1] : '';
-		
-		while (rgxGroupDigits.test(thousands)) {
-			thousands = thousands.replace(rgxGroupDigits, '$1' + thousandsDelimiter + '$2');
-		}
-		return thousands + decimals;
-	}
-
-	function formatToDecimals (value, decimals) {
-		var cleanValue = value.replace(/[^0-9]/g, '');
-		var minLength = decimals + 1;
-		var zeroFilledValue = fillWithZeros(cleanValue, minLength);
-		var rgxDecimalDelimiter = new RegExp('^(\\d+)(\\d{' + decimals + '})$');
-		var delimitedValue = addDefaultDelimiter(zeroFilledValue, rgxDecimalDelimiter);
-		return parseFloat(delimitedValue).toFixed(decimals);
-	}
-
 	function maxValidator(ctrl, value, limit) {
 		var max = parseFloat(limit);
 		var validity = ctrl.$isEmpty(value) || isNaN(max)|| value <= max;
@@ -95,13 +60,54 @@
 		return validateDigit(9) && validateDigit(10);
 	}
 
+	function numberViewMask (decimals, decimalDelimiter, thousandsDelimiter) {
+		var mask = '#' + thousandsDelimiter + '##0';
+
+		if(decimals > 0) {
+			mask += decimalDelimiter;
+			for (var i = 0; i < decimals; i++) {
+				mask += '0';
+			}
+		}
+
+		return new StringMask(mask, {
+			reverse:true
+		});
+	}
+
+	function numberModelMask (decimals) {
+		var mask = '###0';
+
+		if(decimals > 0) {
+			mask += '.';
+			for (var i = 0; i < decimals; i++) {
+				mask += '0';
+			}
+		}
+
+		return new StringMask(mask, {
+			reverse:true
+		});
+	}
+
+	function clearDelimitersAndLeadingZeros (value) {
+		var cleanValue = value.replace(/^0*/, '');
+		cleanValue = cleanValue.replace(/[^0-9]/g, '');
+		return cleanValue;
+	}
+
+	function preparePercentageToFormatter (value, decimals) {
+		return clearDelimitersAndLeadingZeros((parseFloat(value)*100).toFixed(decimals));
+	}
+
+	function prepareNumberToFormatter (value, decimals) {
+		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
+	}
+
 	angular.module('ui.utils.masks', [])
 	.directive('uiPercentageMask', ['$locale', function ($locale) {
-		function localizedNumberFormat(value) {
-			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-			var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-			return genericNumberFormat(value, decimalDelimiter, thousandsDelimiter);
-		}
+		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
 
 		return {
 			restrict: 'A',
@@ -120,27 +126,30 @@
 					decimals = 2;
 				}
 				var numberDecimals = decimals + 2;
+				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),
+					modelMask = numberModelMask(numberDecimals);
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
 						return value;
 					}
 
-					return localizedNumberFormat((parseFloat(value)*100).toFixed(decimals));
+					var valueToFormat = preparePercentageToFormatter(value, decimals);
+					return viewMask.apply(valueToFormat);
 				});
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
 						return value;
 					}
-					
-					var actualNumber = formatToDecimals(value, decimals);
-					var formatedValue = localizedNumberFormat(actualNumber);
 
-					if (value !== formatedValue) {
+					var valueToFormat = clearDelimitersAndLeadingZeros(value);
+					var formatedValue = viewMask.apply(valueToFormat);
+					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+
+					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
-						actualNumber = formatToDecimals(value, numberDecimals);
 					}
 
 					return actualNumber;
@@ -169,11 +178,8 @@
 		};
 	}])
 	.directive('uiNumberMask', ['$locale', function ($locale) {
-		function localizedNumberFormat(value) {
-			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-			var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-			return genericNumberFormat(value, decimalDelimiter, thousandsDelimiter);
-		}
+		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
 
 		return {
 			restrict: 'A',
@@ -191,24 +197,39 @@
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
+				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),
+					modelMask = numberModelMask(decimals);
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
 						return value;
 					}
 
-					return localizedNumberFormat(parseFloat(value).toFixed(decimals));
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return viewMask.apply(valueToFormat);
 				});
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
 						return value;
 					}
-					
-					var actualNumber = formatToDecimals(value, decimals);
-					var formatedValue = localizedNumberFormat(actualNumber);
 
-					if (value !== formatedValue) {
+					var valueToFormat = clearDelimitersAndLeadingZeros(value);
+					var formatedValue = viewMask.apply(valueToFormat);
+					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+
+					if(angular.isDefined(attrs.uiNegativeNumber)){
+						var isNegative = (value[0] === '-'),
+							needsToInvertSign = (value.slice(-1) === '-');
+
+						//only apply the minus sign if is negative or(exclusive) needs to be negative
+						if(needsToInvertSign ^ isNegative) {
+							actualNumber *= -1;
+							formatedValue = '-' + formatedValue;
+						}
+					}
+
+					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
@@ -259,7 +280,7 @@
 					if(!value) {
 						return value;
 					}
-					
+
 					var actualNumber = value.replace(/[^\d]+/g,'');
 					var formatedValue = cpfPattern.apply(actualNumber);
 					ctrl.$setValidity('cpf', validateCPF(formatedValue));
@@ -295,7 +316,7 @@
 					if(!value) {
 						return value;
 					}
-					
+
 					var actualNumber = value.replace(/[^\d]+/g,'');
 					var formatedValue = cnpjPattern.apply(actualNumber);
 					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
@@ -388,7 +409,7 @@
 					if (!value) {
 						return value;
 					}
-					
+
 					var actualNumber = value.replace(/[^\d]+/g,'');
 					actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
 					var formatedValue = moneyMask.apply(actualNumber);
@@ -402,5 +423,74 @@
 				});
 			}
 		};
-	}]);
+	}])
+	.directive('uiBrPhoneNumber',function() {
+		/**
+		 * FIXME: all numbers will have 9 digits after 2016.
+		 * see http://portal.embratel.com.br/embratel/9-digito/
+		 */
+		var phoneMask8D = new StringMask('(00) 0000-0000'),
+			phoneMask9D = new StringMask('(00) 00000-0000');
+
+		function clearValue (value) {
+			if(!value) {
+				return value;
+			}
+
+			return value.replace(/[^0-9]/g, '');
+		}
+
+		function removeLastNonDigitChar (value) {
+			if(!value) {
+				return value;
+			}
+
+			return value.trim().replace(/[^0-9]$/, '');
+		}
+
+		function applyPhoneMask (value) {
+			if(!value) {
+				return value;
+			}
+
+			var formatedValue;
+			if(value.length < 11){
+				formatedValue = phoneMask8D.apply(value);
+			}else{
+				formatedValue = phoneMask9D.apply(value);
+			}
+
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function(scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyPhoneMask(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if (!value) {
+						return value;
+					}
+
+					var cleanValue = clearValue(value);
+					var formatedValue = applyPhoneMask(cleanValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return clearValue(formatedValue);
+				});
+			}
+		}
+	});
 })();
