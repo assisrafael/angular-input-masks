@@ -5,12 +5,12 @@ describe('ui.utils.masks:', function() {
 		browser.get('/demo');
 	});
 
-	it('deveria carregar a página de demonstração', function() {
+	it('should load the demo page', function() {
 		expect(browser.getTitle()).toEqual('Angular Mask Demo');
 	});
 
 	describe('ui-number-mask:', function() {
-		it('deveria formatar números com 2 casas decimais (default)', function() {
+		it('should format number with two decimal places (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -42,7 +42,7 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
-		it('deveria formatar números com 2 casas decimais (parâmetro)', function() {
+		it('should format number with two decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -77,7 +77,7 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
-		it('deveria aceitar números negativos quando o atributo ui-negative number estiver presente', function() {
+		it('should accept negative numbers when the ui-negative attribute is present', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -96,7 +96,7 @@ describe('ui.utils.masks:', function() {
 			expect(input.getAttribute('value')).toEqual('1.234,18');
 		});
 
-		it('não deveria aceitar números negativos quando o atributo ui-negative number estiver ausente', function() {
+		it('should not accept negative numbers when the ui-negative attribute is not present', function() {
 			var formatterView = new StringMask('#.##0,000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -110,7 +110,7 @@ describe('ui.utils.masks:', function() {
 			expect(input.getAttribute('value')).toEqual('1.234,178');
 		});
 
-		it('deveria formatar números com 3 casas decimais (parâmetro)', function() {
+		it('should format number with three decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -142,7 +142,7 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
-		it('deveria formatar números com 0 casas decimais (parâmetro)', function() {
+		it('should format number without decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0', {reverse: true}),
 				formatterModel =  new StringMask('###0', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
@@ -180,7 +180,7 @@ describe('ui.utils.masks:', function() {
 	});
 
 	describe('ui-percentage-mask:', function() {
-		it('deveria formatar porcentagens com 2 casas decimais (default)', function() {
+		it('should format percentage numbers with two decimal places (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.0000', {reverse: true}),
 				numberToFormat = '', percent = ' %', formatedNumberAsString, formatedNumberAsNumber;
@@ -217,7 +217,7 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
-		it('deveria formatar porcentagens com 4 casas decimais (parâmetro)', function() {
+		it('should format percentage numbers with four decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,0000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000000', {reverse: true}),
 				numberToFormat = '', percent = ' %', formatedNumberAsString, formatedNumberAsNumber;
