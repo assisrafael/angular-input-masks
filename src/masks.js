@@ -131,26 +131,36 @@
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
-						return value;
+						return ' %';
 					}
 
 					var valueToFormat = preparePercentageToFormatter(value, decimals);
-					return viewMask.apply(valueToFormat);
+					return viewMask.apply(valueToFormat) + ' %';
 				});
 
 				ctrl.$parsers.push(function(value) {
+					function renderValue(formatedValue) {
+						if (ctrl.$viewValue !== formatedValue) {
+							ctrl.$setViewValue(formatedValue);
+							ctrl.$render();
+						}	
+					}
 					if(!value) {
+						renderValue(' %');
 						return value;
 					}
 
 					var valueToFormat = clearDelimitersAndLeadingZeros(value);
-					var formatedValue = viewMask.apply(valueToFormat);
-					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
+					if(value && value.indexOf('%') < 0 && valueToFormat.length >= 1) {
+						valueToFormat = valueToFormat.substr(0,valueToFormat.length-1);
 					}
+					var formatedValue = ' %';
+					var actualNumber;
+					if (valueToFormat) {
+						formatedValue = viewMask.apply(valueToFormat) + ' %';
+						actualNumber = parseFloat(modelMask.apply(valueToFormat));
+					}
+					renderValue(formatedValue);
 
 					return actualNumber;
 				});
@@ -259,7 +269,15 @@
 			}
 		};
 	}])
-	.directive('uiCpfMask', [function () {
+	.directive('uiBrCpfMask', [function () {
+		function applyCpfMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue = cpfPattern.apply(value);
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -269,11 +287,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
-						return value;
-					}
-
-					return cpfPattern.apply(value);
+					return applyCpfMask(value);
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -281,11 +295,11 @@
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]+/g,'');
-					var formatedValue = cpfPattern.apply(actualNumber);
+					var actualNumber = value.replace(/[^\d]/g,'');
+					var formatedValue = applyCpfMask(actualNumber);
 					ctrl.$setValidity('cpf', validateCPF(formatedValue));
 
-					if (value !== formatedValue) {
+					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
@@ -295,7 +309,14 @@
 			}
 		};
 	}])
-	.directive('uiCnpjMask', [function () {
+	.directive('uiBrCnpjMask', [function () {
+		function applyCnpjMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue = cnpjPattern.apply(value);
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -305,11 +326,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
-						return value;
-					}
-
-					return cnpjPattern.apply(value);
+					return applyCnpjMask(value);
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -318,10 +335,10 @@
 					}
 
 					var actualNumber = value.replace(/[^\d]+/g,'');
-					var formatedValue = cnpjPattern.apply(actualNumber);
+					var formatedValue = applyCnpjMask(actualNumber);
 					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
 
-					if (value !== formatedValue) {
+					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
@@ -331,7 +348,19 @@
 			}
 		};
 	}])
-	.directive('uiCpfcnpjMask', [function () {
+	.directive('uiBrCpfcnpjMask', [function () {
+		function applyCpfCnpjMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue;
+			if (value.length > 11) {
+				formatedValue = cnpjPattern.apply(value);
+			} else {
+				formatedValue = cpfPattern.apply(value);
+			}
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -341,14 +370,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
-						return value;
-					}
-					var actualNumber = value.replace(/[^\d]+/g,'');
-					if(actualNumber.length > 11) {
-						return cnpjPattern.apply(value);
-					}
-					return cpfPattern.apply(value);
+					return applyCpfCnpjMask(value);
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -357,18 +379,16 @@
 					}
 					var actualNumber = value.replace(/[^\d]+/g,'');
 
-					var formatedValue = '';
+					var formatedValue = applyCpfCnpjMask(actualNumber);
 					if (actualNumber.length > 11) {
-						formatedValue = cnpjPattern.apply(actualNumber);
 						ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
 						ctrl.$setValidity('cpf', true);
 					} else {
-						formatedValue = cpfPattern.apply(actualNumber);
 						ctrl.$setValidity('cpf', validateCPF(formatedValue));
 						ctrl.$setValidity('cnpj', true);
 					}
 
-					if (value !== formatedValue) {
+					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}

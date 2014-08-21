@@ -14,10 +14,10 @@
 			$scope.numberWith2Decimals = 1234.178;
 			$scope.percentageWithDefaultDecimals = 0.7654;
 
-			$scope.field7 = '35244457640';
-			$scope.field9 = '13883875000120';
-			$scope.field11 = '56338332958';
-			$scope.field12 = '23212161000144';
+			$scope.initializedCpf = '35244457640';
+			$scope.initializedCnpj = '13883875000120';
+			$scope.initializedCpfCnpj1 = '56338332958';
+			$scope.initializedCpfCnpj2 = '23212161000144';
 
 			$scope.field14 = 15312;
 
@@ -49,25 +49,25 @@
 		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
 		<br>
 
-		<h2>ui-cpf-mask</h2>
-		<input type="text" name="field7" ng-model="field7" ui-cpf-mask> <br>
-		{{field7}} - {{form.field7.$error}}<br>
-		<input type="text" name="field8" ng-model="field8" ui-cpf-mask> <br>
-		{{field8}} - {{form.field8.$error}}<br>
+		<h2>ui-br-cpf-mask</h2>
+		<input type="text" name="field7" ng-model="initializedCpf" ui-br-cpf-mask> <br>
+		<span ng-bind="initializedCpf"></span> - {{form.initializedCpf.$error}}<br>
+		<input type="text" name="field8" ng-model="fieldCpf" ui-br-cpf-mask> <br>
+		<span ng-bind="fieldCpf"></span> - {{form.field8.$error}}<br>
 
-		<h2>ui-cnpj-mask</h2>
-		<input type="text" name="field9" ng-model="field9" ui-cnpj-mask> <br>
-		{{field9}} - {{form.field9.$error}}<br>
-		<input type="text" name="field10" ng-model="field10" ui-cnpj-mask> <br>
-		{{field10}} - {{form.field10.$error}}<br>
+		<h2>ui-br-cnpj-mask</h2>
+		<input type="text" name="field9" ng-model="initializedCnpj" ui-br-cnpj-mask> <br>
+		<span ng-bind="initializedCnpj"></span> - {{form.initializedCnpj.$error}}<br>
+		<input type="text" name="field10" ng-model="fieldCnpj" ui-br-cnpj-mask> <br>
+		<span ng-bind="fieldCnpj"></span> - {{form.field10.$error}}<br>
 
-		<h2>ui-cpfcnpj-mask</h2>
-		<input type="text" name="field11" ng-model="field11" ui-cpfcnpj-mask> <br>
-		{{field11}} - {{form.field11.$error}}<br>
-		<input type="text" name="field12" ng-model="field12" ui-cpfcnpj-mask> <br>
-		{{field12}} - {{form.field12.$error}}<br>
-		<input type="text" name="field13" ng-model="field13" ui-cpfcnpj-mask> <br>
-		{{field13}} - {{form.field13.$error}}<br>
+		<h2>ui-br-cpfcnpj-mask</h2>
+		<input type="text" name="field11" ng-model="initializedCpfCnpj1" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="initializedCpfCnpj1"></span> - {{form.field11.$error}}<br>
+		<input type="text" name="field12" ng-model="initializedCpfCnpj2" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="initializedCpfCnpj2"></span> - {{form.field12.$error}}<br>
+		<input type="text" name="field13" ng-model="cpfcnpj" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="cpfcnpj"></span> - {{form.field13.$error}}<br>
 
 		<h2>ui-money-mask</h2>
 		<input type="text" name="field14" ng-model="field14" ui-money-mask> <br>
