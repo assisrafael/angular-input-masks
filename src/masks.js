@@ -131,26 +131,36 @@
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
-						return value;
+						return ' %';
 					}
 
 					var valueToFormat = preparePercentageToFormatter(value, decimals);
-					return viewMask.apply(valueToFormat);
+					return viewMask.apply(valueToFormat) + ' %';
 				});
 
 				ctrl.$parsers.push(function(value) {
+					function renderValue(formatedValue) {
+						if (ctrl.$viewValue !== formatedValue) {
+							ctrl.$setViewValue(formatedValue);
+							ctrl.$render();
+						}	
+					}
 					if(!value) {
+						renderValue(' %');
 						return value;
 					}
 
 					var valueToFormat = clearDelimitersAndLeadingZeros(value);
-					var formatedValue = viewMask.apply(valueToFormat);
-					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
+					if(value && value.indexOf('%') < 0 && valueToFormat.length >= 1) {
+						valueToFormat = valueToFormat.substr(0,valueToFormat.length-1);
 					}
+					var formatedValue = ' %';
+					var actualNumber;
+					if (valueToFormat) {
+						formatedValue = viewMask.apply(valueToFormat) + ' %';
+						actualNumber = parseFloat(modelMask.apply(valueToFormat));
+					}
+					renderValue(formatedValue);
 
 					return actualNumber;
 				});

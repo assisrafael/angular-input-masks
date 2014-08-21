@@ -183,12 +183,12 @@ describe('ui.utils.masks:', function() {
 		it('deveria formatar porcentagens com 2 casas decimais (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.0000', {reverse: true}),
-				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+				numberToFormat = '', percent = ' %', formatedNumberAsString, formatedNumberAsNumber;
 
 			var input = element(by.model('percentageWithDefaultDecimals')),
 				value = element(by.binding('percentageWithDefaultDecimals'));
 
-			expect(input.getAttribute('value')).toEqual('76,54');
+			expect(input.getAttribute('value')).toEqual('76,54'+percent);
 			input.clear();
 
 			for (var i = 1; i <= 9; i++) {
@@ -196,7 +196,7 @@ describe('ui.utils.masks:', function() {
 				numberToFormat += i;
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 
 				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
@@ -213,14 +213,14 @@ describe('ui.utils.masks:', function() {
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 			}
 		});
 
 		it('deveria formatar porcentagens com 4 casas decimais (parâmetro)', function() {
 			var formatterView = new StringMask('#.##0,0000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000000', {reverse: true}),
-				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+				numberToFormat = '', percent = ' %', formatedNumberAsString, formatedNumberAsNumber;
 
 			var input = element(by.model('percentageWith4Decimals')),
 				value = element(by.binding('percentageWith4Decimals'));
@@ -230,7 +230,7 @@ describe('ui.utils.masks:', function() {
 				numberToFormat += i;
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 
 				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
@@ -247,7 +247,7 @@ describe('ui.utils.masks:', function() {
 				}
 
 				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 			}
 		});
 	});
