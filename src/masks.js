@@ -415,7 +415,8 @@
 					decimals = 2;
 				}
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-				var moneyMask = new StringMask(currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern, {reverse: true});
+				var maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
+				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
@@ -458,14 +459,6 @@
 			}
 
 			return value.replace(/[^0-9]/g, '');
-		}
-
-		function removeLastNonDigitChar (value) {
-			if(!value) {
-				return value;
-			}
-
-			return value.trim().replace(/[^0-9]$/, '');
 		}
 
 		function applyPhoneMask (value) {
@@ -511,6 +504,57 @@
 					return clearValue(formatedValue);
 				});
 			}
+		};
+	})
+	.directive('uiBrCepMask',function() {
+		var cepMask = new StringMask('00000-000');
+
+		function clearValue (value) {
+			if(!value) {
+				return value;
+			}
+
+			return value.replace(/[^0-9]/g, '');
 		}
+
+		function applyCepMask (value, ctrl) {
+			if(!value) {
+				return value;
+			}
+			var processed = cepMask.process(value);
+			ctrl.$setValidity('cep', processed.valid);
+			var formatedValue = processed.result;
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function(scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyCepMask(value, ctrl);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if (!value) {
+						return value;
+					}
+
+					var cleanValue = clearValue(value);
+					var formatedValue = applyCepMask(cleanValue, ctrl);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return clearValue(formatedValue);
+				});
+			}
+		};
 	});
 })();
