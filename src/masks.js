@@ -269,7 +269,7 @@
 			}
 		};
 	}])
-	.directive('uiCpfMask', [function () {
+	.directive('uiBrCpfMask', [function () {
 		function applyCpfMask (value) {
 			if(!value) {
 				return value;
@@ -309,7 +309,7 @@
 			}
 		};
 	}])
-	.directive('uiCnpjMask', [function () {
+	.directive('uiBrCnpjMask', [function () {
 		function applyCnpjMask (value) {
 			if(!value) {
 				return value;
@@ -348,7 +348,7 @@
 			}
 		};
 	}])
-	.directive('uiCpfcnpjMask', [function () {
+	.directive('uiBrCpfcnpjMask', [function () {
 		function applyCpfCnpjMask (value) {
 			if(!value) {
 				return value;
