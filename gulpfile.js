@@ -16,7 +16,7 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('lib', function() {
-	gulp.src(['string-mask/src/string-mask.js'], {
+	gulp.src(['string-mask/src/string-mask.js', 'br-validations/releases/br-validations.min.js'], {
 		cwd: 'bower_components/'
 	})
 	.pipe(changed('lib'))

@@ -32,7 +32,8 @@
         "after",
         "afterEach",
         "it",
-        "StringMask"
+        "StringMask",
+        "BrV"
     ],
     "indent": 4,
     "maxlen": 120,
