@@ -47,5 +47,5 @@ gulp.task('test', ['webdriver_update', 'serve'], function() {
 	.pipe(protractor({
 		configFile: 'test/conf.js'
 	}))
-	.on('error', function(e) { throw e })
+	.on('error', function(e) { throw e });
 });

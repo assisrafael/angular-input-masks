@@ -28,8 +28,8 @@
 			$scope.initializedCep = '30112010';
 
 			$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
-				'MG','MS','MT','PE','PA','PR','RN','RO','RJ','RR','RS','PB','PI',
-				'SC','SE','SP','TO'];
+				'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
+				'RS','SC','SE','SP','TO'];
 			$scope.initializedState = 'SP';
 			$scope.initializedIE = 'P3588747709710';
 		}
@@ -108,9 +108,11 @@
 		<input type="text" name="field19" ng-model="initializedIE" ui-br-ie-mask='initializedState'><br>
 		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - {{form.field19.$error}}<br>
 		<br>
-		<select ng-model="state" ng-options="state for state in states"></select>
-		<input type="text" name="field20" ng-model="ie" ui-br-ie-mask="state"><br>
-		<span ng-bind="state"></span>: <span ng-bind="ie"></span> - {{form.field20.$error}}<br>
+		<select ng-model="state" ng-options="state for state in states">
+			<option value="">--</option>
+		</select>
+		<input type="text" name="field20" ng-model="inscEst" ui-br-ie-mask="state"><br>
+		<span ng-bind="state"></span>: <span ng-bind="inscEst"></span> - {{form.field20.$error}}<br>
 		<br>
 	</form>
 </body>
