@@ -8,9 +8,8 @@
 	<script src="../lib/string-mask.js"></script>
 	<script src="../lib/br-validations.min.js"></script>
 	<script src="../src/masks.js"></script>
-	<script src="../src/ie-masks.js"></script>
 	<script>
-		angular.module('demo', ['ui.utils.masks', 'ui.utils.masks.ie']);
+		angular.module('demo', ['ui.utils.masks']);
 
 		function ctrl($scope) {
 			$scope.numberWith2Decimals = 1234.178;
