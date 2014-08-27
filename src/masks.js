@@ -104,6 +104,138 @@
 		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
 	}
 
+	function uiBrCpfMask() {
+		function applyCpfMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue = cpfPattern.apply(value);
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyCpfMask(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualNumber = value.replace(/[^\d]/g,'');
+					var formatedValue = applyCpfMask(actualNumber);
+					ctrl.$setValidity('cpf', validateCPF(formatedValue));
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}
+
+	function uiBrCnpjMask() {
+		function applyCnpjMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue = cnpjPattern.apply(value);
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyCnpjMask(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualNumber = value.replace(/[^\d]+/g,'');
+					var formatedValue = applyCnpjMask(actualNumber);
+					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}
+
+	function uiBrCpfCnpjMask() {
+		function applyCpfCnpjMask (value) {
+			if(!value) {
+				return value;
+			}
+			var formatedValue;
+			if (value.length > 11) {
+				formatedValue = cnpjPattern.apply(value);
+			} else {
+				formatedValue = cpfPattern.apply(value);
+			}
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyCpfCnpjMask(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					var actualNumber = value.replace(/[^\d]+/g,'');
+
+					var formatedValue = applyCpfCnpjMask(actualNumber);
+					if (actualNumber.length > 11) {
+						ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+						ctrl.$setValidity('cpf', true);
+					} else {
+						ctrl.$setValidity('cpf', validateCPF(formatedValue));
+						ctrl.$setValidity('cnpj', true);
+					}
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return formatedValue.replace(/[^\d]+/g,'');
+				});
+			}
+		};
+	}
+
 	angular.module('ui.utils.masks', [])
 	.directive('uiPercentageMask', ['$locale', function ($locale) {
 		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
@@ -269,135 +401,15 @@
 			}
 		};
 	}])
-	.directive('uiBrCpfMask', [function () {
-		function applyCpfMask (value) {
-			if(!value) {
-				return value;
-			}
-			var formatedValue = cpfPattern.apply(value);
-			return formatedValue.trim().replace(/[^0-9]$/, '');
-		}
-
-		return {
-			restrict: 'A',
-			require: '?ngModel',
-			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
-				ctrl.$formatters.push(function(value) {
-					return applyCpfMask(value);
-				});
-
-				ctrl.$parsers.push(function(value) {
-					if(!value) {
-						return value;
-					}
-
-					var actualNumber = value.replace(/[^\d]/g,'');
-					var formatedValue = applyCpfMask(actualNumber);
-					ctrl.$setValidity('cpf', validateCPF(formatedValue));
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
-					}
-
-					return formatedValue.replace(/[^\d]+/g,'');
-				});
-			}
-		};
-	}])
-	.directive('uiBrCnpjMask', [function () {
-		function applyCnpjMask (value) {
-			if(!value) {
-				return value;
-			}
-			var formatedValue = cnpjPattern.apply(value);
-			return formatedValue.trim().replace(/[^0-9]$/, '');
-		}
-		return {
-			restrict: 'A',
-			require: '?ngModel',
-			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
-				ctrl.$formatters.push(function(value) {
-					return applyCnpjMask(value);
-				});
-
-				ctrl.$parsers.push(function(value) {
-					if(!value) {
-						return value;
-					}
-
-					var actualNumber = value.replace(/[^\d]+/g,'');
-					var formatedValue = applyCnpjMask(actualNumber);
-					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
-					}
-
-					return formatedValue.replace(/[^\d]+/g,'');
-				});
-			}
-		};
-	}])
-	.directive('uiBrCpfcnpjMask', [function () {
-		function applyCpfCnpjMask (value) {
-			if(!value) {
-				return value;
-			}
-			var formatedValue;
-			if (value.length > 11) {
-				formatedValue = cnpjPattern.apply(value);
-			} else {
-				formatedValue = cpfPattern.apply(value);
-			}
-			return formatedValue.trim().replace(/[^0-9]$/, '');
-		}
-		return {
-			restrict: 'A',
-			require: '?ngModel',
-			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
-				ctrl.$formatters.push(function(value) {
-					return applyCpfCnpjMask(value);
-				});
-
-				ctrl.$parsers.push(function(value) {
-					if(!value) {
-						return value;
-					}
-					var actualNumber = value.replace(/[^\d]+/g,'');
-
-					var formatedValue = applyCpfCnpjMask(actualNumber);
-					if (actualNumber.length > 11) {
-						ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
-						ctrl.$setValidity('cpf', true);
-					} else {
-						ctrl.$setValidity('cpf', validateCPF(formatedValue));
-						ctrl.$setValidity('cnpj', true);
-					}
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
-					}
-
-					return formatedValue.replace(/[^\d]+/g,'');
-				});
-			}
-		};
-	}])
+	.directive('uiBrCpfMask', [uiBrCpfMask])
+	.directive('uiBrCnpjMask', [uiBrCnpjMask])
+	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
+	// deprecated: will be removed in the next major version
+	.directive('uiCpfMask', [uiBrCpfMask])
+	// deprecated: will be removed in the next major version
+	.directive('uiCnpjMask', [uiBrCnpjMask])
+	// deprecated: will be removed in the next major version
+	.directive('uiCpfcnpjMask', [uiBrCpfCnpjMask])
 	.directive('uiMoneyMask', ['$locale', function ($locale) {
 		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
 		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
