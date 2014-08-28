@@ -16,49 +16,7 @@
 	}
 
 	var cnpjPattern = new StringMask('00.000.000\/0000-00');
-	function validateCNPJ(c) {
-		var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
-		c = c.replace(/[^\d]/g,'').split('');
-		if(c.length !== 14) {
-			return false;
-		}
-
-		for (var i = 0, n = 0; i < 12; i++) {
-			n += c[i] * b[i+1];
-		}
-		n = 11 - n%11;
-		n = n >= 10 ? 0 : n;
-		if (parseInt(c[12]) !== n)  {
-			return false;
-		}
-
-		for (i = 0, n = 0; i <= 12; i++) {
-			n += c[i] * b[i];
-		}
-		n = 11 - n%11;
-		n = n >= 10 ? 0 : n;
-		if (parseInt(c[13]) !== n)  {
-			return false;
-		}
-		return true;
-	}
-
 	var cpfPattern = new StringMask('000.000.000-00');
-	function validateCPF(cpf) {
-		cpf = cpf.replace(/[^\d]+/g,'');
-		if (cpf === '' || cpf === '00000000000' || cpf.length !== 11) {
-			return false;
-		}
-		function validateDigit(digit) {
-			var add = 0;
-			var init = digit - 9;
-			for (var i = 0; i < 9; i ++) {
-				add += parseInt(cpf.charAt(i + init)) * (i+1);
-			}
-			return (add%11)%10 === parseInt(cpf.charAt(digit));
-		}
-		return validateDigit(9) && validateDigit(10);
-	}
 
 	function numberViewMask (decimals, decimalDelimiter, thousandsDelimiter) {
 		var mask = '#' + thousandsDelimiter + '##0';
@@ -132,7 +90,7 @@
 
 					var actualNumber = value.replace(/[^\d]/g,'');
 					var formatedValue = applyCpfMask(actualNumber);
-					ctrl.$setValidity('cpf', validateCPF(formatedValue));
+					ctrl.$setValidity('cpf', BrV.cpf.validate(formatedValue));
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -172,7 +130,7 @@
 
 					var actualNumber = value.replace(/[^\d]+/g,'');
 					var formatedValue = applyCnpjMask(actualNumber);
-					ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+					ctrl.$setValidity('cnpj', BrV.cnpj.validate(formatedValue));
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -218,10 +176,10 @@
 
 					var formatedValue = applyCpfCnpjMask(actualNumber);
 					if (actualNumber.length > 11) {
-						ctrl.$setValidity('cnpj', validateCNPJ(formatedValue));
+						ctrl.$setValidity('cnpj', BrV.cnpj.validate(formatedValue));
 						ctrl.$setValidity('cpf', true);
 					} else {
-						ctrl.$setValidity('cpf', validateCPF(formatedValue));
+						ctrl.$setValidity('cpf', BrV.cpf.validate(formatedValue));
 						ctrl.$setValidity('cnpj', true);
 					}
 
@@ -427,7 +385,8 @@
 					decimals = 2;
 				}
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-				var moneyMask = new StringMask(currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern, {reverse: true});
+				var maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
+				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
 					if(!value) {
@@ -470,14 +429,6 @@
 			}
 
 			return value.replace(/[^0-9]/g, '');
-		}
-
-		function removeLastNonDigitChar (value) {
-			if(!value) {
-				return value;
-			}
-
-			return value.trim().replace(/[^0-9]$/, '');
 		}
 
 		function applyPhoneMask (value) {
@@ -523,6 +474,169 @@
 					return clearValue(formatedValue);
 				});
 			}
+		};
+	})
+	.directive('uiBrCepMask',function() {
+		var cepMask = new StringMask('00000-000');
+
+		function clearValue (value) {
+			if(!value) {
+				return value;
+			}
+
+			return value.replace(/[^0-9]/g, '');
 		}
+
+		function applyCepMask (value, ctrl) {
+			if(!value) {
+				return value;
+			}
+			var processed = cepMask.process(value);
+			ctrl.$setValidity('cep', processed.valid);
+			var formatedValue = processed.result;
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function(scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyCepMask(value, ctrl);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if (!value) {
+						return value;
+					}
+
+					var cleanValue = clearValue(value);
+					var formatedValue = applyCepMask(cleanValue, ctrl);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return clearValue(formatedValue);
+				});
+			}
+		};
+	})
+	.directive('uiBrIeMask',function() {
+
+		var ieMasks = {
+			'AC': [{mask: new StringMask('00.000.000/000-00')}],
+			'AL': [{mask: new StringMask('000000000')}],
+			'AM': [{mask: new StringMask('00.000.000-0')}],
+			'AP': [{mask: new StringMask('000000000')}],
+			'BA': [{chars: 8, mask: new StringMask('000000-00')},
+				   {mask: new StringMask('0000000-00')}],
+			'CE': [{mask: new StringMask('00000000-0')}],
+			'DF': [{mask: new StringMask('00000000000-00')}],
+			'ES': [{mask: new StringMask('00000000-0')}],
+			'GO': [{mask: new StringMask('00.000.000-0')}],
+			'MA': [{mask: new StringMask('000000000')}],
+			'MG': [{mask: new StringMask('000.000.000/0000')}],
+			'MS': [{mask: new StringMask('000000000')}],
+			'MT': [{mask: new StringMask('0000000000-0')}],
+			'PA': [{mask: new StringMask('00-000000-0')}],
+			'PB': [{mask: new StringMask('00000000-0')}],
+			'PE': [{chars: 9, mask: new StringMask('0000000-00')},
+				   {mask: new StringMask('00.0.000.0000000-0')}],
+			'PI': [{mask: new StringMask('000000000')}],
+			'PR': [{mask: new StringMask('000.00000-00')}],
+			'RJ': [{mask: new StringMask('00.000.00-0')}],
+			'RN': [{chars: 9, mask: new StringMask('00.000.000-0')},
+				   {mask: new StringMask('00.0.000.000-0')}],
+			'RO': [{mask: new StringMask('0000000000000-0')}],
+			'RR': [{mask: new StringMask('00000000-0')}],
+			'RS': [{mask: new StringMask('000/0000000')}],
+			'SC': [{mask: new StringMask('000.000.000')}],
+			'SE': [{mask: new StringMask('00000000-0')}],
+			'SP': [{mask: new StringMask('000.000.000.000')},
+				   {mask: new StringMask('-00000000.0/000')}],
+			'TO': [{mask: new StringMask('00000000000')}]
+		};
+
+		function clearValue (value) {
+			if(!value) {
+				return value;
+			}
+			return value.replace(/[^0-9]/g, '');
+		}
+
+		function getMask(uf, value) {
+			if(!uf || !ieMasks[uf]) {
+				return undefined;
+			}
+			var _uf = uf.toUpperCase();
+			if (_uf === 'SP' && /^P/i.test(value)) {
+				return ieMasks.SP[1].mask;
+			}
+			var masks = ieMasks[uf];
+			var i = 0;
+			while(masks[i].chars && masks[i].chars < clearValue(value).length && i < masks.length - 1) {
+				i++;
+			}
+			return masks[i].mask;
+		}
+
+		function applyIEMask (value, uf, ctrl) {
+			var mask = getMask(uf, value);
+			if(!value || !mask) {
+				return value;
+			}
+			var processed = mask.process(clearValue(value));
+			ctrl.$setValidity('ie', BrV.ie(uf).validate(value));
+			var formatedValue = processed.result;
+			if (uf && uf.toUpperCase() === 'SP' && /^p/i.test(value)) {
+				return 'P'+(formatedValue ? formatedValue.trim().replace(/[^0-9]$/, '') : '');
+			}
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			scope: {
+				state: '=uiBrIeMask'
+			},
+			link: function(scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				scope.$watch('state', function(state) {
+					applyIEMask(ctrl.$viewValue, state, ctrl);
+				});
+
+				ctrl.$formatters.push(function(value) {
+					return applyIEMask(value, scope.state, ctrl);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if (!value) {
+						return value;
+					}
+
+					var formatedValue = applyIEMask(value, scope.state, ctrl);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					if (scope.state && scope.state.toUpperCase() === 'SP' && /^p/i.test(value)) {
+						return 'P'+clearValue(formatedValue);
+					}
+					return clearValue(formatedValue);
+				});
+			}
+		};
 	});
 })();
