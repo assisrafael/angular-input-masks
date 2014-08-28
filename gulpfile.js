@@ -1,30 +1,56 @@
 var gulp = require('gulp'),
-jshint = require('gulp-jshint'),
-jshintReporter = require('jshint-stylish'),
-changed = require('gulp-changed');
+	path = require('path'),
+	jshintReporter = require('jshint-stylish'),
+	plugins = require('gulp-load-plugins')({
+		config: path.join(__dirname, 'package.json')
+	});
 
 var path = {
 	src: {
-		files: 'src/**/*.js'
+		files: ['src/**/*.js']
+	},
+	lib: {
+		files: [
+			'bower_components/string-mask/src/string-mask.js',
+			'bower_components/br-validations/releases/br-validations.js'
+		]
 	}
 }
 
 gulp.task('jshint', function() {
 	gulp.src(path.src.files)
-	.pipe(jshint('.jshintrc'))
-	.pipe(jshint.reporter(jshintReporter));
+	.pipe(plugins.jshint('.jshintrc'))
+	.pipe(plugins.jshint.reporter(jshintReporter));
 });
 
-gulp.task('lib', function() {
-	gulp.src(['string-mask/src/string-mask.js', 'br-validations/releases/br-validations.min.js'], {
-		cwd: 'bower_components/'
-	})
-	.pipe(changed('lib'))
-	.pipe(gulp.dest('lib'));
+gulp.task('build', function() {
+	var pkg = require('./package.json');
+
+	var header = ['/**',
+		' * <%= pkg.name %>',
+		' * <%= pkg.description %>',
+		' * @version v<%= pkg.version %>',
+		' * @link <%= pkg.homepage %>',
+		' * @license <%= pkg.license %>',
+		' */',
+		''].join('\n');
+
+	var stream1 = gulp.src(path.lib.files);
+
+	var stream2 = gulp.src(path.src.files)
+	.pipe(plugins.header(header, {pkg: pkg}));
+
+	require('event-stream')
+	.merge(stream1, stream2)
+	.pipe(plugins.concat('masks.js'))
+	.pipe(gulp.dest('./releases'))
+	.pipe(plugins.uglify())
+	.pipe(plugins.concat('masks.min.js'))
+	.pipe(gulp.dest('./releases'));
 });
 
-gulp.task('default', ['jshint', 'lib'], function() {
-	gulp.watch(path.src.files, ['jshint']);
+gulp.task('default', ['jshint', 'build'], function() {
+	gulp.watch(path.src.files, ['jshint', 'build']);
 });
 
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);

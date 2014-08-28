@@ -1,4 +1,4 @@
-var StringMask = require('./../lib/string-mask.js');
+var StringMask = require('../bower_components/string-mask/src/string-mask.js');
 
 describe('ui.utils.masks:', function() {
 	beforeEach(function() {

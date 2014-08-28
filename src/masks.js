@@ -612,23 +612,14 @@
 				}
 
 				scope.$watch('state', function(state) {
-					console.log('');
-					console.log('state changed to: '+state);
-					console.log('ctrl.$viewValue: '+ctrl.$viewValue);
 					applyIEMask(ctrl.$viewValue, state, ctrl);
 				});
 
 				ctrl.$formatters.push(function(value) {
-					console.log('');
-					console.log('format('+value+')');
-					console.log('scope.state: '+scope.state);
 					return applyIEMask(value, scope.state, ctrl);
 				});
 
 				ctrl.$parsers.push(function(value) {
-					console.log('');
-					console.log('parse('+value+')');
-					console.log('scope.state: '+scope.state);
 					if (!value) {
 						return value;
 					}
