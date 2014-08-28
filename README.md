@@ -130,7 +130,7 @@ How to use
 
 ### More examples ###
 
-_See more usage examples in ```demo/index.html```_
+_See more usage examples in [demo/index.html](demo/index.html)_
 
 Tests
 -----
