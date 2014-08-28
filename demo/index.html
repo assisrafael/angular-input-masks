@@ -6,6 +6,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
 	<script src="../lib/string-mask.js"></script>
+	<script src="../lib/br-validations.min.js"></script>
 	<script src="../src/masks.js"></script>
 	<script>
 		angular.module('demo', ['ui.utils.masks']);
@@ -24,6 +25,12 @@
 			$scope.initializedPhoneNumber = '3133536767';
 
 			$scope.initializedCep = '30112010';
+
+			$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
+				'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
+				'RS','SC','SE','SP','TO'];
+			$scope.initializedState = 'SP';
+			$scope.initializedIE = 'P3588747709710';
 		}
 	</script>
 </head>
@@ -96,6 +103,18 @@
 		<br>
 		<input type="text" name="field18" ng-model="cep" ui-br-cep-mask><br>
 		<span ng-bind="cep"></span> - {{form.field18.$error}}<br>
+		<br>
+
+		<h2>ui-br-ie-mask</h2>
+		<select ng-model="initializedState" ng-options="state for state in states"></select>
+		<input type="text" name="field19" ng-model="initializedIE" ui-br-ie-mask='initializedState'><br>
+		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - {{form.field19.$error}}<br>
+		<br>
+		<select ng-model="state" ng-options="state for state in states">
+			<option value="">--</option>
+		</select>
+		<input type="text" name="field20" ng-model="inscEst" ui-br-ie-mask="state"><br>
+		<span ng-bind="state"></span>: <span ng-bind="inscEst"></span> - {{form.field20.$error}}<br>
 		<br>
 	</form>
 </body>
