@@ -186,7 +186,7 @@ if (objectTypes[typeof module]) {
 /**
  * angular-mask
  * Personalized input masks for AngularJS
- * @version v1.2.0
+ * @version v1.2.1
  * @link http://github.com/assisrafael/angular-input-masks
  * @license MIT
  */
@@ -501,12 +501,17 @@ if (objectTypes[typeof module]) {
 					modelMask = numberModelMask(decimals);
 
 				ctrl.$formatters.push(function(value) {
+					var prefix = '';
+					if(angular.isDefined(attrs.uiNegativeNumber) && value < 0){
+						prefix = '-';
+					}
+
 					if(!value) {
 						return value;
 					}
 
 					var valueToFormat = prepareNumberToFormatter(value, decimals);
-					return viewMask.apply(valueToFormat);
+					return prefix + viewMask.apply(valueToFormat);
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -614,7 +619,7 @@ if (objectTypes[typeof module]) {
 						ctrl.$render();
 					}
 
-					return parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals);
+					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
 				});
 			}
 		};
