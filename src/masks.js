@@ -415,7 +415,7 @@
 						ctrl.$render();
 					}
 
-					return parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals);
+					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
 				});
 			}
 		};
