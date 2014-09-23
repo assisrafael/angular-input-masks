@@ -47,6 +47,9 @@
 		<input type="text" name="field4" ng-model="numberWith0Decimals" ui-number-mask="0" min="numberWith3Decimals"> <br>
 		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
 		<br>
+		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<br>
 
 		<h2>ui-percentage-mask</h2>
 		<input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>

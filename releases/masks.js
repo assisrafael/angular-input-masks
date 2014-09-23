@@ -403,6 +403,10 @@ if (objectTypes[typeof module]) {
 					return;
 				}
 
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
+				}
+
 				var decimals = parseInt(attrs.uiPercentageMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
@@ -483,6 +487,10 @@ if (objectTypes[typeof module]) {
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
 					return;
+				}
+
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
 				}
 
 				var decimals = parseInt(attrs.uiNumberMask);
@@ -570,6 +578,10 @@ if (objectTypes[typeof module]) {
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
 					return;
+				}
+
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
 				}
 
 				var decimals = parseInt(attrs.uiMoneyMask);

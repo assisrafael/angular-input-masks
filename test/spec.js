@@ -177,6 +177,38 @@ describe('ui.utils.masks:', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
+
+		it('should format number without thousands delimiters', function() {
+			var formatterView = new StringMask('###0,00', {reverse: true}),
+				formatterModel =  new StringMask('###0.00', {reverse: true}),
+				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('numberWithoutGrupoSep')),
+				value = element(by.binding('numberWithoutGrupoSep'));
+
+			for (var i = 1; i <= 9; i++) {
+				input.sendKeys(i);
+				numberToFormat += i;
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+				expect(value.getText()).toEqual(formatedNumberAsNumber);
+			}
+
+			for (var i = 9; i >= 1; i--) {
+				input.sendKeys(protractor.Key.BACK_SPACE);
+				numberToFormat = numberToFormat.slice(0, -1);
+				if(!numberToFormat) {
+					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
+				}
+
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+			}
+		});
 	});
 
 	describe('ui-percentage-mask:', function() {

@@ -211,6 +211,10 @@
 					return;
 				}
 
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
+				}
+
 				var decimals = parseInt(attrs.uiPercentageMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
@@ -291,6 +295,10 @@
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
 					return;
+				}
+
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
 				}
 
 				var decimals = parseInt(attrs.uiNumberMask);
@@ -378,6 +386,10 @@
 			link: function (scope, element, attrs, ctrl) {
 				if (!ctrl) {
 					return;
+				}
+
+				if (angular.isDefined(attrs.uiHideGroupSep)){
+					thousandsDelimiter = '';
 				}
 
 				var decimals = parseInt(attrs.uiMoneyMask);
