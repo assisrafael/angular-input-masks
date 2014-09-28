@@ -42,10 +42,15 @@ How to use
 <input type="text" name="field" ng-model="number" ui-number-mask="4" ui-negative-number>
 ```
 
-- Support to the ```min``` and ```max``` attributes:
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
 ```html
 <input type="text" name="field" ng-model="number" ui-number-mask min="10.1" max="100.9">
+```
+
+```html
+<!-- Use 'ui-hide-group-sep' attribute if you don't want show the thousands separators-->
+<input type="text" name="field" ng-model="number" ui-number-mask ui-hide-group-sep>
 ```
 
 - Internationalized: Used the decimal separator and the thousands separator defined in the client browser configuration.
@@ -64,9 +69,9 @@ How to use
 <input type="text" name="field" ng-model="percentage" ui-percentage-mask="4">
 ```
 
-- Support to the ```min``` and ```max``` attributes.
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
-- Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.
+- Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.
 
 ### ui-money-mask ###
 
@@ -81,6 +86,8 @@ How to use
 ```html
 <input type="text" name="field" ng-model="money" ui-money-mask="3">
 ```
+
+- Support to the ```ui-hide-group-sep``` attribute.
 
 - Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.
 
