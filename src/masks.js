@@ -62,6 +62,34 @@
 		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
 	}
 
+	function validateBrPhoneNumber (ctrl, value) {
+		var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
+		ctrl.$setValidity('br-phone-number', valid);
+		return value;
+	}
+
+	function validateCPF (ctrl, value) {
+		var valid = ctrl.$isEmpty(value) || BrV.cpf.validate(value);
+		ctrl.$setValidity('cpf', valid);
+		return value;
+	}
+
+	function validateCNPJ (ctrl, value) {
+		var valid = ctrl.$isEmpty(value) || BrV.cnpj.validate(value);
+		ctrl.$setValidity('cnpj', valid);
+		return value;
+	}
+
+	function validateCPForCNPJ (ctrl, value) {
+		if(!value || value.length <= 11) {
+			validateCNPJ(ctrl, '');
+			return validateCPF(ctrl, value);
+		}else {
+			validateCPF(ctrl, '');
+			return validateCNPJ(ctrl, value);
+		}
+	}
+
 	function uiBrCpfMask() {
 		function applyCpfMask (value) {
 			if(!value) {
@@ -80,7 +108,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					return applyCpfMask(value);
+					return applyCpfMask(validateCPF(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -90,7 +118,6 @@
 
 					var actualNumber = value.replace(/[^\d]/g,'');
 					var formatedValue = applyCpfMask(actualNumber);
-					ctrl.$setValidity('cpf', BrV.cpf.validate(formatedValue));
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -98,6 +125,10 @@
 					}
 
 					return formatedValue.replace(/[^\d]+/g,'');
+				});
+
+				ctrl.$parsers.push(function(value) {
+					return validateCPF(ctrl, value);
 				});
 			}
 		};
@@ -120,7 +151,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					return applyCnpjMask(value);
+					return applyCnpjMask(validateCNPJ(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -130,7 +161,6 @@
 
 					var actualNumber = value.replace(/[^\d]+/g,'');
 					var formatedValue = applyCnpjMask(actualNumber);
-					ctrl.$setValidity('cnpj', BrV.cnpj.validate(formatedValue));
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -138,6 +168,10 @@
 					}
 
 					return formatedValue.replace(/[^\d]+/g,'');
+				});
+
+				ctrl.$parsers.push(function(value) {
+					return validateCNPJ(ctrl, value);
 				});
 			}
 		};
@@ -165,23 +199,16 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					return applyCpfCnpjMask(value);
+					return applyCpfCnpjMask(validateCPForCNPJ(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
 						return value;
 					}
-					var actualNumber = value.replace(/[^\d]+/g,'');
 
+					var actualNumber = value.replace(/[^\d]+/g,'');
 					var formatedValue = applyCpfCnpjMask(actualNumber);
-					if (actualNumber.length > 11) {
-						ctrl.$setValidity('cnpj', BrV.cnpj.validate(formatedValue));
-						ctrl.$setValidity('cpf', true);
-					} else {
-						ctrl.$setValidity('cpf', BrV.cpf.validate(formatedValue));
-						ctrl.$setValidity('cnpj', true);
-					}
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -189,6 +216,10 @@
 					}
 
 					return formatedValue.replace(/[^\d]+/g,'');
+				});
+
+				ctrl.$parsers.push(function(value) {
+					return validateCPForCNPJ(ctrl, value);
 				});
 			}
 		};
@@ -465,7 +496,7 @@
 				}
 
 				ctrl.$formatters.push(function(value) {
-					return applyPhoneMask(value);
+					return applyPhoneMask(validateBrPhoneNumber(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -483,6 +514,10 @@
 
 					return clearValue(formatedValue);
 				});
+
+				ctrl.$parsers.push(function(value) {
+					return validateBrPhoneNumber(ctrl, value);
+				});
 			}
 		};
 	})
@@ -499,6 +534,7 @@
 
 		function applyCepMask (value, ctrl) {
 			if(!value) {
+				ctrl.$setValidity('cep', true);
 				return value;
 			}
 			var processed = cepMask.process(value);
@@ -521,7 +557,7 @@
 
 				ctrl.$parsers.push(function(value) {
 					if (!value) {
-						return value;
+						return applyCepMask(value, ctrl);
 					}
 
 					var cleanValue = clearValue(value);
@@ -599,6 +635,7 @@
 		function applyIEMask (value, uf, ctrl) {
 			var mask = getMask(uf, value);
 			if(!value || !mask) {
+				ctrl.$setValidity('ie', true);
 				return value;
 			}
 			var processed = mask.process(clearValue(value));
@@ -606,6 +643,9 @@
 			var formatedValue = processed.result;
 			if (uf && uf.toUpperCase() === 'SP' && /^p/i.test(value)) {
 				return 'P'+(formatedValue ? formatedValue.trim().replace(/[^0-9]$/, '') : '');
+			}
+			if(!formatedValue) {
+				return formatedValue;
 			}
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
@@ -631,7 +671,7 @@
 
 				ctrl.$parsers.push(function(value) {
 					if (!value) {
-						return value;
+						return applyIEMask(value, scope.state, ctrl);
 					}
 
 					var formatedValue = applyIEMask(value, scope.state, ctrl);

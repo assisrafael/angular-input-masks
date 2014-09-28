@@ -699,6 +699,31 @@ describe('ui.utils.masks:', function() {
 	});
 
 	describe('ui-br-ie-mask:', function() {
+		it('should not have validation errors when empty', function() {
+			var inputIE = element(by.model('inscEst')),
+				inputUF = element(by.model('state')),
+				valid = element(by.binding('form.field20.$error'));
+
+			for (var i = 1; i < 27; i++) {
+				inputIE.clear();
+				inputUF.all(by.tagName('option')).get(i).click();
+				expect(valid.getText()).toEqual('{ "ie": false }');
+				inputIE.sendKeys(1);
+				expect(valid.getText()).toEqual('{ "ie": true }');
+			}
+		});
+
+		it('should be valid if the model is a valid I.E', function() {
+			var inputIE = element(by.model('inscEst')),
+				inputUF = element(by.model('state')),
+				valid = element(by.binding('form.field20.$error'));
+
+			inputUF.all(by.tagName('option')).get(26).click();
+			inputIE.clear();
+			inputIE.sendKeys('P-35887477.0/971');
+			expect(valid.getText()).toEqual('{ "ie": false }');
+		});
+
 		it('should apply a I.E. mask while the user is typping:', function() {
 			var BS = protractor.Key.BACK_SPACE;
 			var tests = [
@@ -781,6 +806,12 @@ describe('ui.utils.masks:', function() {
 				value = element(by.binding('initializedIE'));
 
 			expect(input.getAttribute('value')).toEqual('P-35887477.0/971');
+		});
+
+		it('should validate in a model with default value', function() {
+			var valid = element(by.binding('form.field19.$error'));
+
+			expect(valid.getText()).toEqual('{ "ie": false }');
 		});
 	});
 });
