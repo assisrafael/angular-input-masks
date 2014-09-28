@@ -1067,7 +1067,7 @@ if (objectTypes[typeof module]) {
 						if (ctrl.$viewValue !== formatedValue) {
 							ctrl.$setViewValue(formatedValue);
 							ctrl.$render();
-						}	
+						}
 					}
 					if(!value) {
 						renderValue(' %');
@@ -1157,7 +1157,7 @@ if (objectTypes[typeof module]) {
 						return value;
 					}
 
-					var valueToFormat = clearDelimitersAndLeadingZeros(value);
+					var valueToFormat = clearDelimitersAndLeadingZeros(value) || '0';
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
@@ -1165,7 +1165,7 @@ if (objectTypes[typeof module]) {
 						var isNegative = (value[0] === '-'),
 							needsToInvertSign = (value.slice(-1) === '-');
 
-						//only apply the minus sign if is negative or(exclusive) needs to be negative
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative
 						if(needsToInvertSign ^ isNegative) {
 							actualNumber *= -1;
 							formatedValue = '-' + formatedValue;

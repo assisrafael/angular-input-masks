@@ -209,6 +209,39 @@ describe('ui.utils.masks:', function() {
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
 			}
 		});
+
+		it('should accept 0 in all configurations', function() {
+			var input = element(by.model('numberWithDefaultDecimals')),
+				value = element(by.binding('numberWithDefaultDecimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('numberWith2Decimals'));
+			value = element(by.binding('numberWith2Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('numberWith3Decimals'));
+			value = element(by.binding('numberWith3Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,000');
+			expect(value.getText()).toEqual('0');
+			input = element(by.model('numberWith0Decimals'));
+			value = element(by.binding('numberWith0Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0');
+			expect(value.getText()).toEqual('0');
+		});
 	});
 
 	describe('ui-percentage-mask:', function() {
