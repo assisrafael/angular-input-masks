@@ -61,7 +61,7 @@ gulp.task('default', ['jshint', 'build'], function() {
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
 gulp.task('webdriver_standalone', ['webdriver_update'], require('gulp-protractor').webdriver_standalone);
 
-gulp.task('serve', function() {
+gulp.task('serve', ['build'], function() {
 	var express = require('express');
 	var server = express();
 
