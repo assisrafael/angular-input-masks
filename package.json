@@ -1,6 +1,6 @@
 {
   "name": "angular-mask",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "Personalized input masks for AngularJS",
   "main": "mask.js",
   "repository": {
@@ -9,8 +9,8 @@
   },
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
-    "test": "gulp",
-    "postinstall": "bower install && gulp lib",
+    "test": "gulp test",
+    "postinstall": "bower install && gulp build",
     "postupdate": "bower update"
   },
   "keywords": [
@@ -27,6 +27,7 @@
     "gulp": "^3.7.0",
     "gulp-changed": "~0.3.0",
     "gulp-concat": "^2.3.4",
+    "gulp-footer": "^1.0.5",
     "gulp-header": "^1.0.5",
     "gulp-jshint": "^1.6.1",
     "gulp-load-plugins": "^0.6.0",

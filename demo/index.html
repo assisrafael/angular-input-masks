@@ -5,7 +5,7 @@
 	<title>Angular Mask Demo</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.5/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
-	<script src="../releases/masks.min.js"></script>
+	<script src="../releases/masks.js"></script>
 	<script>
 		angular.module('demo', ['ui.utils.masks']);
 
@@ -46,6 +46,9 @@
 		<br>
 		<input type="text" name="field4" ng-model="numberWith0Decimals" ui-number-mask="0" min="numberWith3Decimals"> <br>
 		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
+		<br>
+		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
 		<br>
 
 		<h2>ui-percentage-mask</h2>
@@ -89,10 +92,10 @@
 
 		<h2>ui-br-phone-number</h2>
 		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>
-		<span ng-bind="phoneNumber">-</span>
+		<span ng-bind="phoneNumber">-</span> - {{form.phoneNumber.$error}}<br>
 		<br>
 		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ui-br-phone-number><br>
-		<span ng-bind="initializedPhoneNumber">-</span>
+		<span ng-bind="initializedPhoneNumber">-</span> - {{form.initializedPhoneNumber.$error}}<br>
 		<br>
 
 		<h2>ui-br-cep-mask</h2>
@@ -106,13 +109,13 @@
 		<h2>ui-br-ie-mask</h2>
 		<select ng-model="initializedState" ng-options="state for state in states"></select>
 		<input type="text" name="field19" ng-model="initializedIE" ui-br-ie-mask='initializedState'><br>
-		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - {{form.field19.$error}}<br>
+		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - <span ng-bind="form.field19.$error | json"></span><br>
 		<br>
 		<select ng-model="state" ng-options="state for state in states">
 			<option value="">--</option>
 		</select>
 		<input type="text" name="field20" ng-model="inscEst" ui-br-ie-mask="state"><br>
-		<span ng-bind="state"></span>: <span ng-bind="inscEst"></span> - {{form.field20.$error}}<br>
+		<span ng-bind="state"></span>: <span ng-bind="inscEst"></span> - <span ng-bind="form.field20.$error | json"></span><br>
 		<br>
 	</form>
 </body>

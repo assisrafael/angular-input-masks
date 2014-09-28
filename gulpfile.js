@@ -33,20 +33,25 @@ gulp.task('build', function() {
 		' * @link <%= pkg.homepage %>',
 		' * @license <%= pkg.license %>',
 		' */',
+		'(function (angular) {',
+		'',
 		''].join('\n');
 
-	var stream1 = gulp.src(path.lib.files);
+	var footer = [
+		'',
+		'})(angular);',
+		''].join('\n');
 
-	var stream2 = gulp.src(path.src.files)
-	.pipe(plugins.header(header, {pkg: pkg}));
-
-	require('event-stream')
-	.merge(stream1, stream2)
+	gulp.src(
+		path.lib.files.concat(path.src.files)
+	)
 	.pipe(plugins.concat('masks.js'))
-	.pipe(gulp.dest('./releases'))
+	.pipe(plugins.header(header, {pkg: pkg}))
+	.pipe(plugins.footer(footer))
+	.pipe(gulp.dest('./releases/'))
 	.pipe(plugins.uglify())
 	.pipe(plugins.concat('masks.min.js'))
-	.pipe(gulp.dest('./releases'));
+	.pipe(gulp.dest('./releases/'));
 });
 
 gulp.task('default', ['jshint', 'build'], function() {
@@ -56,7 +61,7 @@ gulp.task('default', ['jshint', 'build'], function() {
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
 gulp.task('webdriver_standalone', ['webdriver_update'], require('gulp-protractor').webdriver_standalone);
 
-gulp.task('serve', function() {
+gulp.task('serve', ['build'], function() {
 	var express = require('express');
 	var server = express();
 

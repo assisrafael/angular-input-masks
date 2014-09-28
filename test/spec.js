@@ -177,6 +177,71 @@ describe('ui.utils.masks:', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 		});
+
+		it('should format number without thousands delimiters', function() {
+			var formatterView = new StringMask('###0,00', {reverse: true}),
+				formatterModel =  new StringMask('###0.00', {reverse: true}),
+				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('numberWithoutGrupoSep')),
+				value = element(by.binding('numberWithoutGrupoSep'));
+
+			for (var i = 1; i <= 9; i++) {
+				input.sendKeys(i);
+				numberToFormat += i;
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+				expect(value.getText()).toEqual(formatedNumberAsNumber);
+			}
+
+			for (var i = 9; i >= 1; i--) {
+				input.sendKeys(protractor.Key.BACK_SPACE);
+				numberToFormat = numberToFormat.slice(0, -1);
+				if(!numberToFormat) {
+					numberToFormat = '0';
+				}else{
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
+				}
+
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString);
+			}
+		});
+
+		it('should accept 0 in all configurations', function() {
+			var input = element(by.model('numberWithDefaultDecimals')),
+				value = element(by.binding('numberWithDefaultDecimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('numberWith2Decimals'));
+			value = element(by.binding('numberWith2Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('numberWith3Decimals'));
+			value = element(by.binding('numberWith3Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,000');
+			expect(value.getText()).toEqual('0');
+			input = element(by.model('numberWith0Decimals'));
+			value = element(by.binding('numberWith0Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0');
+			expect(value.getText()).toEqual('0');
+		});
 	});
 
 	describe('ui-percentage-mask:', function() {
@@ -215,6 +280,32 @@ describe('ui.utils.masks:', function() {
 				formatedNumberAsString = formatterView.apply(numberToFormat);
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 			}
+		});
+
+		it('should accept 0 in all configurations', function() {
+			var input = element(by.model('percentageWithDefaultDecimals')),
+				value = element(by.binding('percentageWithDefaultDecimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00 %');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('percentageWith4Decimals'));
+			value = element(by.binding('percentageWith4Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,0000 %');
+			expect(value.getText()).toEqual('0');
+		});
+
+		it('should not include the % symbol when the input is empty', function() {
+			var input = element(by.model('percentageWith4Decimals')),
+				value = element(by.binding('percentageWith4Decimals'));
+
+			input.clear();
+			expect(input.getAttribute('value')).toEqual('');
 		});
 
 		it('should format percentage numbers with four decimal places (parameter)', function() {
@@ -608,6 +699,31 @@ describe('ui.utils.masks:', function() {
 	});
 
 	describe('ui-br-ie-mask:', function() {
+		it('should not have validation errors when empty', function() {
+			var inputIE = element(by.model('inscEst')),
+				inputUF = element(by.model('state')),
+				valid = element(by.binding('form.field20.$error'));
+
+			for (var i = 1; i < 27; i++) {
+				inputIE.clear();
+				inputUF.all(by.tagName('option')).get(i).click();
+				expect(valid.getText()).toEqual('{ "ie": false }');
+				inputIE.sendKeys(1);
+				expect(valid.getText()).toEqual('{ "ie": true }');
+			}
+		});
+
+		it('should be valid if the model is a valid I.E', function() {
+			var inputIE = element(by.model('inscEst')),
+				inputUF = element(by.model('state')),
+				valid = element(by.binding('form.field20.$error'));
+
+			inputUF.all(by.tagName('option')).get(26).click();
+			inputIE.clear();
+			inputIE.sendKeys('P-35887477.0/971');
+			expect(valid.getText()).toEqual('{ "ie": false }');
+		});
+
 		it('should apply a I.E. mask while the user is typping:', function() {
 			var BS = protractor.Key.BACK_SPACE;
 			var tests = [
@@ -690,6 +806,12 @@ describe('ui.utils.masks:', function() {
 				value = element(by.binding('initializedIE'));
 
 			expect(input.getAttribute('value')).toEqual('P-35887477.0/971');
+		});
+
+		it('should validate in a model with default value', function() {
+			var valid = element(by.binding('form.field19.$error'));
+
+			expect(valid.getText()).toEqual('{ "ie": false }');
 		});
 	});
 });
