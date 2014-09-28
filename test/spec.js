@@ -282,6 +282,32 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
+		it('should accept 0 in all configurations', function() {
+			var input = element(by.model('percentageWithDefaultDecimals')),
+				value = element(by.binding('percentageWithDefaultDecimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,00 %');
+			expect(value.getText()).toEqual('0');
+
+			input = element(by.model('percentageWith4Decimals'));
+			value = element(by.binding('percentageWith4Decimals'));
+
+			input.clear();
+			input.sendKeys(0);
+			expect(input.getAttribute('value')).toEqual('0,0000 %');
+			expect(value.getText()).toEqual('0');
+		});
+
+		it('should not include the % symbol when the input is empty', function() {
+			var input = element(by.model('percentageWith4Decimals')),
+				value = element(by.binding('percentageWith4Decimals'));
+
+			input.clear();
+			expect(input.getAttribute('value')).toEqual('');
+		});
+
 		it('should format percentage numbers with four decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,0000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000000', {reverse: true}),
