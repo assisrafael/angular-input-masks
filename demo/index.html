@@ -90,7 +90,7 @@
 		<h2>ui-money-mask</h2>
 		<input type="text" name="field14" ng-model="defaultMoney" ui-money-mask> <br>
 		<span ng-bind="defaultMoney"></span> - {{form.field14.$error}}<br>
-		<input type="text" name="field15" ng-model="money3Decimals" ui-money-mask="3"> <br>
+		<input type="text" name="field15" ng-model="money3Decimals" ui-money-mask="3" min="defaultMoney" max="field16"> <br>
 		<span ng-bind="money3Decimals"></span> - {{form.field15.$error}}<br>
 		<input type="text" name="field16" ng-model="field16" ui-money-mask="0"> <br>
 		{{field16}} - {{form.field16.$error}}<br>

@@ -427,7 +427,7 @@
 	.directive('uiCnpjMask', [uiBrCnpjMask])
 	// deprecated: will be removed in the next major version
 	.directive('uiCpfcnpjMask', [uiBrCpfCnpjMask])
-	.directive('uiMoneyMask', ['$locale', function ($locale) {
+	.directive('uiMoneyMask', ['$locale', '$parse', function ($locale, $parse) {
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -476,6 +476,28 @@
 
 					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
 				});
+
+				if(attrs.min){
+					ctrl.$parsers.push(function(value) {
+						var min = $parse(attrs.min)(scope);
+						return minValidator(ctrl, value, min);
+					});
+
+					scope.$watch(attrs.min, function(value) {
+						minValidator(ctrl, ctrl.$modelValue, value);
+					});
+				}
+
+				if(attrs.max) {
+					ctrl.$parsers.push(function(value) {
+						var max = $parse(attrs.max)(scope);
+						return maxValidator(ctrl, value, max);
+					});
+
+					scope.$watch(attrs.max, function(value) {
+						maxValidator(ctrl, ctrl.$modelValue, value);
+					});
+				}
 			}
 		};
 	}])
