@@ -1057,9 +1057,6 @@ if (objectTypes[typeof module]) {
 
 	angular.module('ui.utils.masks', [])
 	.directive('uiPercentageMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -1068,6 +1065,9 @@ if (objectTypes[typeof module]) {
 				max: '=?max'
 			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+
 				if (!ctrl) {
 					return;
 				}
@@ -1136,17 +1136,18 @@ if (objectTypes[typeof module]) {
 		};
 	}])
 	.directive('uiNumberMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
 		return {
 			restrict: 'A',
 			require: '?ngModel',
 			scope: {
 				min: '=?min',
-				max: '=?max'
+				max: '=?max',
+				decimals: '=uiNumberMask'
 			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+
 				if (!ctrl) {
 					return;
 				}
@@ -1155,12 +1156,46 @@ if (objectTypes[typeof module]) {
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiNumberMask);
+				var decimals = scope.decimals;
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
 				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = numberModelMask(decimals);
+
+				function applyNegativeSign(actualNumber, formatedValue, value) {
+					if(angular.isDefined(attrs.uiNegativeNumber)){
+						var isNegative = (value[0] === '-'),
+							needsToInvertSign = (value.slice(-1) === '-');
+
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative
+						if(needsToInvertSign ^ isNegative) {
+							return {
+								actualNumber: actualNumber *= -1,
+								formatedValue: formatedValue = '-' + formatedValue
+							};
+						}
+					}
+					return {
+						actualNumber: actualNumber,
+						formatedValue: formatedValue
+					};
+				}
+
+				scope.$watch('decimals', function(decimals) {
+					if(isNaN(decimals)) {
+						decimals = 2;
+					}
+					var value = ctrl.$viewValue || '';
+					viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter);
+					modelMask = numberModelMask(decimals);
+
+					var formatedValue = viewMask.apply(clearDelimitersAndLeadingZeros(value));
+					formatedValue = applyNegativeSign(0, formatedValue, value).formatedValue;
+
+					ctrl.$setViewValue(formatedValue);
+					ctrl.$render();
+				});
 
 				ctrl.$formatters.push(function(value) {
 					var prefix = '';
@@ -1185,16 +1220,9 @@ if (objectTypes[typeof module]) {
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
-					if(angular.isDefined(attrs.uiNegativeNumber)){
-						var isNegative = (value[0] === '-'),
-							needsToInvertSign = (value.slice(-1) === '-');
-
-						//only apply the minus sign if it is negative or(exclusive) needs to be negative
-						if(needsToInvertSign ^ isNegative) {
-							actualNumber *= -1;
-							formatedValue = '-' + formatedValue;
-						}
-					}
+					var applyedNegativeNumber = applyNegativeSign(actualNumber, formatedValue, value);
+					formatedValue = applyedNegativeNumber.formatedValue;
+					actualNumber = applyedNegativeNumber.actualNumber;
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -1236,13 +1264,14 @@ if (objectTypes[typeof module]) {
 	// deprecated: will be removed in the next major version
 	.directive('uiCpfcnpjMask', [uiBrCpfCnpjMask])
 	.directive('uiMoneyMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-		var currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
 		return {
 			restrict: 'A',
 			require: '?ngModel',
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+
 				if (!ctrl) {
 					return;
 				}

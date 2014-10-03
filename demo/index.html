@@ -35,6 +35,9 @@
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-number-mask</h2>
+		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<br>
 		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ui-number-mask> <br>
 		<span ng-bind="numberWithDefaultDecimals"></span>
 		<br>
@@ -47,8 +50,9 @@
 		<input type="text" name="field4" ng-model="numberWith0Decimals" ui-number-mask="0" min="numberWith3Decimals"> <br>
 		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
 		<br>
-		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
-		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		Number: <input type="text" name="field23" ng-model="numberWithDynamicDecimals" ui-number-mask="decimals">
+		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0> {{decimals}}<br>
+		<span ng-bind="numberWithDynamicDecimals"></span> - {{form.field23.$error}}
 		<br>
 
 		<h2>ui-percentage-mask</h2>
