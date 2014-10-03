@@ -27,6 +27,7 @@
 			$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
 				'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
 				'RS','SC','SE','SP','TO'];
+			$scope.fixedStateIE = '0623079040081';
 			$scope.initializedState = 'SP';
 			$scope.initializedIE = 'P3588747709710';
 		}
@@ -51,7 +52,7 @@
 		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
 		<br>
 		Number: <input type="text" name="field23" ng-model="numberWithDynamicDecimals" ui-number-mask="decimals">
-		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0> {{decimals}}<br>
+		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0><br>
 		<span ng-bind="numberWithDynamicDecimals"></span> - {{form.field23.$error}}
 		<br>
 
@@ -59,7 +60,7 @@
 		<input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>
 		<span ng-bind="percentageWithDefaultDecimals"></span>
 		<br>
-		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals"> <br>
+		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals" max="115"> <br>
 		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
 		<br>
 
@@ -111,6 +112,9 @@
 		<br>
 
 		<h2>ui-br-ie-mask</h2>
+		<input type="text" name="field24" ng-model="fixedStateIE" ui-br-ie-mask="'MG'"><br>
+		<span></span>MG: <span ng-bind="fixedStateIE"></span> - <span ng-bind="form.field24.$error | json"></span><br>
+		<br>
 		<select ng-model="initializedState" ng-options="state for state in states"></select>
 		<input type="text" name="field19" ng-model="initializedIE" ui-br-ie-mask='initializedState'><br>
 		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - <span ng-bind="form.field19.$error | json"></span><br>
