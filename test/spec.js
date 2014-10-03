@@ -242,6 +242,25 @@ describe('ui.utils.masks:', function() {
 			expect(input.getAttribute('value')).toEqual('0');
 			expect(value.getText()).toEqual('0');
 		});
+
+		it('should reformat number when decimals config changes', function() {
+			var input = element(by.model('numberWithDynamicDecimals')),
+				value = element(by.binding('numberWithDynamicDecimals')),
+				decimalsInput = element(by.model('decimals'));
+
+			input.sendKeys('123');
+			expect(input.getAttribute('value')).toEqual('1,23');
+			expect(value.getText()).toEqual('1.23');
+
+			decimalsInput.sendKeys('3');
+			expect(input.getAttribute('value')).toEqual('0,123');
+			expect(value.getText()).toEqual('0.123');
+
+			decimalsInput.clear();
+			decimalsInput.sendKeys('0');
+			expect(input.getAttribute('value')).toEqual('123');
+			expect(value.getText()).toEqual('123');
+		});
 	});
 
 	describe('ui-percentage-mask:', function() {

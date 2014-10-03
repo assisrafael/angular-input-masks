@@ -27,6 +27,7 @@
 			$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
 				'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
 				'RS','SC','SE','SP','TO'];
+			$scope.fixedStateIE = '0623079040081';
 			$scope.initializedState = 'SP';
 			$scope.initializedIE = 'P3588747709710';
 		}
@@ -35,6 +36,9 @@
 <body ng-app="demo">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-number-mask</h2>
+		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<br>
 		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ui-number-mask> <br>
 		<span ng-bind="numberWithDefaultDecimals"></span>
 		<br>
@@ -47,16 +51,21 @@
 		<input type="text" name="field4" ng-model="numberWith0Decimals" ui-number-mask="0" min="numberWith3Decimals"> <br>
 		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
 		<br>
-		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ui-number-mask ui-hide-group-sep> <br>
-		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		Number: <input type="text" name="field23" ng-model="numberWithDynamicDecimals" ui-number-mask="decimals">
+		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0><br>
+		<span ng-bind="numberWithDynamicDecimals"></span> - {{form.field23.$error}}
 		<br>
 
 		<h2>ui-percentage-mask</h2>
 		<input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>
 		<span ng-bind="percentageWithDefaultDecimals"></span>
 		<br>
-		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals"> <br>
+		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals" max="115"> <br>
 		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
+		<br>
+		Percentage: <input type="text" name="field25" ng-model="percentWithDynamicDecimals" ui-percentage-mask="pdecimals">
+		Decimals: <input type="text" name="field26" ng-model="pdecimals" ui-number-mask=0><br>
+		<span ng-bind="percentWithDynamicDecimals"></span> - {{form.field25.$error}}
 		<br>
 
 		<h2>ui-br-cpf-mask</h2>
@@ -85,10 +94,15 @@
 		<h2>ui-money-mask</h2>
 		<input type="text" name="field14" ng-model="defaultMoney" ui-money-mask> <br>
 		<span ng-bind="defaultMoney"></span> - {{form.field14.$error}}<br>
-		<input type="text" name="field15" ng-model="money3Decimals" ui-money-mask="3"> <br>
+		<input type="text" name="field15" ng-model="money3Decimals" ui-money-mask="3" min="defaultMoney" max="field16"> <br>
 		<span ng-bind="money3Decimals"></span> - {{form.field15.$error}}<br>
 		<input type="text" name="field16" ng-model="field16" ui-money-mask="0"> <br>
-		{{field16}} - {{form.field16.$error}}<br>
+		{{field16}} - {{form.field16.$error}}
+		<br>
+		Money: <input type="text" name="field27" ng-model="moneyWithDynamicDecimals" ui-money-mask="mdecimals">
+		Decimals: <input type="text" name="field28" ng-model="mdecimals" ui-number-mask=0><br>
+		<span ng-bind="moneyWithDynamicDecimals"></span> - {{form.field27.$error}}
+		<br>
 
 		<h2>ui-br-phone-number</h2>
 		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>
@@ -107,6 +121,9 @@
 		<br>
 
 		<h2>ui-br-ie-mask</h2>
+		<input type="text" name="field24" ng-model="fixedStateIE" ui-br-ie-mask="'MG'"><br>
+		<span></span>MG: <span ng-bind="fixedStateIE"></span> - <span ng-bind="form.field24.$error | json"></span><br>
+		<br>
 		<select ng-model="initializedState" ng-options="state for state in states"></select>
 		<input type="text" name="field19" ng-model="initializedIE" ui-br-ie-mask='initializedState'><br>
 		<span ng-bind="initializedState"></span>: <span ng-bind="initializedIE"></span> - <span ng-bind="form.field19.$error | json"></span><br>
