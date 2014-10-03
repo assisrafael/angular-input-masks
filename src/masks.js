@@ -226,18 +226,15 @@
 	}
 
 	angular.module('ui.utils.masks', [])
-	.directive('uiPercentageMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
+	.directive('uiPercentageMask', ['$locale', '$parse', function ($locale, $parse) {
 		return {
 			restrict: 'A',
 			require: '?ngModel',
-			scope: {
-				min: '=?min',
-				max: '=?max'
-			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					decimals = parseInt(attrs.uiPercentageMask);
+
 				if (!ctrl) {
 					return;
 				}
@@ -246,7 +243,6 @@
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiPercentageMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
@@ -263,7 +259,7 @@
 					return viewMask.apply(valueToFormat) + ' %';
 				});
 
-				ctrl.$parsers.push(function(value) {
+				function parse(value) {
 					if(!value) {
 						return value;
 					}
@@ -281,42 +277,56 @@
 					}
 
 					return actualNumber;
-				});
+				}
+
+				ctrl.$parsers.push(parse);
+
+				if (attrs.uiPercentageMask) {
+					scope.$watch(attrs.uiPercentageMask, function(decimals) {
+						if(isNaN(decimals)) {
+							decimals = 2;
+						}
+						numberDecimals = decimals + 2;
+						viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter);
+						modelMask = numberModelMask(numberDecimals);
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
 
 				if(attrs.min){
 					ctrl.$parsers.push(function(value) {
-						return minValidator(ctrl, value, scope.min);
+						var min = $parse(attrs.min)(scope);
+						return minValidator(ctrl, value, min);
 					});
 
-					scope.$watch('min', function() {
-						minValidator(ctrl, ctrl.$modelValue, scope.min);
+					scope.$watch('min', function(value) {
+						minValidator(ctrl, ctrl.$modelValue, value);
 					});
 				}
 
 				if(attrs.max) {
 					ctrl.$parsers.push(function(value) {
-						return maxValidator(ctrl, value, scope.max);
+						var max = $parse(attrs.max)(scope);
+						return maxValidator(ctrl, value, max);
 					});
 
-					scope.$watch('max', function() {
-						maxValidator(ctrl, ctrl.$modelValue, scope.max);
+					scope.$watch('max', function(value) {
+						maxValidator(ctrl, ctrl.$modelValue, value);
 					});
 				}
 			}
 		};
 	}])
-	.directive('uiNumberMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
+	.directive('uiNumberMask', ['$locale', '$parse', function ($locale, $parse) {
 		return {
 			restrict: 'A',
 			require: '?ngModel',
-			scope: {
-				min: '=?min',
-				max: '=?max'
-			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					decimals = $parse(attrs.uiNumberMask)(scope);
+
 				if (!ctrl) {
 					return;
 				}
@@ -325,28 +335,13 @@
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiNumberMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
 				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = numberModelMask(decimals);
 
-				ctrl.$formatters.push(function(value) {
-					var prefix = '';
-					if(angular.isDefined(attrs.uiNegativeNumber) && value < 0){
-						prefix = '-';
-					}
-
-					if(!value) {
-						return value;
-					}
-
-					var valueToFormat = prepareNumberToFormatter(value, decimals);
-					return prefix + viewMask.apply(valueToFormat);
-				});
-
-				ctrl.$parsers.push(function(value) {
+				function parse(value) {
 					if(!value) {
 						return value;
 					}
@@ -372,25 +367,55 @@
 					}
 
 					return actualNumber;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					var prefix = '';
+					if(angular.isDefined(attrs.uiNegativeNumber) && value < 0){
+						prefix = '-';
+					}
+
+					if(!value) {
+						return value;
+					}
+
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return prefix + viewMask.apply(valueToFormat);
 				});
+
+				ctrl.$parsers.push(parse);
+
+				if (attrs.uiNumberMask) {
+					scope.$watch(attrs.uiNumberMask, function(decimals) {
+						if(isNaN(decimals)) {
+							decimals = 2;
+						}
+						viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter);
+						modelMask = numberModelMask(decimals);
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
 
 				if(attrs.min){
 					ctrl.$parsers.push(function(value) {
-						return minValidator(ctrl, value, scope.min);
+						var min = $parse(attrs.min)(scope);
+						return minValidator(ctrl, value, min);
 					});
 
-					scope.$watch('min', function() {
-						minValidator(ctrl, ctrl.$modelValue, scope.min);
+					scope.$watch(attrs.min, function(value) {
+						minValidator(ctrl, ctrl.$modelValue, value);
 					});
 				}
 
 				if(attrs.max) {
 					ctrl.$parsers.push(function(value) {
-						return maxValidator(ctrl, value, scope.max);
+						var max = $parse(attrs.max)(scope);
+						return maxValidator(ctrl, value, max);
 					});
 
-					scope.$watch('max', function() {
-						maxValidator(ctrl, ctrl.$modelValue, scope.max);
+					scope.$watch(attrs.max, function(value) {
+						maxValidator(ctrl, ctrl.$modelValue, value);
 					});
 				}
 			}
@@ -405,14 +430,16 @@
 	.directive('uiCnpjMask', [uiBrCnpjMask])
 	// deprecated: will be removed in the next major version
 	.directive('uiCpfcnpjMask', [uiBrCpfCnpjMask])
-	.directive('uiMoneyMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-		var currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+	.directive('uiMoneyMask', ['$locale', '$parse', function ($locale, $parse) {
 		return {
 			restrict: 'A',
 			require: '?ngModel',
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+					decimals = parseInt(attrs.uiMoneyMask);
+
 				if (!ctrl) {
 					return;
 				}
@@ -421,7 +448,6 @@
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiMoneyMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
@@ -437,7 +463,7 @@
 					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
 				});
 
-				ctrl.$parsers.push(function(value) {
+				function parse(value) {
 					if (!value) {
 						return value;
 					}
@@ -452,7 +478,44 @@
 					}
 
 					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
-				});
+				}
+
+				ctrl.$parsers.push(parse);
+
+				if (attrs.uiMoneyMask) {
+					scope.$watch(attrs.uiMoneyMask, function(decimals) {
+						if(isNaN(decimals)) {
+							decimals = 2;
+						}
+						decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+						maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
+						moneyMask = new StringMask(maskPattern, {reverse: true});
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
+
+				if(attrs.min){
+					ctrl.$parsers.push(function(value) {
+						var min = $parse(attrs.min)(scope);
+						return minValidator(ctrl, value, min);
+					});
+
+					scope.$watch(attrs.min, function(value) {
+						minValidator(ctrl, ctrl.$modelValue, value);
+					});
+				}
+
+				if(attrs.max) {
+					ctrl.$parsers.push(function(value) {
+						var max = $parse(attrs.max)(scope);
+						return maxValidator(ctrl, value, max);
+					});
+
+					scope.$watch(attrs.max, function(value) {
+						maxValidator(ctrl, ctrl.$modelValue, value);
+					});
+				}
 			}
 		};
 	}])
@@ -573,7 +636,7 @@
 			}
 		};
 	})
-	.directive('uiBrIeMask',function() {
+	.directive('uiBrIeMask', ['$parse', function($parse) {
 
 		var ieMasks = {
 			'AC': [{mask: new StringMask('00.000.000/000-00')}],
@@ -653,40 +716,40 @@
 		return {
 			restrict: 'A',
 			require: '?ngModel',
-			scope: {
-				state: '=uiBrIeMask'
-			},
 			link: function(scope, element, attrs, ctrl) {
+				var state = $parse(attrs.uiBrIeMask)(scope);
+
 				if (!ctrl) {
 					return;
 				}
 
-				scope.$watch('state', function(state) {
+				scope.$watch(attrs.uiBrIeMask, function(newState) {
+					state = newState;
 					applyIEMask(ctrl.$viewValue, state, ctrl);
 				});
 
 				ctrl.$formatters.push(function(value) {
-					return applyIEMask(value, scope.state, ctrl);
+					return applyIEMask(value, state, ctrl);
 				});
 
 				ctrl.$parsers.push(function(value) {
 					if (!value) {
-						return applyIEMask(value, scope.state, ctrl);
+						return applyIEMask(value, state, ctrl);
 					}
 
-					var formatedValue = applyIEMask(value, scope.state, ctrl);
+					var formatedValue = applyIEMask(value, state, ctrl);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
 
-					if (scope.state && scope.state.toUpperCase() === 'SP' && /^p/i.test(value)) {
+					if (state && state.toUpperCase() === 'SP' && /^p/i.test(value)) {
 						return 'P'+clearValue(formatedValue);
 					}
 					return clearValue(formatedValue);
 				});
 			}
 		};
-	});
+	}]);
 })();

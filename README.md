@@ -87,7 +87,7 @@ How to use
 <input type="text" name="field" ng-model="money" ui-money-mask="3">
 ```
 
-- Support to the ```ui-hide-group-sep``` attribute.
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
 - Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.
 
@@ -106,7 +106,7 @@ How to use
  - Example:
 
 ```html
-<input type="text" name="field" ng-model="initializedCpf" ui-br-cpf-mask> 
+<input type="text" name="field" ng-model="initializedCpf" ui-br-cpf-mask>
 ```
 
 ### ui-br-cnpj-mask ###
@@ -137,7 +137,7 @@ How to use
 
 ### More examples ###
 
-_See more usage examples in [demo/index.html](demo/index.html)_
+_See more usage examples in the [http://assisrafael.github.io/angular-input-masks/](demo page)_
 
 Tests
 -----
