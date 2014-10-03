@@ -137,7 +137,7 @@ How to use
 
 ### More examples ###
 
-_See more usage examples in [demo/index.html](demo/index.html)_
+_See more usage examples in the [http://assisrafael.github.io/angular-input-masks/](demo page)_
 
 Tests
 -----
