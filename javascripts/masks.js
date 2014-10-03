@@ -1062,7 +1062,8 @@ if (objectTypes[typeof module]) {
 			require: '?ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					decimals = parseInt(attrs.uiPercentageMask);
 
 				if (!ctrl) {
 					return;
@@ -1072,7 +1073,6 @@ if (objectTypes[typeof module]) {
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiPercentageMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
@@ -1089,7 +1089,7 @@ if (objectTypes[typeof module]) {
 					return viewMask.apply(valueToFormat) + ' %';
 				});
 
-				ctrl.$parsers.push(function(value) {
+				function parse(value) {
 					if(!value) {
 						return value;
 					}
@@ -1107,7 +1107,22 @@ if (objectTypes[typeof module]) {
 					}
 
 					return actualNumber;
-				});
+				}
+
+				ctrl.$parsers.push(parse);
+
+				if (attrs.uiPercentageMask) {
+					scope.$watch(attrs.uiPercentageMask, function(decimals) {
+						if(isNaN(decimals)) {
+							decimals = 2;
+						}
+						numberDecimals = decimals + 2;
+						viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter);
+						modelMask = numberModelMask(numberDecimals);
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
 
 				if(attrs.min){
 					ctrl.$parsers.push(function(value) {
@@ -1156,25 +1171,6 @@ if (objectTypes[typeof module]) {
 				var viewMask = numberViewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = numberModelMask(decimals);
 
-				function applyNegativeSign(actualNumber, formatedValue, value) {
-					if(angular.isDefined(attrs.uiNegativeNumber)){
-						var isNegative = (value[0] === '-'),
-							needsToInvertSign = (value.slice(-1) === '-');
-
-						//only apply the minus sign if it is negative or(exclusive) needs to be negative
-						if(needsToInvertSign ^ isNegative) {
-							return {
-								actualNumber: actualNumber *= -1,
-								formatedValue: formatedValue = '-' + formatedValue
-							};
-						}
-					}
-					return {
-						actualNumber: actualNumber,
-						formatedValue: formatedValue
-					};
-				}
-
 				function parse(value) {
 					if(!value) {
 						return value;
@@ -1184,9 +1180,16 @@ if (objectTypes[typeof module]) {
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
-					var applyedNegativeNumber = applyNegativeSign(actualNumber, formatedValue, value);
-					formatedValue = applyedNegativeNumber.formatedValue;
-					actualNumber = applyedNegativeNumber.actualNumber;
+					if(angular.isDefined(attrs.uiNegativeNumber)){
+						var isNegative = (value[0] === '-'),
+							needsToInvertSign = (value.slice(-1) === '-');
+
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative
+						if(needsToInvertSign ^ isNegative) {
+							actualNumber *= -1;
+							formatedValue = '-' + formatedValue;
+						}
+					}
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -1264,7 +1267,8 @@ if (objectTypes[typeof module]) {
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+					decimals = parseInt(attrs.uiMoneyMask);
 
 				if (!ctrl) {
 					return;
@@ -1274,7 +1278,6 @@ if (objectTypes[typeof module]) {
 					thousandsDelimiter = '';
 				}
 
-				var decimals = parseInt(attrs.uiMoneyMask);
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
@@ -1290,7 +1293,7 @@ if (objectTypes[typeof module]) {
 					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
 				});
 
-				ctrl.$parsers.push(function(value) {
+				function parse(value) {
 					if (!value) {
 						return value;
 					}
@@ -1305,7 +1308,22 @@ if (objectTypes[typeof module]) {
 					}
 
 					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
-				});
+				}
+
+				ctrl.$parsers.push(parse);
+
+				if (attrs.uiMoneyMask) {
+					scope.$watch(attrs.uiMoneyMask, function(decimals) {
+						if(isNaN(decimals)) {
+							decimals = 2;
+						}
+						decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+						maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
+						moneyMask = new StringMask(maskPattern, {reverse: true});
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
 
 				if(attrs.min){
 					ctrl.$parsers.push(function(value) {
