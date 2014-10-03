@@ -12,6 +12,9 @@
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
+    <script src="javascripts/masks.js"></script>
 
     <title>Angular-input-masks by assisrafael</title>
   </head>
@@ -20,46 +23,136 @@
     <header>
       <div class="inner">
         <h1>Angular-input-masks</h1>
-        <h2>Personalized input masks for AngularJS</h2>
+        <h2>Personalized and localized input masks for AngularJS</h2>
         <a href="https://github.com/assisrafael/angular-input-masks" class="button"><small>View project on</small>GitHub</a>
       </div>
     </header>
 
     <div id="content-wrapper">
       <div class="inner clearfix">
-        <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<script>
+  angular.module('demo', ['ui.utils.masks']);
+  function ctrl($scope) {
+    $scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
+      'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
+      'RS','SC','SE','SP','TO'];
+  }
+</script>
+<section id="main-content" ng-app="demo" ng-controller="ctrl">
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
-</code></pre>
+<h3>Installation</h3>
+  <strong>With Bower:</strong>
+  <pre><code>$ bower install --save angular-input-masks</code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+  <h4>How to use</h4>
+    <ol>
+      <li>Import the masks.min.js script in your page</li>
+      <li>Include the module ui.utils.masks in your angular app.</li>
+      <li>Include the desired ui-mask directive in a text field like the examples in this page</li>
+    </ol>
 
-<h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<br><hr width="80%">
+<h3>ui-number-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;percentage&quot; ui-percentage-mask=&quot;4&quot;&gt;</code></pre>
+<form ng-init="decimals=2; demoNumber=1234.56">
+  <strong>Number:</strong> <input type="text" name="field21" ng-model="demoNumber" ui-number-mask="decimals">
+    <code>Model value: {{demoNumber}}</code><br>
+  <strong>Decimals:</strong> <input type="text" name="field21" ng-model="decimals" ui-number-mask=0 ui-hide-group-sep>
+  <br><br>
+  <li>Support to the min, max and ui-hide-group-sep attributes.</li>
+  <li>Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.</li>
+</form>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
 
-<h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<br><hr width="80%">
+<h3>ui-percentage-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;percentage&quot; ui-percentage-mask=&quot;4&quot;&gt;</code></pre>
+  <form ng-init="percentageDemo=1234.56; pdecimals=2;">
+    <strong>Percentage: </strong><input type="text" name="field5" ng-model="percentageDemo" ui-percentage-mask="pdecimals">
+      <code>Model value: {{percentageDemo}}</code><br>
+    <strong>Decimals:</strong> <input type="text" name="field21" ng-model="pdecimals" ui-number-mask=0 ui-hide-group-sep><br>
+    <br>
+    <li>Support to the min, max and ui-hide-group-sep attributes.</li>
+    <li>Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.</li>
+  </form>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<br><hr width="80%">
+<h3>ui-money-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;money&quot; ui-money-mask=&quot;3&quot;&gt;</code></pre>
+  <form ng-init="moneyDemo=1234.56; mdecimals=2;">
+    <strong>Money: </strong> <input type="text" name="field" ng-model="moneyDemo" ui-money-mask="mdecimals">
+      <code>Model value: {{moneyDemo}}</code><br>
+    <strong>Decimals:</strong> <input type="text" name="field21" ng-model="mdecimals" ui-number-mask=0 ui-hide-group-sep>
+    <br><br>
+    <li>Support to the min, max and ui-hide-group-sep attributes.</li>
+    <li>Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.</li>
+  </form>
 
-<h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<br><hr width="80%">
+<h3>ui-br-phone-number</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;phoneNumber&quot; ui-br-phone-number&gt;</code></pre>
+  <form ng-init="phone8=3125250784; phone9=11412590346;">
+    <strong>Phone number: </strong> <input type="text" name="field" ng-model="phone8" ui-br-phone-number>
+      <code>Model value: {{phone8}}</code><br>
+    <strong>Phone number: </strong> <input type="text" name="field" ng-model="phone9" ui-br-phone-number>
+      <code>Model value: {{phone9}}</code>
+    <br><br>
+    <li>The same mask supports phone numbers with 8 or 9 numbers.</li>
+  </form>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<br><hr width="80%">
+<h3>ui-br-cep-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;cep&quot; ui-br-cep-mask&gt;</code></pre>
+  <form ng-init="cep=30421318;">
+    <strong>CEP: </strong> <input type="text" name="field" ng-model="cep" ui-br-cep-mask>
+      <code>Model value: {{cep}}</code>
+  </form>
 
-<h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<br><hr width="80%">
+<h3>ui-br-cpf-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;initializedCpf&quot; ui-br-cpf-mask&gt;</code></pre>
+  <form ng-init="cpf='45581400458';">
+    <strong>CPF: </strong> <input type="text" name="field" ng-model="cpf" ui-br-cpf-mask>
+      <code>Model value: {{cpf}}</code>
+    <br><br>
+    <li>With CPF validation support.</li>
+  </form>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
-        </section>
+<br><hr width="80%">
+<h3>ui-br-cnpj-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;initializedCnpj&quot; ui-br-cnpj-mask&gt;</code></pre>
+  <form ng-init="cnpj='33861324000173';">
+    <strong>CNPJ: </strong> <input type="text" name="field" ng-model="cnpj" ui-br-cnpj-mask>
+      <code>Model value: {{cnpj}}</code>
+    <br><br>
+    <li>With CNPJ validation support.</li>
+  </form>
+
+<br><hr width="80%">
+<h3>ui-br-cpfcnpj-mask</h3>
+  <pre><code>&lt;input type=&quot;text&quot; name=&quot;field&quot; ng-model=&quot;initializedCpfCnpj1&quot; ui-br-cpfcnpj-mask&gt;</code></pre>
+  <form ng-init="cpfcnpj='45581400458';">
+    <strong>CPF/CNPJ: </strong> <input type="text" name="field" ng-model="cpfcnpj" ui-br-cpfcnpj-mask>
+      <code>Model value: {{cpfcnpj}}</code>
+    <br><br>
+    <li>With CPF/CNPJ validation support.</li>
+  </form>
+
+<br><hr width="80%">
+<h3>ui-br-ie-mask</h3>
+  <pre><code>&lt;select ng-init=&quot;ufs=['AC','AL','AM','TO']&quot; ng-model=&quot;selectedUF&quot; ng-options=&quot;uf for uf in ufs&quot;&gt;&lt;/select&gt;<br/>&lt;input type=&quot;text&quot; name=&quot;field19&quot; ng-model=&quot;ieField&quot; ui-br-ie-mask='selectedUF'&gt;</code></pre>
+  <form ng-init="ieField='0623079040081'; selectedUF='MG';">
+    <strong>State: </strong> <select ng-model="selectedUF" ng-options="uf for uf in states"></select> &nbsp;&nbsp;
+    <strong>I.E.: </strong> <input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
+      <code>Model value: {{ieField}}</code>
+    <br><br>
+    <li>Support masks for all the 27 brazillian states.</li>
+    <li>Validations according to the <a href="http://www.sintegra.gov.br/insc_est.html">Sintegra especification</a></li>
+  </form>
+
+
+</section>
 
         <aside id="sidebar">
           <a href="https://github.com/assisrafael/angular-input-masks/zipball/master" class="button">
@@ -78,6 +171,6 @@ $ git checkout gh-pages
       </div>
     </div>
 
-  
+
   </body>
 </html>
