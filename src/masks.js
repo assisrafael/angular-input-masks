@@ -227,9 +227,6 @@
 
 	angular.module('ui.utils.masks', [])
 	.directive('uiPercentageMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -238,6 +235,9 @@
 				max: '=?max'
 			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+
 				if (!ctrl) {
 					return;
 				}
@@ -306,9 +306,6 @@
 		};
 	}])
 	.directive('uiNumberMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-
 		return {
 			restrict: 'A',
 			require: '?ngModel',
@@ -317,6 +314,9 @@
 				max: '=?max'
 			},
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
+
 				if (!ctrl) {
 					return;
 				}
@@ -406,13 +406,14 @@
 	// deprecated: will be removed in the next major version
 	.directive('uiCpfcnpjMask', [uiBrCpfCnpjMask])
 	.directive('uiMoneyMask', ['$locale', function ($locale) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP;
-		var thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP;
-		var currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
 		return {
 			restrict: 'A',
 			require: '?ngModel',
 			link: function (scope, element, attrs, ctrl) {
+				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
+					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+
 				if (!ctrl) {
 					return;
 				}
