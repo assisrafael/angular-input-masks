@@ -131,6 +131,11 @@ How to use
 <input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
 ```
 
+### ui-pl-postal-code-mask ###
+```html
+<input type="text" name="field" ng-model="postalCode" ui-pl-postal-code-mask>
+```
+
 - Support masks for all the 27 brazillian states.
 
 - Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).

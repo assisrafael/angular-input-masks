@@ -13,7 +13,7 @@ var StringMask = (function() {
 		'9': {pattern: /\d/, optional: true},
 		'#': {pattern: /\d/, optional: true, recursive: true},
 		'S': {pattern: /[a-zA-Z]/},
-		'$': {escape: true} 
+		'$': {escape: true}
 	};
 	var isEscaped = function(pattern, pos) {
 		var count = 0;
@@ -24,7 +24,7 @@ var StringMask = (function() {
 			count += token && token.escape ? 1 : 0;
 			i--;
 		}
-		return count > 0 && count%2 === 1;	
+		return count > 0 && count%2 === 1;
 	};
 	var calcOptionalNumbersToUse = function(pattern, value) {
 		var numbersInP = pattern.replace(/[^0]/g,'').length;
@@ -189,7 +189,7 @@ var objectTypes = {
 };
 
 if (objectTypes[typeof module]) {
-	module.exports = StringMask;	
+	module.exports = StringMask;
 }
 
 /**
@@ -823,7 +823,7 @@ var objectTypes = {
 	'object': true
 };
 if (objectTypes[typeof module]) {
-	module.exports = BrV;	
+	module.exports = BrV;
 } else {
 	root.BrV = BrV;
 }
@@ -845,6 +845,7 @@ if (objectTypes[typeof module]) {
 		return value;
 	}
 
+	var plPostalCodePattern = new StringMask('00-000');
 	var cnpjPattern = new StringMask('00.000.000\/0000-00');
 	var cpfPattern = new StringMask('000.000.000-00');
 
@@ -895,6 +896,12 @@ if (objectTypes[typeof module]) {
 	function validateBrPhoneNumber (ctrl, value) {
 		var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
 		ctrl.$setValidity('br-phone-number', valid);
+		return value;
+	}
+
+	function validatePlPostalCode (ctrl, value) {
+		var valid = ctrl.$isEmpty(value) || value.length === 5;
+		ctrl.$setValidity('pl-postal-code', valid);
 		return value;
 	}
 
@@ -1002,6 +1009,49 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$parsers.push(function(value) {
 					return validateCNPJ(ctrl, value);
+				});
+			}
+		};
+	}
+
+	function uiPlPostalCodeMask() {
+		function applyPlPostalCodeMask (value) {
+			if(!value) {
+				return value;
+			}
+
+			var formatedValue = plPostalCodePattern.apply(value);
+			return formatedValue.trim().replace(/[^\d]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function (scope, element, attrs, ctrl) {
+				if(!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyPlPostalCodeMask(value);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlPostalCodeMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					ctrl.$parsers.push(function(value) {
+						return validatePlPostalCode(ctrl, value);
+					});
 				});
 			}
 		};
@@ -1252,6 +1302,7 @@ if (objectTypes[typeof module]) {
 		};
 	}])
 	.directive('uiBrCpfMask', [uiBrCpfMask])
+	.directive('uiPlPostalCodeMask', [uiPlPostalCodeMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
 	// deprecated: will be removed in the next major version
@@ -1455,6 +1506,58 @@ if (objectTypes[typeof module]) {
 
 					var cleanValue = clearValue(value);
 					var formatedValue = applyCepMask(cleanValue, ctrl);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+
+					return clearValue(formatedValue);
+				});
+			}
+		};
+	})
+.directive('uiPostalCodeMask',function() {
+		var postalCodeMask = new StringMask('00-000');
+
+		function clearValue (value) {
+			if(!value) {
+				return value;
+			}
+
+			return value.replace(/[^0-9]/g, '');
+		}
+
+		function applyPostalCodeMask (value, ctrl) {
+			if(!value) {
+				ctrl.$setValidity('postalCode', true);
+				return value;
+			}
+			var processed = postalCodeMask.process(value);
+			ctrl.$setValidity('postalCode', processed.valid);
+			var formatedValue = processed.result;
+			return formatedValue.trim().replace(/[^0-9]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '?ngModel',
+			link: function(scope, element, attrs, ctrl) {
+				if (!ctrl) {
+					return;
+				}
+
+				ctrl.$formatters.push(function(value) {
+					return applyPostalCodeMask(value, ctrl);
+				});
+
+				ctrl.$parsers.push(function(value) {
+					if (!value) {
+						return applyPostalCodeMask(value, ctrl);
+					}
+
+					var cleanValue = clearValue(value);
+					var formatedValue = applyPostalCodeMask(cleanValue, ctrl);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
