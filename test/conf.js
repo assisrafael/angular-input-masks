@@ -1,5 +1,8 @@
 exports.config = {
-	seleniumServerJar: './../node_modules/protractor/selenium/selenium-server-standalone-2.42.2.jar',
+	allScriptsTimeout: 11000,
+	jasmineNodeOpts: {
+		defaultTimeoutInterval: 100000
+	},
 	multiCapabilities: [/*{
 		'browserName': 'firefox'
 	}, */{

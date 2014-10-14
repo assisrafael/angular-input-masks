@@ -1,6 +1,10 @@
 angular-mask
 ============
 
+[![NPM version](https://badge.fury.io/js/angular-mask.svg)](http://badge.fury.io/js/angular-mask)
+[![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg)](https://travis-ci.org/assisrafael/angular-input-masks)
+
+
 Personalized and localized input masks for AngularJS
 
 Installation

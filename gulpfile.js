@@ -59,7 +59,6 @@ gulp.task('default', ['jshint', 'build'], function() {
 });
 
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
-gulp.task('webdriver_standalone', ['webdriver_update'], require('gulp-protractor').webdriver_standalone);
 
 gulp.task('serve', ['build'], function() {
 	var express = require('express');
@@ -78,5 +77,5 @@ gulp.task('test', ['webdriver_update', 'serve'], function() {
 	.pipe(protractor({
 		configFile: 'test/conf.js'
 	}))
-	.on('error', function(e) { throw e });
+	.pipe(plugins.exit());
 });
