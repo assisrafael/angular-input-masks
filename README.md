@@ -130,15 +130,32 @@ How to use
 <select ng-init="ufs=['AC','AL','AM','TO']" ng-model="selectedUF" ng-options="uf for uf in ufs"></select>
 <input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
 ```
+- Support masks for all the 27 brazillian states.
+
+- Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).
+
 
 ### ui-pl-postal-code-mask ###
 ```html
 <input type="text" name="field" ng-model="postalCode" ui-pl-postal-code-mask>
 ```
 
-- Support masks for all the 27 brazillian states.
+### ui-pl-pesel-mask ###
+```html
+<input type="text" name="field" ng-model="postalCode" ui-pl-pesel>
+```
 
-- Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).
+### ui-pl-nip-mask ###
+```html
+<input type="text" name="field" ng-model="postalCode" ui-pl-nip-mask>
+```
+
+### ui-pl-regon-mask ###
+```html
+<input type="text" name="field" ng-model="postalCode" ui-pl-regon-mask>
+```
+
+- Added support for validation & formatting of polish Postal Code, Pesel, Nip and Regon (9# & 14#)
 
 ### More examples ###
 
