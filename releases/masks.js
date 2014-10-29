@@ -845,6 +845,10 @@ if (objectTypes[typeof module]) {
 		return value;
 	}
 
+
+	var plPeselPattern = new StringMask('00000000000');
+	var plNipPattern = new StringMask('000-00-00-000');
+	var plRegonPattern = new StringMask('0000000000000');
 	var plPostalCodePattern = new StringMask('00-000');
 	var cnpjPattern = new StringMask('00.000.000\/0000-00');
 	var cpfPattern = new StringMask('000.000.000-00');
@@ -896,12 +900,6 @@ if (objectTypes[typeof module]) {
 	function validateBrPhoneNumber (ctrl, value) {
 		var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
 		ctrl.$setValidity('br-phone-number', valid);
-		return value;
-	}
-
-	function validatePlPostalCode (ctrl, value) {
-		var valid = ctrl.$isEmpty(value) || value.length === 5;
-		ctrl.$setValidity('pl-postal-code', valid);
 		return value;
 	}
 
@@ -1021,20 +1019,13 @@ if (objectTypes[typeof module]) {
 			}
 
 			var formatedValue = plPostalCodePattern.apply(value);
-			return formatedValue.trim().replace(/[^\d]$/, '');
+			return formatedValue.replace(/[^\d]$/, '');
 		}
 
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: '^ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				if(!ctrl) {
-					return;
-				}
-
-				ctrl.$formatters.push(function(value) {
-					return applyPlPostalCodeMask(value);
-				});
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
@@ -1048,10 +1039,156 @@ if (objectTypes[typeof module]) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = ctrl.$isEmpty(value) || value.length === 5;
+					ctrl.$setValidity('pl-postal-code', valid);
+					return value;
+				});
+			}
+		};
+	}
+	function uiPlPeselMask() {
+		function applyPlPeselMask (value) {
+			if(!value) {
+				return value;
+			}
 
-					ctrl.$parsers.push(function(value) {
-						return validatePlPostalCode(ctrl, value);
-					});
+			var formatedValue = plPeselPattern.apply(value);
+			return formatedValue.replace(/[^\d]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlPeselMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 11) {
+						var dig = (""+value).split("");
+        		var kontrola = (1*parseInt(dig[0]) + 3*parseInt(dig[1]) + 7*parseInt(dig[2]) + 9*parseInt(dig[3]) + 1*parseInt(dig[4]) + 3*parseInt(dig[5]) + 7*parseInt(dig[6]) + 9*parseInt(dig[7]) + 1*parseInt(dig[8]) + 3*parseInt(dig[9]))%10;
+        if(kontrola==0) kontrola = 10;
+	        kontrola = 10 - kontrola;
+
+        if(parseInt(dig[10])==kontrola)
+  	      valid = true;
+				}
+				ctrl.$setValidity('pl-pesel', valid);
+					return value;
+				});
+			}
+		};
+	}
+	function uiPlNipMask() {
+		function applyPlNipMask (value) {
+			if(!value) {
+				return value;
+			}
+
+			var formatedValue = plNipPattern.apply(value);
+			return formatedValue.replace(/[^\d]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlNipMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 10) {
+						var dig = (""+value).split("");
+						var kontrola = (6*parseInt(dig[0]) + 5*parseInt(dig[1]) + 7*parseInt(dig[2]) + 2*parseInt(dig[3]) + 3*parseInt(dig[4]) + 4*parseInt(dig[5]) + 5*parseInt(dig[6]) + 6*parseInt(dig[7]) + 7*parseInt(dig[8]))%11;
+						if(parseInt(dig[9])==kontrola)
+  	      		valid = true;
+					}
+					ctrl.$setValidity('pl-nip', valid);
+					return value;
+				});
+			}
+		};
+	}
+	function uiPlRegonMask() {
+		function applyPlRegonMask (value) {
+			if(!value) {
+				return value;
+			}
+
+			var formatedValue = plRegonPattern.apply(value);
+			return formatedValue.replace(/[^\d]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlRegonMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 9) {
+						var dig = (""+value).split("");
+						var kontrola = (8*parseInt(dig[0]) + 9*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]) + 7*parseInt(dig[7]))%11;
+						if(kontrola == 10)
+							kontrola = 0;
+
+						if(parseInt(dig[8])==kontrola)
+							valid = true;
+					}
+					else if (value.length == 14) {
+						var dig = (""+value).split("");
+						var kontrola = (2*parseInt(dig[0]) + 4*parseInt(dig[1]) + 8*parseInt(dig[2]) + 5*parseInt(dig[3]) + 0*parseInt(dig[4]) + 9*parseInt(dig[5]) + 7*parseInt(dig[6]) + 3*parseInt(dig[7]) + 6*parseInt(dig[8]) + 1*parseInt(dig[9]) + 2*parseInt(dig[10]) + 4*parseInt(dig[11]) + 8*parseInt(dig[12]))%11;
+						if(kontrola == 10)
+							kontrola = 0;
+
+						if(parseInt(dig[13])==kontrola)
+							valid = true;
+					}
+					ctrl.$setValidity('pl-regon', valid);
+					return value;
 				});
 			}
 		};
@@ -1301,8 +1438,12 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	}])
-	.directive('uiBrCpfMask', [uiBrCpfMask])
+//Introduced Polish validations for Postal Code, NIP, PESEL, REGON (9# & 14#)
 	.directive('uiPlPostalCodeMask', [uiPlPostalCodeMask])
+	.directive('uiPlPeselMask', [uiPlPeselMask])
+	.directive('uiPlNipMask', [uiPlNipMask])
+	.directive('uiPlRegonMask', [uiPlRegonMask])
+	.directive('uiBrCpfMask', [uiBrCpfMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
 	// deprecated: will be removed in the next major version
@@ -1517,58 +1658,7 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	})
-.directive('uiPostalCodeMask',function() {
-		var postalCodeMask = new StringMask('00-000');
 
-		function clearValue (value) {
-			if(!value) {
-				return value;
-			}
-
-			return value.replace(/[^0-9]/g, '');
-		}
-
-		function applyPostalCodeMask (value, ctrl) {
-			if(!value) {
-				ctrl.$setValidity('postalCode', true);
-				return value;
-			}
-			var processed = postalCodeMask.process(value);
-			ctrl.$setValidity('postalCode', processed.valid);
-			var formatedValue = processed.result;
-			return formatedValue.trim().replace(/[^0-9]$/, '');
-		}
-
-		return {
-			restrict: 'A',
-			require: '?ngModel',
-			link: function(scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
-				ctrl.$formatters.push(function(value) {
-					return applyPostalCodeMask(value, ctrl);
-				});
-
-				ctrl.$parsers.push(function(value) {
-					if (!value) {
-						return applyPostalCodeMask(value, ctrl);
-					}
-
-					var cleanValue = clearValue(value);
-					var formatedValue = applyPostalCodeMask(cleanValue, ctrl);
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
-					}
-
-					return clearValue(formatedValue);
-				});
-			}
-		};
-	})
 	.directive('uiBrIeMask', ['$parse', function($parse) {
 
 		var ieMasks = {
