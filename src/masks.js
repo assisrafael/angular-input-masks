@@ -398,7 +398,7 @@ function validateIE(value, rule) {
 		return false;
 	}
 	for (var i = 0; i < rule.dvs.length; i++) {
-		// console.log('>> >> dv'+i);
+
 		if (!validateDV(value, rule.dvs[i])) {
 			return false;
 		}
@@ -845,7 +845,7 @@ if (objectTypes[typeof module]) {
 		return value;
 	}
 
-
+	var plDoctorNrPattern = new StringMask('0000000');
 	var plPeselPattern = new StringMask('00000000000');
 	var plNipPattern = new StringMask('000-00-00-000');
 	var plRegonPattern = new StringMask('0000000000000');
@@ -1082,11 +1082,11 @@ if (objectTypes[typeof module]) {
 					var valid = false;
 					if (value.length == 11) {
 						var dig = (""+value).split("");
-        		var kontrola = (1*parseInt(dig[0]) + 3*parseInt(dig[1]) + 7*parseInt(dig[2]) + 9*parseInt(dig[3]) + 1*parseInt(dig[4]) + 3*parseInt(dig[5]) + 7*parseInt(dig[6]) + 9*parseInt(dig[7]) + 1*parseInt(dig[8]) + 3*parseInt(dig[9]))%10;
-        if(kontrola==0) kontrola = 10;
-	        kontrola = 10 - kontrola;
+        		var controlSum = (1*parseInt(dig[0]) + 3*parseInt(dig[1]) + 7*parseInt(dig[2]) + 9*parseInt(dig[3]) + 1*parseInt(dig[4]) + 3*parseInt(dig[5]) + 7*parseInt(dig[6]) + 9*parseInt(dig[7]) + 1*parseInt(dig[8]) + 3*parseInt(dig[9]))%10;
+        if(controlSum==0) controlSum = 10;
+	        controlSum = 10 - controlSum;
 
-        if(parseInt(dig[10])==kontrola)
+        if(parseInt(dig[10])==controlSum)
   	      valid = true;
 				}
 				ctrl.$setValidity('pl-pesel', valid);
@@ -1128,8 +1128,8 @@ if (objectTypes[typeof module]) {
 					var valid = false;
 					if (value.length == 10) {
 						var dig = (""+value).split("");
-						var kontrola = (6*parseInt(dig[0]) + 5*parseInt(dig[1]) + 7*parseInt(dig[2]) + 2*parseInt(dig[3]) + 3*parseInt(dig[4]) + 4*parseInt(dig[5]) + 5*parseInt(dig[6]) + 6*parseInt(dig[7]) + 7*parseInt(dig[8]))%11;
-						if(parseInt(dig[9])==kontrola)
+						var controlSum = (6*parseInt(dig[0]) + 5*parseInt(dig[1]) + 7*parseInt(dig[2]) + 2*parseInt(dig[3]) + 3*parseInt(dig[4]) + 4*parseInt(dig[5]) + 5*parseInt(dig[6]) + 6*parseInt(dig[7]) + 7*parseInt(dig[8]))%11;
+						if(parseInt(dig[9])==controlSum)
   	      		valid = true;
 					}
 					ctrl.$setValidity('pl-nip', valid);
@@ -1143,9 +1143,7 @@ if (objectTypes[typeof module]) {
 			if(!value) {
 				return value;
 			}
-
-			var formatedValue = plRegonPattern.apply(value);
-			return formatedValue.replace(/[^\d]$/, '');
+			return plRegonPattern.apply(value);
 		}
 
 		return {
@@ -1171,20 +1169,20 @@ if (objectTypes[typeof module]) {
 					var valid = false;
 					if (value.length == 9) {
 						var dig = (""+value).split("");
-						var kontrola = (8*parseInt(dig[0]) + 9*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]) + 7*parseInt(dig[7]))%11;
-						if(kontrola == 10)
-							kontrola = 0;
+						var controlSum = (8*parseInt(dig[0]) + 9*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]) + 7*parseInt(dig[7]))%11;
+						if(controlSum == 10)
+							controlSum = 0;
 
-						if(parseInt(dig[8])==kontrola)
+						if(parseInt(dig[8])==controlSum)
 							valid = true;
 					}
 					else if (value.length == 14) {
 						var dig = (""+value).split("");
-						var kontrola = (2*parseInt(dig[0]) + 4*parseInt(dig[1]) + 8*parseInt(dig[2]) + 5*parseInt(dig[3]) + 0*parseInt(dig[4]) + 9*parseInt(dig[5]) + 7*parseInt(dig[6]) + 3*parseInt(dig[7]) + 6*parseInt(dig[8]) + 1*parseInt(dig[9]) + 2*parseInt(dig[10]) + 4*parseInt(dig[11]) + 8*parseInt(dig[12]))%11;
-						if(kontrola == 10)
-							kontrola = 0;
+						var controlSum = (2*parseInt(dig[0]) + 4*parseInt(dig[1]) + 8*parseInt(dig[2]) + 5*parseInt(dig[3]) + 0*parseInt(dig[4]) + 9*parseInt(dig[5]) + 7*parseInt(dig[6]) + 3*parseInt(dig[7]) + 6*parseInt(dig[8]) + 1*parseInt(dig[9]) + 2*parseInt(dig[10]) + 4*parseInt(dig[11]) + 8*parseInt(dig[12]))%11;
+						if(controlSum == 10)
+							controlSum = 0;
 
-						if(parseInt(dig[13])==kontrola)
+						if(parseInt(dig[13])==controlSum)
 							valid = true;
 					}
 					ctrl.$setValidity('pl-regon', valid);
@@ -1193,7 +1191,49 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	}
+	function uiPlDoctorNrMask() {
+		function applyPlDoctorNrMask (value) {
+			if(!value) {
+				return value;
+			}
+			return plDoctorNrPattern.apply(value);
+		}
 
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlDoctorNrMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					var dig = (""+value).split("");
+					if (value.length == 7 && parseInt(dig[0]) != 0) {
+        		var controlSum = (1*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]))%11;
+
+	        	if (parseInt(dig[0]) == controlSum)
+	  	      	valid = true;
+					}
+
+					ctrl.$setValidity('pl-doctor-nr', valid);
+						return value;
+				});
+			}
+		};
+	}
 	function uiBrCpfCnpjMask() {
 		function applyCpfCnpjMask (value) {
 			if(!value) {
@@ -1443,6 +1483,7 @@ if (objectTypes[typeof module]) {
 	.directive('uiPlPeselMask', [uiPlPeselMask])
 	.directive('uiPlNipMask', [uiPlNipMask])
 	.directive('uiPlRegonMask', [uiPlRegonMask])
+	.directive('uiPlDoctorNrMask', [uiPlDoctorNrMask])
 	.directive('uiBrCpfMask', [uiBrCpfMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
