@@ -845,7 +845,7 @@ if (objectTypes[typeof module]) {
 		return value;
 	}
 
-
+	var plDoctorNrPattern = new StringMask('0000000');
 	var plPeselPattern = new StringMask('00000000000');
 	var plNipPattern = new StringMask('000-00-00-000');
 	var plRegonPattern = new StringMask('0000000000000');
@@ -1193,7 +1193,50 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	}
+	function uiPlDoctorNrMask() {
+		function applyPlDoctorNrMask (value) {
+			if(!value) {
+				return value;
+			}
 
+			var formatedValue = plDoctorNrPattern.apply(value);
+			return formatedValue.replace(/[^\d]$/, '');
+		}
+
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue = value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlDoctorNrMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					var dig = (""+value).split("");
+					if (value.length == 7 && parseInt(dig[0]) != 0) {
+        		var kontrola = (1*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]))%11;
+
+        	if(parseInt(dig[0])==kontrola)
+  	      	valid = true;
+					}
+				ctrl.$setValidity('pl-doctor-nr', valid);
+					return value;
+				});
+			}
+		};
+	}
 	function uiBrCpfCnpjMask() {
 		function applyCpfCnpjMask (value) {
 			if(!value) {
@@ -1443,6 +1486,7 @@ if (objectTypes[typeof module]) {
 	.directive('uiPlPeselMask', [uiPlPeselMask])
 	.directive('uiPlNipMask', [uiPlNipMask])
 	.directive('uiPlRegonMask', [uiPlRegonMask])
+	.directive('uiPlDoctorNrMask', [uiPlDoctorNrMask])
 	.directive('uiBrCpfMask', [uiBrCpfMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
