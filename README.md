@@ -155,7 +155,12 @@ How to use
 <input type="text" name="field" ng-model="postalCode" ui-pl-regon-mask>
 ```
 
-- Added support for validation & formatting of polish Postal Code, Pesel, Nip and Regon (9# & 14#)
+### ui-pl-doctor-nr-mask ###
+```html
+<input type="text" name="field" ng-model="postalCode" ui-pl-doctor-nr-mask>
+```
+
+- Added support for validation & formatting of polish Postal Code, Pesel, Nip and Regon (9# & 14#), Docto Number (Numer prawa wykonywania zawodu)
 
 ### More examples ###
 
