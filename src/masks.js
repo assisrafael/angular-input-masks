@@ -459,6 +459,12 @@
 					if(!value) {
 						return value;
 					}
+					if(typeof value != 'number') {
+						if(isNaN(parseFloat(value))) {
+							return value;
+						}
+						value = parseFloat(value);
+					}
 
 					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
 				});
