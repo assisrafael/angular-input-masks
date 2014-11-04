@@ -844,6 +844,8 @@ if (objectTypes[typeof module]) {
 		ctrl.$setValidity('min', validity);
 		return value;
 	}
+
+	var plBankAccountNoPattern = new StringMask('00 0000 0000 0000 0000 0000 0000');
 	var plIdNoPattern = new StringMask('SSS 000000');
 	var plPassportNoPattern = new StringMask('SS 0000000');
 	var plMedicalNoPattern = new StringMask('0000000');
@@ -1012,7 +1014,6 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	}
-
 	function convertToWeight(letter) {
 		var weights = [
 			{value: 'A', weight: 10},
@@ -1048,6 +1049,106 @@ if (objectTypes[typeof module]) {
 				return weights[i].weight;
 		}
 	}
+
+	function checkBank(bankId){
+		var message = "Nie wykryto banku";
+		var banks = [
+			{code: '1010', name: 'Narodowy Bank Polski'},
+			{code: '1020', name: 'PKO BP'},
+			{code: '1030', name: 'Citybank Handlowy'},
+			{code: '1050', name: 'ING'},
+			{code: '1060', name: 'BPH'},
+			{code: '1090', name: 'BZ WBK'},
+			{code: '1130', name: 'BGK'},
+			{code: '1140', name: 'mBank'},
+			{code: '1160', name: 'Bank Millennium'},
+			{code: '1240', name: 'Pekao'},
+			{code: '1280', name: 'HSBC'},
+			{code: '1300', name: 'Meritum Bank'},
+			{code: '1320', name: 'Bank Pocztowy'},
+			{code: '1440', name: 'Nordea Bank'},
+			{code: '1470', name: 'Euro Bank'},
+			{code: '1540', name: 'BOŚ'},
+			{code: '1580', name: 'Mercedes-Benz Bank Polska'},
+			{code: '1600', name: 'BNP Paribas Fortis'},
+			{code: '1610', name: 'SGB - Bank'},
+			{code: '1670', name: 'RBS Bank (Polska)'},
+			{code: '1680', name: 'Plus Bank'},
+			{code: '1750', name: 'Raiffeisen Bank'},
+			{code: '1840', name: 'Societe Generale'},
+			{code: '1870', name: 'FM Bank PBP'},
+			{code: '1910', name: 'Deutsche Bank Polska'},
+			{code: '1930', name: 'Bank Polskiej Spółdzielczości'},
+			{code: '1940', name: 'Credit Agricole Bank Polska'},
+			{code: '1950', name: 'Idea Bank'},
+			{code: '2000', name: 'Rabobank Polska'},
+			{code: '2030', name: 'BGŻ'},
+			{code: '2070', name: 'FCE Bank Polska'},
+			{code: '2120', name: 'Santander Consumer Bank'},
+			{code: '2130', name: 'Volkswagen Bank'},
+			{code: '2140', name: 'Fiat Bank Polska'},
+			{code: '2160', name: 'Toyota Bank'},
+			{code: '2190', name: 'DnB Nord'},
+			{code: '2480', name: 'Getin Noble Bank'},
+			{code: '2490', name: 'Alior Bank'}
+			];
+
+		for (var i in banks)
+			if (banks[i].code.toString() == bankId.toString())
+				message = banks[i].name;
+
+		return message;
+	}
+
+	function uiPlBankAccountNoMask() {
+		function applyPlBankAccountNoMask (value) {
+			if(!value) {
+				return value;
+			}
+			return plBankAccountNoPattern.apply(value).toUpperCase().replace(/[^\d]$/, '') ;
+		}
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+
+				var weights = [1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49, 5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51, 25, 56, 75, 71, 31, 19, 93, 57];
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+					var actualValue =  value.replace(/[^\d]/g, '');
+					var formatedValue = applyPlBankAccountNoMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 26) {
+						// var bankName = checkBank(value.substr(2,4));
+						value = value + "2521";
+        		value = value.substr(2) + value.substr(0, 2);
+        		var controlSum = 0;
+        		for (var i = 0; i < 30; i++) {
+            	controlSum += value[29 - i] * weights[i];
+        		}
+        		if (controlSum % 97 == 1)
+	  	      	valid = true;
+					}
+					ctrl.$setValidity('pl-bank-account-no', valid);
+						return value;
+				});
+			}
+		};
+	}
+
 
 	function uiPlPassportNoMask() {
 		function applyPlPassportNoMask (value) {
@@ -1602,6 +1703,7 @@ if (objectTypes[typeof module]) {
 	}])
 //Introduced Polish validations for Postal Code, NIP, PESEL, REGON (9# & 14#)
 
+	.directive('uiPlBankAccountNoMask', [uiPlBankAccountNoMask])
 	.directive('uiPlIdNoMask', [uiPlIdNoMask])
 	.directive('uiPlPassportNoMask', [uiPlPassportNoMask])
 	.directive('uiPlPostalCodeMask', [uiPlPostalCodeMask])
