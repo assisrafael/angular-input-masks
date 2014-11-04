@@ -844,8 +844,9 @@ if (objectTypes[typeof module]) {
 		ctrl.$setValidity('min', validity);
 		return value;
 	}
-
-	var plDoctorNrPattern = new StringMask('0000000');
+	var plIdNoPattern = new StringMask('SSS 000000');
+	var plPassportNoPattern = new StringMask('SS 0000000');
+	var plMedicalNoPattern = new StringMask('0000000');
 	var plPeselPattern = new StringMask('00000000000');
 	var plNipPattern = new StringMask('000-00-00-000');
 	var plRegonPattern = new StringMask('0000000000000');
@@ -1012,6 +1013,128 @@ if (objectTypes[typeof module]) {
 		};
 	}
 
+	function convertToWeight(letter) {
+		var weights = [
+			{value: 'A', weight: 10},
+			{value: 'B', weight: 11},
+			{value: 'C', weight: 12},
+			{value: 'D', weight: 13},
+			{value: 'E', weight: 14},
+			{value: 'F', weight: 15},
+			{value: 'G', weight: 16},
+			{value: 'H', weight: 17},
+			{value: 'I', weight: 18},
+			{value: 'J', weight: 19},
+			{value: 'K', weight: 20},
+			{value: 'L', weight: 21},
+			{value: 'M', weight: 22},
+			{value: 'N', weight: 23},
+			{value: 'O', weight: 24},
+			{value: 'P', weight: 25},
+			{value: 'Q', weight: 26},
+			{value: 'R', weight: 27},
+			{value: 'S', weight: 28},
+			{value: 'T', weight: 29},
+			{value: 'U', weight: 30},
+			{value: 'V', weight: 31},
+			{value: 'W', weight: 32},
+			{value: 'X', weight: 33},
+			{value: 'Y', weight: 34},
+			{value: 'Z', weight: 35}
+			];
+
+		for (var i in weights){
+			if(letter.toUpperCase() == weights[i].value)
+				return weights[i].weight;
+		}
+	}
+
+	function uiPlPassportNoMask() {
+		function applyPlPassportNoMask (value) {
+			if(!value) {
+				return value;
+			}
+			return plPassportNoPattern.apply(value).toUpperCase().replace(/[^\da-zA-Z]$/, '');
+		}
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue =  value.replace(/[^\da-zA-Z]/, '');
+					var formatedValue = applyPlPassportNoMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 9) {
+						var digs = (""+value).split("");
+        		var controlSum = (convertToWeight(digs[0].toString()) * 7 + convertToWeight(digs[1].toString()) * 3 + digs[2] * 9 + digs[3] * 1 + digs[4] *7 + digs[5] *3 + digs[6] *1 + digs[7] *7 +digs[8] * 3 )%10;
+
+	        	if (controlSum == 0)
+	  	      	valid = true;
+					}
+					ctrl.$setValidity('pl-passport-no', valid);
+						return value;
+				});
+			}
+		};
+	}
+
+	function uiPlIdNoMask() {
+		function applyPlIdNoMask (value) {
+			if(!value) {
+				return value;
+			}
+			return plIdNoPattern.apply(value).toUpperCase().replace(/[^\da-zA-Z]$/, '');
+		}
+		return {
+			restrict: 'A',
+			require: '^ngModel',
+			link: function (scope, element, attrs, ctrl) {
+
+				ctrl.$parsers.push(function(value) {
+					if(!value) {
+						return value;
+					}
+
+					var actualValue =  value.replace(/[^\da-zA-Z]/, '');
+					var formatedValue = applyPlIdNoMask(actualValue);
+
+					if (ctrl.$viewValue !== formatedValue) {
+						ctrl.$setViewValue(formatedValue);
+						ctrl.$render();
+					}
+					return actualValue;
+				});
+
+				ctrl.$parsers.push(function(value) {
+					var valid = false;
+					if (value.length == 9) {
+						var digs = (""+value).split("");
+        		var controlSum = (convertToWeight(digs[0].toString()) * 7 + convertToWeight(digs[1].toString()) * 3 + convertToWeight(digs[2].toString()) * 1 + digs[4] *7 + digs[5] *3 + digs[6] *1 + digs[7] *7 +digs[8] * 3 )%10;
+
+	        	if (parseInt(digs[3]) == controlSum)
+	  	      	valid = true;
+					}
+					ctrl.$setValidity('pl-id-no', valid);
+						return value;
+				});
+			}
+		};
+	}
+
 	function uiPlPostalCodeMask() {
 		function applyPlPostalCodeMask (value) {
 			if(!value) {
@@ -1055,8 +1178,7 @@ if (objectTypes[typeof module]) {
 				return value;
 			}
 
-			var formatedValue = plPeselPattern.apply(value);
-			return formatedValue.replace(/[^\d]$/, '');
+			return plPeselPattern.apply(value);
 		}
 
 		return {
@@ -1191,12 +1313,12 @@ if (objectTypes[typeof module]) {
 			}
 		};
 	}
-	function uiPlDoctorNrMask() {
-		function applyPlDoctorNrMask (value) {
+	function uiPlMedicalNoMask() {
+		function applyPlMedicalNoMask (value) {
 			if(!value) {
 				return value;
 			}
-			return plDoctorNrPattern.apply(value);
+			return plMedicalNoPattern.apply(value);
 		}
 
 		return {
@@ -1210,7 +1332,7 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
-					var formatedValue = applyPlDoctorNrMask(actualValue);
+					var formatedValue = applyPlMedicalNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
@@ -1228,7 +1350,7 @@ if (objectTypes[typeof module]) {
 	  	      	valid = true;
 					}
 
-					ctrl.$setValidity('pl-doctor-nr', valid);
+					ctrl.$setValidity('pl-medical-no', valid);
 						return value;
 				});
 			}
@@ -1479,11 +1601,14 @@ if (objectTypes[typeof module]) {
 		};
 	}])
 //Introduced Polish validations for Postal Code, NIP, PESEL, REGON (9# & 14#)
+
+	.directive('uiPlIdNoMask', [uiPlIdNoMask])
+	.directive('uiPlPassportNoMask', [uiPlPassportNoMask])
 	.directive('uiPlPostalCodeMask', [uiPlPostalCodeMask])
 	.directive('uiPlPeselMask', [uiPlPeselMask])
 	.directive('uiPlNipMask', [uiPlNipMask])
 	.directive('uiPlRegonMask', [uiPlRegonMask])
-	.directive('uiPlDoctorNrMask', [uiPlDoctorNrMask])
+	.directive('uiPlMedicalNoMask', [uiPlMedicalNoMask])
 	.directive('uiBrCpfMask', [uiBrCpfMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
