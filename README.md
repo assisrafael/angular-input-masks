@@ -137,27 +137,37 @@ How to use
 
 ### ui-pl-postal-code-mask ###
 ```html
-<input type="text" name="field" ng-model="postalCode" ui-pl-postal-code-mask>
+<input type="text" name="field" ui-pl-postal-code-mask>
 ```
 
 ### ui-pl-pesel-mask ###
 ```html
-<input type="text" name="field" ng-model="postalCode" ui-pl-pesel>
+<input type="text" name="field" ui-pl-pesel>
 ```
 
 ### ui-pl-nip-mask ###
 ```html
-<input type="text" name="field" ng-model="postalCode" ui-pl-nip-mask>
+<input type="text" name="field" ui-pl-nip-mask>
 ```
 
 ### ui-pl-regon-mask ###
 ```html
-<input type="text" name="field" ng-model="postalCode" ui-pl-regon-mask>
+<input type="text" name="field" ui-pl-regon-mask
+>```
+
+### ui-pl-medical-no-mask ###
+```html
+<input type="text" name="field" ui-pl-medical-no-mask>
 ```
 
-### ui-pl-doctor-nr-mask ###
+### ui-pl-passport-no-mask ###
 ```html
-<input type="text" name="field" ng-model="postalCode" ui-pl-doctor-nr-mask>
+<input type="text" name="field" ui-pl-passport-no-mask>
+```
+
+### ui-pl-id-no-mask ###
+```html
+<input type="text" name="field" ui-pl-id-no-mask>
 ```
 
 - Added support for validation & formatting of polish Postal Code, Pesel, Nip and Regon (9# & 14#), Docto Number (Numer prawa wykonywania zawodu)
