@@ -13,7 +13,7 @@
   ],
   "dependencies": {
     "angular": "~1.2.9",
-    "br-validations": "~0.2.0",
+    "br-validations": "~0.2.3",
     "string-mask": "~0.1.1"
   },
   "devDependencies": {

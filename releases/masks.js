@@ -195,7 +195,7 @@ if (objectTypes[typeof module]) {
 /**
  * br-validations
  * A library of validations applicable to several Brazilian data like I.E., CNPJ, CPF and others
- * @version v0.2.1
+ * @version v0.2.2
  * @link http://github.com/the-darc/br-validations
  * @license MIT
  */
@@ -205,10 +205,13 @@ var CNPJ = {};
 
 CNPJ.validate = function(c) {
 	var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
-	c = c.replace(/[^\d]/g,'').split('');
-	if(c.length !== 14) {
+	c = c.replace(/[^\d]/g,'');
+
+	var r = /^(0{14}|1{14}|2{14}|3{14}|4{14}|5{14}|6{14}|7{14}|8{14}|9{14})$/;
+	if (!c || c.length !== 14 || r.test(c)) {
 		return false;
 	}
+	c = c.split('');
 
 	for (var i = 0, n = 0; i < 12; i++) {
 		n += c[i] * b[i+1];
@@ -235,7 +238,8 @@ var CPF = {};
 
 CPF.validate = function(cpf) {
 	cpf = cpf.replace(/[^\d]+/g,'');
-	if (cpf === '' || cpf === '00000000000' || cpf.length !== 11) {
+	var r = /^(0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11})$/;
+	if (!cpf || cpf.length !== 11 || r.test(cpf)) {
 		return false;
 	}
 	function validateDigit(digit) {
