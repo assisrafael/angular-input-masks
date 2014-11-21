@@ -1,7 +1,7 @@
 /**
  * angular-mask
  * Personalized input masks for AngularJS
- * @version v1.2.3
+ * @version v1.2.5
  * @link http://github.com/assisrafael/angular-input-masks
  * @license MIT
  */
@@ -9,7 +9,7 @@
 
 var StringMask = (function() {
 	var tokens = {
-		'0': {pattern: /\d/, default: '0'},
+		'0': {pattern: /\d/, _default: '0'},
 		'9': {pattern: /\d/, optional: true},
 		'#': {pattern: /\d/, optional: true, recursive: true},
 		'S': {pattern: /[a-zA-Z]/},
@@ -143,8 +143,8 @@ var StringMask = (function() {
 				} else if (token.pattern.test(vc)) {
 					formatted = concatChar(formatted, vc, this.options);
 					valuePos = valuePos + steps.inc;
-				} else if (!vc && token.default && this.options.usedefaults) {
-					formatted = concatChar(formatted, token.default, this.options);
+				} else if (!vc && token._default && this.options.usedefaults) {
+					formatted = concatChar(formatted, token._default, this.options);
 				} else {
 					valid = false;
 					break;
@@ -195,7 +195,7 @@ if (objectTypes[typeof module]) {
 /**
  * br-validations
  * A library of validations applicable to several Brazilian data like I.E., CNPJ, CPF and others
- * @version v0.2.1
+ * @version v0.2.2
  * @link http://github.com/the-darc/br-validations
  * @license MIT
  */
@@ -205,10 +205,13 @@ var CNPJ = {};
 
 CNPJ.validate = function(c) {
 	var b = [6,5,4,3,2,9,8,7,6,5,4,3,2];
-	c = c.replace(/[^\d]/g,'').split('');
-	if(c.length !== 14) {
+	c = c.replace(/[^\d]/g,'');
+
+	var r = /^(0{14}|1{14}|2{14}|3{14}|4{14}|5{14}|6{14}|7{14}|8{14}|9{14})$/;
+	if (!c || c.length !== 14 || r.test(c)) {
 		return false;
 	}
+	c = c.split('');
 
 	for (var i = 0, n = 0; i < 12; i++) {
 		n += c[i] * b[i+1];
@@ -235,7 +238,8 @@ var CPF = {};
 
 CPF.validate = function(cpf) {
 	cpf = cpf.replace(/[^\d]+/g,'');
-	if (cpf === '' || cpf === '00000000000' || cpf.length !== 11) {
+	var r = /^(0{11}|1{11}|2{11}|3{11}|4{11}|5{11}|6{11}|7{11}|8{11}|9{11})$/;
+	if (!cpf || cpf.length !== 11 || r.test(cpf)) {
 		return false;
 	}
 	function validateDigit(digit) {
@@ -879,7 +883,7 @@ if (objectTypes[typeof module]) {
 	}
 
 	function clearDelimitersAndLeadingZeros (value) {
-		var cleanValue = value.replace(/^0*/, '');
+		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
 		cleanValue = cleanValue.replace(/[^0-9]/g, '');
 		return cleanValue;
 	}
@@ -1184,8 +1188,8 @@ if (objectTypes[typeof module]) {
 						var isNegative = (value[0] === '-'),
 							needsToInvertSign = (value.slice(-1) === '-');
 
-						//only apply the minus sign if it is negative or(exclusive) needs to be negative
-						if(needsToInvertSign ^ isNegative) {
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative and the number is different from zero
+						if(needsToInvertSign ^ isNegative && !!actualNumber) {
 							actualNumber *= -1;
 							formatedValue = '-' + formatedValue;
 						}
@@ -1286,11 +1290,12 @@ if (objectTypes[typeof module]) {
 				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
+					if(angular.isUndefined(value)) {
 						return value;
 					}
 
-					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return moneyMask.apply(valueToFormat);
 				});
 
 				function parse(value) {
