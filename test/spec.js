@@ -450,6 +450,14 @@ describe('ui.utils.masks:', function() {
 			}
 		});
 
+		it('should format a field with 0 as the initial value', function() {
+			var currency = 'R$ ';
+
+			var input = element(by.model('moneyStartedWith0'));
+
+			expect(input.getAttribute('value')).toEqual(currency+'0,00');
+		});
+
 		it('should format money with three decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000', {reverse: true}),

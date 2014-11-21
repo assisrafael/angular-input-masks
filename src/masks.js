@@ -349,10 +349,6 @@
 					var valueToFormat = clearDelimitersAndLeadingZeros(value) || '0';
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
-					console.log('Valor recebido pelo parser: ', value);
-					console.log('Valor a formatar: ', valueToFormat);
-					console.log('Valor formatado: ', formatedValue);
-					console.log('Valor atual: ', actualNumber);
 
 					if(angular.isDefined(attrs.uiNegativeNumber)){
 						var isNegative = (value[0] === '-'),
@@ -369,8 +365,7 @@
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
-					console.log('Valor formatado final: ', formatedValue);
-					console.log('Valor final: ', actualNumber);
+
 					return actualNumber;
 				}
 
@@ -461,7 +456,7 @@
 				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
+					if(angular.isUndefined(value)) {
 						return value;
 					}
 
