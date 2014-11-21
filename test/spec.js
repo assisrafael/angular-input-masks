@@ -94,6 +94,56 @@ describe('ui.utils.masks:', function() {
 			expect(input.getAttribute('value')).toEqual('1.234,18');
 			input.sendKeys('-');
 			expect(input.getAttribute('value')).toEqual('-1.234,18');
+			input.sendKeys(9);
+			expect(input.getAttribute('value')).toEqual('-12.341,89');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-1.234,18');
+			input.sendKeys('-');
+			input.sendKeys(9);
+			expect(input.getAttribute('value')).toEqual('12.341,89');
+		});
+
+		it('should not allow -0 parsing it to 0', function() {
+			var formatterView = new StringMask('#.##0,00', {reverse: true}),
+				formatterModel =  new StringMask('###0.00', {reverse: true}),
+				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('numberWith2Decimals')),
+				value = element(by.binding('numberWith2Decimals'));
+
+			expect(input.getAttribute('value')).toEqual('-1.234,18');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-123,41');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-12,34');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-1,23');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-0,12');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-0,01');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			input.sendKeys(1);
+			expect(input.getAttribute('value')).toEqual('0,01');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-0,01');
+			input.sendKeys(2);
+			expect(input.getAttribute('value')).toEqual('-0,12');
+			input.sendKeys(3);
+			expect(input.getAttribute('value')).toEqual('-1,23');
+			input.sendKeys(4);
+			expect(input.getAttribute('value')).toEqual('-12,34');
+			input.sendKeys(1);
+			expect(input.getAttribute('value')).toEqual('-123,41');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('0,00');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('0,00');
 		});
 
 		it('should not accept negative numbers when the ui-negative attribute is not present', function() {

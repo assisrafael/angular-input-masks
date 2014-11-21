@@ -49,7 +49,7 @@
 	}
 
 	function clearDelimitersAndLeadingZeros (value) {
-		var cleanValue = value.replace(/^0*/, '');
+		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
 		cleanValue = cleanValue.replace(/[^0-9]/g, '');
 		return cleanValue;
 	}
@@ -349,13 +349,17 @@
 					var valueToFormat = clearDelimitersAndLeadingZeros(value) || '0';
 					var formatedValue = viewMask.apply(valueToFormat);
 					var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+					console.log('Valor recebido pelo parser: ', value);
+					console.log('Valor a formatar: ', valueToFormat);
+					console.log('Valor formatado: ', formatedValue);
+					console.log('Valor atual: ', actualNumber);
 
 					if(angular.isDefined(attrs.uiNegativeNumber)){
 						var isNegative = (value[0] === '-'),
 							needsToInvertSign = (value.slice(-1) === '-');
 
-						//only apply the minus sign if it is negative or(exclusive) needs to be negative
-						if(needsToInvertSign ^ isNegative) {
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative and the number is different from zero
+						if(needsToInvertSign ^ isNegative && !!actualNumber) {
 							actualNumber *= -1;
 							formatedValue = '-' + formatedValue;
 						}
@@ -365,7 +369,8 @@
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
-
+					console.log('Valor formatado final: ', formatedValue);
+					console.log('Valor final: ', actualNumber);
 					return actualNumber;
 				}
 
