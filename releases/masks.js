@@ -1120,6 +1120,8 @@ if (objectTypes[typeof module]) {
 						return value;
 					}
 					var actualValue =  value.replace(/[^\d]/g, '');
+					if (actualValue.length > 26)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlBankAccountNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1168,6 +1170,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue =  value.replace(/[^\da-zA-Z]/, '');
+					if (actualValue.length > 9)
+						actualValue = actualValue.replace(/[\da-zA-Z]$/, '');
 					var formatedValue = applyPlPassportNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1211,6 +1215,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue =  value.replace(/[^\da-zA-Z]/, '');
+					if (actualValue.length > 9)
+						actualValue = actualValue.replace(/[\da-zA-Z]$/, '');
 					var formatedValue = applyPlIdNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1241,9 +1247,7 @@ if (objectTypes[typeof module]) {
 			if(!value) {
 				return value;
 			}
-
-			var formatedValue = plPostalCodePattern.apply(value);
-			return formatedValue.replace(/[^\d]$/, '');
+			return plPostalCodePattern.apply(value).replace(/[^\d]$/, '');
 		}
 
 		return {
@@ -1257,6 +1261,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
+					if (actualValue.length > 5)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlPostalCodeMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1293,6 +1299,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
+					if (actualValue.length > 11)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlPeselMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1303,17 +1311,18 @@ if (objectTypes[typeof module]) {
 				});
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
+
 					if (value.length == 11) {
 						var dig = (""+value).split("");
         		var controlSum = (1*parseInt(dig[0]) + 3*parseInt(dig[1]) + 7*parseInt(dig[2]) + 9*parseInt(dig[3]) + 1*parseInt(dig[4]) + 3*parseInt(dig[5]) + 7*parseInt(dig[6]) + 9*parseInt(dig[7]) + 1*parseInt(dig[8]) + 3*parseInt(dig[9]))%10;
-        if(controlSum==0) controlSum = 10;
-	        controlSum = 10 - controlSum;
+	        if(controlSum==0) controlSum = 10;
+		        controlSum = 10 - controlSum;
 
-        if(parseInt(dig[10])==controlSum)
-  	      valid = true;
-				}
-				ctrl.$setValidity('pl-pesel', valid);
-					return value;
+	        if(parseInt(dig[10])==controlSum)
+	  	      valid = true;
+					}
+					ctrl.$setValidity('pl-pesel', valid);
+						return value;
 				});
 			}
 		};
@@ -1339,6 +1348,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
+					if (actualValue.length > 10)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlNipMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1380,6 +1391,8 @@ if (objectTypes[typeof module]) {
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
+					if (actualValue.length > 9)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlRegonMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1429,10 +1442,12 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
-						return value;
+						return "";
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
+					if (actualValue.length > 7)
+						actualValue = actualValue.replace(/[\d]$/, '');
 					var formatedValue = applyPlMedicalNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -1444,7 +1459,7 @@ if (objectTypes[typeof module]) {
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
 					var dig = (""+value).split("");
-					if (value.length == 7 && parseInt(dig[0]) != 0) {
+					if ((value.length == 7) && (parseInt(dig[0]) != 0)) {
         		var controlSum = (1*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]))%11;
 
 	        	if (parseInt(dig[0]) == controlSum)
