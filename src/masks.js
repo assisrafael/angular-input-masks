@@ -49,7 +49,7 @@
 	}
 
 	function clearDelimitersAndLeadingZeros (value) {
-		var cleanValue = value.replace(/^0*/, '');
+		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
 		cleanValue = cleanValue.replace(/[^0-9]/g, '');
 		return cleanValue;
 	}
@@ -354,8 +354,8 @@
 						var isNegative = (value[0] === '-'),
 							needsToInvertSign = (value.slice(-1) === '-');
 
-						//only apply the minus sign if it is negative or(exclusive) needs to be negative
-						if(needsToInvertSign ^ isNegative) {
+						//only apply the minus sign if it is negative or(exclusive) needs to be negative and the number is different from zero
+						if(needsToInvertSign ^ isNegative && !!actualNumber) {
 							actualNumber *= -1;
 							formatedValue = '-' + formatedValue;
 						}
@@ -456,11 +456,12 @@
 				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
+					if(angular.isUndefined(value)) {
 						return value;
 					}
 
-					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return moneyMask.apply(valueToFormat);
 				});
 
 				function parse(value) {
