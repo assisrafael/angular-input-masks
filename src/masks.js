@@ -459,14 +459,9 @@
 					if(angular.isUndefined(value)) {
 						return value;
 					}
-					if(typeof value != 'number') {
-						if(isNaN(parseFloat(value))) {
-							return value;
-						}
-						value = parseFloat(value);
-					}
 
-					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return moneyMask.apply(valueToFormat);
 				});
 
 				function parse(value) {

@@ -1294,7 +1294,8 @@ if (objectTypes[typeof module]) {
 						return value;
 					}
 
-					return moneyMask.apply(value.toFixed(decimals).replace(/[^\d]+/g,''));
+					var valueToFormat = prepareNumberToFormatter(value, decimals);
+					return moneyMask.apply(valueToFormat);
 				});
 
 				function parse(value) {
