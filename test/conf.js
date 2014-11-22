@@ -4,6 +4,14 @@ exports.config = {
 	}, */{
 		'browserName': 'chrome'
 	}],
-	specs: ['spec.js'],
+	specs: [
+		'cep-spec.js',
+		'cpf-cnpj-spec.js',
+		'ie-spec.js',
+		'money-spec.js',
+		'number-spec.js',
+		'percentage-spec.js',
+		'phone-spec.js'
+	],
 	baseUrl: 'http://localhost:8000/demo'
 }
