@@ -7,6 +7,7 @@ exports.config = {
 	specs: [
 		'cep-spec.js',
 		'cpf-cnpj-spec.js',
+		'date-spec.js',
 		'ie-spec.js',
 		'money-spec.js',
 		'number-spec.js',
