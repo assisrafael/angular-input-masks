@@ -11,7 +11,8 @@ angular.module('ui.utils.masks', [
 	'ui.utils.masks.cpfCnpj',
 	'ui.utils.masks.date',
 	'ui.utils.masks.time',
-	'ui.utils.masks.scientific-notation'
+	'ui.utils.masks.scientific-notation',
+	'ui.utils.masks.nfe'
 ])
 .config(['$logProvider', function($logProvider) {
 	$logProvider.debugEnabled(false);

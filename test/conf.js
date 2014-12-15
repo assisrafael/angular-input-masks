@@ -10,6 +10,7 @@ exports.config = {
 		'date-spec.js',
 		'ie-spec.js',
 		'money-spec.js',
+		'nfe-spec.js',
 		'number-spec.js',
 		'percentage-spec.js',
 		'phone-spec.js',
