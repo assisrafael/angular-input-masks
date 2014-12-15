@@ -13,6 +13,7 @@ exports.config = {
 		'number-spec.js',
 		'percentage-spec.js',
 		'phone-spec.js',
+		'scientific-notation-spec.js',
 		'time-spec.js'
 	],
 	baseUrl: 'http://localhost:8000/demo'
