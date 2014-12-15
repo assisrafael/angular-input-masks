@@ -12,7 +12,8 @@ exports.config = {
 		'money-spec.js',
 		'number-spec.js',
 		'percentage-spec.js',
-		'phone-spec.js'
+		'phone-spec.js',
+		'time-spec.js'
 	],
 	baseUrl: 'http://localhost:8000/demo'
 }

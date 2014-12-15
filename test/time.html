@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Time Spec</title>
+	<script src="../bower_components/angular/angular.min.js"></script>
+	<script src="../releases/masks.js"></script>
+	<script>
+		angular.module('timeTest', ['ui.utils.masks']);
+
+		function ctrl($scope) {
+			$scope.initializedTimeMask = '1430';
+		}
+	</script>
+</head>
+<body ng-app="timeTest">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-time-mask</h2>
+		<input type="text" name="timeMaskInput" ng-model="timeMask" ui-time-mask>
+		<br>
+		ModelValue: <span ng-bind="timeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.timeMaskInput.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedTimeMask" ng-model="initializedTimeMask" ui-time-mask>
+		<br>
+		ModelValue: <span ng-bind="initializedTimeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedTimeMask.$error | json"></span>
+		<br>
+	</form>
+</body>
+</html>
