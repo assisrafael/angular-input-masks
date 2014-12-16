@@ -1363,7 +1363,7 @@ angular.module('ui.utils.masks.money', [])
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+					currencySym = attrs.uiMoneySymbol,
 					decimals = parseInt(attrs.uiMoneyMask);
 
 				if (!ctrl) {
