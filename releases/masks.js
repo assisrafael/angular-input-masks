@@ -1330,6 +1330,80 @@ angular.module('ui.utils.masks.ie', [])
 		}
 	};
 }]);
+    
+'use strict';
+angular.module('ui.utils.masks.filters', [])
+.filter('uiBrPhoneNumber', function(){
+    return function(value){
+        if(!value) {
+            return value;
+        }
+        
+        var phoneMask8D = new StringMask('(00) 0000-0000'),
+            phoneMask9D = new StringMask('(00) 00000-0000');
+    
+        var formatedValue;
+        if(value.length < 11){            
+            formatedValue = phoneMask8D.apply(value);
+        }else{
+            formatedValue = phoneMask9D.apply(value);
+        }
+
+        return formatedValue.trim().replace(/[^0-9]$/, '');
+    };
+})
+.filter('uiBrCepMask', function(){
+    return function(value){
+        if(!value) {
+            return value;
+        }
+        
+        var cepMask = new StringMask('00000-000');
+        var formatedValue = cepMask.apply(value);
+        
+        return formatedValue.trim().replace(/[^0-9]$/, '');
+    };
+})
+.filter('uiBrCpfMask', function(){
+    return function(value){
+        if(!value) {
+            return value;
+        }
+        
+        var cpfMask = new StringMask('000.000.000-00');
+        var formatedValue = cpfMask.apply(value);
+        return formatedValue.trim().replace(/[^0-9]$/, '');
+    };
+})
+.filter('uiBrCnpjMask', function(){
+    return function(value){
+        if(!value) {
+            return value;
+        }
+        
+        var cnpjMask = new StringMask('00.000.000/0000-00');
+        var formatedValue = cnpjMask.apply(value);
+        return formatedValue.trim().replace(/[^0-9]$/, '');
+    };
+})
+.filter('uiBrCpfcnpjMask', function(){
+    return function(value){
+        if(!value) {
+            return value;
+        }
+        
+        var cpfMask = new StringMask('000.000.000-00');
+        var cnpjMask = new StringMask('00.000.000/0000-00');
+        
+        var formatedValue;
+        if(value.length < 14){
+            formatedValue = cpfMask.apply(value);
+        }else{
+            formatedValue = cnpjMask.apply(value);
+        }
+        return formatedValue.trim().replace(/[^0-9]$/, '');
+    };
+});
 
 'use strict';
 
@@ -1345,7 +1419,8 @@ angular.module('ui.utils.masks', [
 	'ui.utils.masks.date',
 	'ui.utils.masks.time',
 	'ui.utils.masks.scientific-notation',
-	'ui.utils.masks.nfe'
+	'ui.utils.masks.nfe',
+    'ui.utils.masks.filters'
 ])
 .config(['$logProvider', function($logProvider) {
 	$logProvider.debugEnabled(false);
