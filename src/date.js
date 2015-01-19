@@ -1,10 +1,31 @@
 'use strict';
 
-/*global moment */
-angular.module('ui.utils.masks.date', [])
-.directive('uiDateMask', ['$locale', '$log', function($locale, $log) {
-	if(typeof moment === 'undefined') {
-		throw new Error('Moment.js not found. Check if it is available.');
+/*global moment*/
+var globalMomentJS;
+if (typeof moment !== 'undefined') {
+	globalMomentJS = moment;
+}
+
+var dependencies = [];
+
+try {
+	//Check if angular-momentjs is available
+	angular.module('angular-momentjs');
+	dependencies.push('angular-momentjs');
+} catch (e) {}
+
+angular.module('ui.utils.masks.date', dependencies)
+.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
+	var moment;
+
+	if (typeof globalMomentJS === 'undefined') {
+		if ($injector.has('MomentJS')) {
+			moment = $injector.get('MomentJS');
+		} else {
+			throw new Error('Moment.js not found. Check if it is available.');
+		}
+	} else {
+		moment = globalMomentJS;
 	}
 
 	var dateFormatMapByLocalle = {
