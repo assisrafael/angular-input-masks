@@ -32,8 +32,8 @@ angular.module('ui.utils.masks.time', [])
 			function parser (value) {
 				$log.debug('[uiTimeMask] Parser called: ', value);
 
-				var modelValue = clearValue(value);
-				var viewValue = formatter(modelValue);
+				var modelValue = formatter(clearValue(value));
+				var viewValue = modelValue;
 
 				if(ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
@@ -50,7 +50,7 @@ angular.module('ui.utils.masks.time', [])
 					return value;
 				}
 
-				var splittedValue = value.toString().split(/([0-9]{2})/).filter(function(v) {
+				var splittedValue = value.toString().split(/:/).filter(function(v) {
 					return !!v;
 				});
 
@@ -58,7 +58,7 @@ angular.module('ui.utils.masks.time', [])
 					minutes = parseInt(splittedValue[1]),
 					seconds = parseInt(splittedValue[2]);
 
-				var isValid = value.toString().length === 6 && hours < 24 && minutes < 60 && seconds < 60;
+				var isValid = value.toString().length === 8 && hours < 24 && minutes < 60 && seconds < 60;
 
 				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
 				return value;

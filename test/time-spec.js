@@ -23,6 +23,7 @@ describe('ui.utils.masks.time', function() {
 				numberToFormat += key;
 				formatedTimeAsString = timeFormatter.apply(numberToFormat).replace(/:$/,'');
 				expect(input.getAttribute('value')).toEqual(formatedTimeAsString);
+				expect(value.getText()).toEqual(formatedTimeAsString);
 			}
 
 			for (var i = 5; i >= 0; i--) {
@@ -31,6 +32,7 @@ describe('ui.utils.masks.time', function() {
 				if(numberToFormat) {
 					formatedTimeAsString = timeFormatter.apply(numberToFormat).replace(/:$/,'');
 					expect(input.getAttribute('value')).toEqual(formatedTimeAsString);
+					expect(value.getText()).toEqual(formatedTimeAsString);
 				}
 			}
 		});
