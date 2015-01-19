@@ -1,7 +1,7 @@
 /**
  * angular-mask
  * Personalized input masks for AngularJS
- * @version v1.3.0
+ * @version v1.3.1
  * @link http://github.com/assisrafael/angular-input-masks
  * @license MIT
  */
@@ -1065,11 +1065,32 @@ angular.module('ui.utils.masks.cep', [])
 
 'use strict';
 
-/*global moment */
-angular.module('ui.utils.masks.date', [])
-.directive('uiDateMask', ['$locale', '$log', function($locale, $log) {
-	if(typeof moment === 'undefined') {
-		throw new Error('Moment.js not found. Check if it is available.');
+/*global moment*/
+var globalMomentJS;
+if (typeof moment !== 'undefined') {
+	globalMomentJS = moment;
+}
+
+var dependencies = [];
+
+try {
+	//Check if angular-momentjs is available
+	angular.module('angular-momentjs');
+	dependencies.push('angular-momentjs');
+} catch (e) {}
+
+angular.module('ui.utils.masks.date', dependencies)
+.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
+	var moment;
+
+	if (typeof globalMomentJS === 'undefined') {
+		if ($injector.has('MomentJS')) {
+			moment = $injector.get('MomentJS');
+		} else {
+			throw new Error('Moment.js not found. Check if it is available.');
+		}
+	} else {
+		moment = globalMomentJS;
 	}
 
 	var dateFormatMapByLocalle = {
@@ -2012,7 +2033,8 @@ angular.module('ui.utils.masks.time', [])
 					minutes = parseInt(splittedValue[1]),
 					seconds = parseInt(splittedValue[2] || 0);
 
-				var isValid = value.toString().length === formattedValueLength && hours < 24 && minutes < 60 && seconds < 60;
+				var isValid = value.toString().length === formattedValueLength &&
+					hours < 24 && minutes < 60 && seconds < 60;
 
 				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
 				return value;
