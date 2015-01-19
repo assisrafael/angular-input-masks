@@ -6,17 +6,28 @@ angular.module('ui.utils.masks.time', [])
 		throw new Error('StringMask not found. Check if it is available.');
 	}
 
-	var timeMask = new StringMask('00:00:00');
 	return {
 		restrict: 'A',
 		require: '?ngModel',
 		link: function(scope, element, attrs, ctrl) {
+			var unformattedValueLength = 6,
+				formattedValueLength = 8,
+				timeFormat = '00:00:00';
+
+			if (angular.isDefined(attrs.uiTimeMask) && attrs.uiTimeMask === 'short') {
+				unformattedValueLength = 4;
+				formattedValueLength = 5;
+				timeFormat = '00:00';
+			}
+
+			var timeMask = new StringMask(timeFormat);
+
 			function clearValue (value) {
 				if(angular.isUndefined(value) || value.length === 0) {
 					return value;
 				}
 
-				return value.replace(/[^0-9]/g, '').slice(0, 6);
+				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
 			}
 
 			function formatter (value) {
@@ -25,15 +36,15 @@ angular.module('ui.utils.masks.time', [])
 					return value;
 				}
 
-				var formattedValue = timeMask.process(value).result;
+				var formattedValue = timeMask.process(clearValue(value)).result;
 				return formattedValue.replace(/[^0-9]$/, '');
 			}
 
 			function parser (value) {
 				$log.debug('[uiTimeMask] Parser called: ', value);
 
-				var modelValue = clearValue(value);
-				var viewValue = formatter(modelValue);
+				var modelValue = formatter(value);
+				var viewValue = modelValue;
 
 				if(ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
@@ -50,15 +61,16 @@ angular.module('ui.utils.masks.time', [])
 					return value;
 				}
 
-				var splittedValue = value.toString().split(/([0-9]{2})/).filter(function(v) {
+				var splittedValue = value.toString().split(/:/).filter(function(v) {
 					return !!v;
 				});
 
 				var hours = parseInt(splittedValue[0]),
 					minutes = parseInt(splittedValue[1]),
-					seconds = parseInt(splittedValue[2]);
+					seconds = parseInt(splittedValue[2] || 0);
 
-				var isValid = value.toString().length === 6 && hours < 24 && minutes < 60 && seconds < 60;
+				var isValid = value.toString().length === formattedValueLength &&
+					hours < 24 && minutes < 60 && seconds < 60;
 
 				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
 				return value;

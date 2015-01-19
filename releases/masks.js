@@ -1,7 +1,7 @@
 /**
  * angular-mask
  * Personalized input masks for AngularJS
- * @version v1.3.0
+ * @version v1.3.1
  * @link http://github.com/assisrafael/angular-input-masks
  * @license MIT
  */
@@ -1065,11 +1065,32 @@ angular.module('ui.utils.masks.cep', [])
 
 'use strict';
 
-/*global moment */
-angular.module('ui.utils.masks.date', [])
-.directive('uiDateMask', ['$locale', '$log', function($locale, $log) {
-	if(typeof moment === 'undefined') {
-		throw new Error('Moment.js not found. Check if it is available.');
+/*global moment*/
+var globalMomentJS;
+if (typeof moment !== 'undefined') {
+	globalMomentJS = moment;
+}
+
+var dependencies = [];
+
+try {
+	//Check if angular-momentjs is available
+	angular.module('angular-momentjs');
+	dependencies.push('angular-momentjs');
+} catch (e) {}
+
+angular.module('ui.utils.masks.date', dependencies)
+.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
+	var moment;
+
+	if (typeof globalMomentJS === 'undefined') {
+		if ($injector.has('MomentJS')) {
+			moment = $injector.get('MomentJS');
+		} else {
+			throw new Error('Moment.js not found. Check if it is available.');
+		}
+	} else {
+		moment = globalMomentJS;
 	}
 
 	var dateFormatMapByLocalle = {
@@ -1949,17 +1970,28 @@ angular.module('ui.utils.masks.time', [])
 		throw new Error('StringMask not found. Check if it is available.');
 	}
 
-	var timeMask = new StringMask('00:00:00');
 	return {
 		restrict: 'A',
 		require: '?ngModel',
 		link: function(scope, element, attrs, ctrl) {
+			var unformattedValueLength = 6,
+				formattedValueLength = 8,
+				timeFormat = '00:00:00';
+
+			if (angular.isDefined(attrs.uiTimeMask) && attrs.uiTimeMask === 'short') {
+				unformattedValueLength = 4;
+				formattedValueLength = 5;
+				timeFormat = '00:00';
+			}
+
+			var timeMask = new StringMask(timeFormat);
+
 			function clearValue (value) {
 				if(angular.isUndefined(value) || value.length === 0) {
 					return value;
 				}
 
-				return value.replace(/[^0-9]/g, '').slice(0, 6);
+				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
 			}
 
 			function formatter (value) {
@@ -1968,15 +2000,15 @@ angular.module('ui.utils.masks.time', [])
 					return value;
 				}
 
-				var formattedValue = timeMask.process(value).result;
+				var formattedValue = timeMask.process(clearValue(value)).result;
 				return formattedValue.replace(/[^0-9]$/, '');
 			}
 
 			function parser (value) {
 				$log.debug('[uiTimeMask] Parser called: ', value);
 
-				var modelValue = clearValue(value);
-				var viewValue = formatter(modelValue);
+				var modelValue = formatter(value);
+				var viewValue = modelValue;
 
 				if(ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
@@ -1993,15 +2025,16 @@ angular.module('ui.utils.masks.time', [])
 					return value;
 				}
 
-				var splittedValue = value.toString().split(/([0-9]{2})/).filter(function(v) {
+				var splittedValue = value.toString().split(/:/).filter(function(v) {
 					return !!v;
 				});
 
 				var hours = parseInt(splittedValue[0]),
 					minutes = parseInt(splittedValue[1]),
-					seconds = parseInt(splittedValue[2]);
+					seconds = parseInt(splittedValue[2] || 0);
 
-				var isValid = value.toString().length === 6 && hours < 24 && minutes < 60 && seconds < 60;
+				var isValid = value.toString().length === formattedValueLength &&
+					hours < 24 && minutes < 60 && seconds < 60;
 
 				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
 				return value;
