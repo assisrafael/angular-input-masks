@@ -139,6 +139,10 @@ How to use
 
 _See more usage examples in the [Demo page](http://assisrafael.github.io/angular-input-masks/)_
 
+### Filters ###
+
+Looking for related filters? Take a look at [angular-br-filters](https://github.com/the-darc/angular-br-filters)
+
 Tests
 -----
 
