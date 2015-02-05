@@ -67,13 +67,13 @@ angular.module('ui.utils.masks.date', dependencies)
 				
 				var parsedDate = moment(value);
 
-                if (angular.isDefined(attrs.uiDateParse)) {
-                    var parsedDateCustom = moment(value, attrs.uiDateParse);
+				if (angular.isDefined(attrs.uiDateParse)) {
+					var parsedDateCustom = moment(value, attrs.uiDateParse);
 
-                    if(parsedDateCustom.isValid()) {
-                        parsedDate = parsedDateCustom;
-                    }
-                }
+					if(parsedDateCustom.isValid()) {
+						parsedDate = parsedDateCustom;
+					}
+				}
 
 				var formatedValue = applyMask(parsedDate.format(dateFormat));
 				validator(formatedValue);
