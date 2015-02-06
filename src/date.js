@@ -61,7 +61,7 @@ angular.module('ui.utils.masks.date', dependencies)
 
 			function formatter (value) {
 				$log.debug('[uiDateMask] Formatter called: ', value);
-				if(angular.isUndefined(value)) {
+				if(angular.isUndefined(value) || !value) {
 					return;
 				}
 				
