@@ -1,4 +1,4 @@
-angular-mask
+angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=feature%2Ftravis)](https://travis-ci.org/assisrafael/angular-input-masks)
 ============
 
 Personalized and localized input masks for AngularJS
