@@ -1,4 +1,4 @@
-angular-mask
+angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=feature%2Ftravis)](https://travis-ci.org/assisrafael/angular-input-masks)
 ============
 
 [![NPM version](https://badge.fury.io/js/angular-mask.svg)](http://badge.fury.io/js/angular-mask)
@@ -141,7 +141,11 @@ How to use
 
 ### More examples ###
 
-_See more usage examples in the [http://assisrafael.github.io/angular-input-masks/](demo page)_
+_See more usage examples in the [Demo page](http://assisrafael.github.io/angular-input-masks/)_
+
+### Filters ###
+
+Looking for related filters? Take a look at [angular-br-filters](https://github.com/the-darc/angular-br-filters)
 
 Tests
 -----
