@@ -32,7 +32,7 @@ angular.module('ui.utils.masks.phone', [])
 		}
 
 		var formatedValue;
-		if(value.length < 11){
+		if(value.toString().length < 11){
 			formatedValue = phoneMask8D.apply(value);
 		}else{
 			formatedValue = phoneMask9D.apply(value);
