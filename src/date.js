@@ -55,6 +55,14 @@ angular.module('ui.utils.masks.date', dependencies)
 
 				var cleanValue = clearValue(value);
 				var formatedValue = dateMask.process(cleanValue).result;
+				
+				if(angular.isUndefined(formatedValue)) {
+					return;
+				}
+
+				if(angular.isUndefined(formatedValue)) {
++					return;
++				}
 
 				return formatedValue.trim().replace(/[^0-9]$/, '');
 			}
