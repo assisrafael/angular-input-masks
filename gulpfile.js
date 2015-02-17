@@ -90,7 +90,9 @@ gulp.task('test-watch', function(done) {
 	karma.start(karmaConfig, done);
 });
 
-gulp.task('test:e2e', ['serve'], function() {
+gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
+
+gulp.task('test:e2e', ['webdriver_update', 'serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(path.src.e2e)
