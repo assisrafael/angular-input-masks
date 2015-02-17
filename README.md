@@ -1,10 +1,8 @@
-angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=feature%2Ftravis)](https://travis-ci.org/assisrafael/angular-input-masks)
-============
+# angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=master)](https://travis-ci.org/assisrafael/angular-input-masks) [![Coverage Status](https://coveralls.io/repos/assisrafael/angular-input-masks/badge.svg?branch=master)](https://coveralls.io/r/assisrafael/angular-input-masks?branch=master)
 
 Personalized and localized input masks for AngularJS
 
-Installation
-------------
+##  Installation
 
 With Bower:
 
@@ -12,9 +10,7 @@ With Bower:
 bower install --save angular-input-masks
 ```
 
-How to use
-----------
-
+## How to use
 
 1. Import the ```masks.min.js``` script in your page.
 
@@ -139,16 +135,37 @@ How to use
 
 _See more usage examples in the [Demo page](http://assisrafael.github.io/angular-input-masks/)_
 
-### Filters ###
+## Filters
 
 Looking for related filters? Take a look at [angular-br-filters](https://github.com/the-darc/angular-br-filters)
 
-Tests
------
+## Build
 
-Uses [Protractor](https://github.com/angular/protractor).
+```
+npm install
+gulp build
+```
 
-Run throug gulp:
+### Tests
+
+- Unit:
+ - Uses [Karma](http://karma-runner.github.io) + [Jasmine](http://jasmine.github.io/)
+ - Files: src/**/*.test.js
+
+```
+gulp test:unit
+```
+
+- e2e:
+ - Uses [Protractor](https://github.com/angular/protractor) + Jasmine
+ - Files: src/**/*.test.js
+
+
+```
+gulp test:e2e
+```
+
+- To run both tests:
 
 ```
 gulp test

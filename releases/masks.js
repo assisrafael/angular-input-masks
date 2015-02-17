@@ -834,7 +834,108 @@ if (objectTypes[typeof module]) {
 }.call(this));
 'use strict';
 
-angular.module('ui.utils.masks.cep', [])
+angular.module('ui.utils.masks.helpers', [])
+.factory('PreFormatters', [function(){
+	function clearDelimitersAndLeadingZeros(value) {
+		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
+		cleanValue = cleanValue.replace(/[^0-9]/g, '');
+		return cleanValue;
+	}
+
+	function prepareNumberToFormatter (value, decimals) {
+		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
+	}
+
+	return {
+		clearDelimitersAndLeadingZeros: clearDelimitersAndLeadingZeros,
+		prepareNumberToFormatter: prepareNumberToFormatter
+	};
+}])
+.factory('NumberValidators', [function() {
+	return {
+		maxNumber: function maxValidator(ctrl, value, limit) {
+			var max = parseFloat(limit);
+			var validity = ctrl.$isEmpty(value) || isNaN(max)|| value <= max;
+			ctrl.$setValidity('max', validity);
+			return value;
+		},
+		minNumber: function minValidator(ctrl, value, limit) {
+			var min = parseFloat(limit);
+			var validity = ctrl.$isEmpty(value) || isNaN(min) || value >= min;
+			ctrl.$setValidity('min', validity);
+			return value;
+		}
+	};
+}])
+.factory('NumberMasks', [function(){
+	return {
+		viewMask: function (decimals, decimalDelimiter, thousandsDelimiter) {
+			var mask = '#' + thousandsDelimiter + '##0';
+
+			if(decimals > 0) {
+				mask += decimalDelimiter;
+				for (var i = 0; i < decimals; i++) {
+					mask += '0';
+				}
+			}
+
+			return new StringMask(mask, {
+				reverse: true
+			});
+		},
+		modelMask: function (decimals) {
+			var mask = '###0';
+
+			if(decimals > 0) {
+				mask += '.';
+				for (var i = 0; i < decimals; i++) {
+					mask += '0';
+				}
+			}
+
+			return new StringMask(mask, {
+				reverse: true
+			});
+		}
+	};
+}]);
+
+'use strict';
+
+angular.module('ui.utils.masks', [
+	'ui.utils.masks.global',
+	'ui.utils.masks.br'
+])
+.config(['$logProvider', function($logProvider) {
+	$logProvider.debugEnabled(false);
+}]);
+
+'use strict';
+
+angular.module('ui.utils.masks.br', [
+	'ui.utils.masks.helpers',
+	'ui.utils.masks.br.cep',
+	'ui.utils.masks.br.cpfCnpj',
+	'ui.utils.masks.br.ie',
+	'ui.utils.masks.br.nfe',
+	'ui.utils.masks.br.phone'
+]);
+
+'use strict';
+
+angular.module('ui.utils.masks.global', [
+	'ui.utils.masks.helpers',
+	'ui.utils.masks.global.date',
+	'ui.utils.masks.global.money',
+	'ui.utils.masks.global.number',
+	'ui.utils.masks.global.percentage',
+	'ui.utils.masks.global.scientific-notation',
+	'ui.utils.masks.global.time'
+]);
+
+'use strict';
+
+angular.module('ui.utils.masks.br.cep', [])
 .directive('uiBrCepMask', [function() {
 	var cepMask = new StringMask('00000-000');
 
@@ -1051,7 +1152,7 @@ angular.module('ui.utils.masks.cep', [])
 		};
 	}
 
-	angular.module('ui.utils.masks.cpfCnpj', [])
+	angular.module('ui.utils.masks.br.cpfCnpj', [])
 	.directive('uiBrCpfMask', [uiBrCpfMask])
 	.directive('uiBrCnpjMask', [uiBrCnpjMask])
 	.directive('uiBrCpfcnpjMask', [uiBrCpfCnpjMask])
@@ -1065,177 +1166,7 @@ angular.module('ui.utils.masks.cep', [])
 
 'use strict';
 
-/*global moment*/
-var globalMomentJS;
-if (typeof moment !== 'undefined') {
-	globalMomentJS = moment;
-}
-
-var dependencies = [];
-
-try {
-	//Check if angular-momentjs is available
-	angular.module('angular-momentjs');
-	dependencies.push('angular-momentjs');
-} catch (e) {}
-
-angular.module('ui.utils.masks.date', dependencies)
-.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
-	var moment;
-
-	if (typeof globalMomentJS === 'undefined') {
-		if ($injector.has('MomentJS')) {
-			moment = $injector.get('MomentJS');
-		} else {
-			throw new Error('Moment.js not found. Check if it is available.');
-		}
-	} else {
-		moment = globalMomentJS;
-	}
-
-	var dateFormatMapByLocalle = {
-		'pt-br': 'DD/MM/YYYY',
-	};
-
-	var dateFormat = dateFormatMapByLocalle[$locale.id] || 'YYYY-MM-DD';
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
-
-			function clearValue (value) {
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				return value.replace(/[^0-9]/g, '');
-			}
-
-			function applyMask (value) {
-				if(angular.isUndefined(value) || value.length === 0) {
-					return;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = dateMask.process(cleanValue).result;
-
-				return formatedValue.trim().replace(/[^0-9]$/, '');
-			}
-
-			function formatter (value) {
-				$log.debug('[uiDateMask] Formatter called: ', value);
-				if(angular.isUndefined(value)) {
-					return;
-				}
-
-				var formatedValue = applyMask(moment(value).format(dateFormat));
-				validator(formatedValue);
-				return formatedValue;
-			}
-
-			function parser(value) {
-				$log.debug('[uiDateMask] Parser called: ', value);
-
-				var formatedValue = applyMask(value);
-				$log.debug('[uiDateMask] Formated value: ', formatedValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-				validator(formatedValue);
-
-				var modelValue = moment(formatedValue, dateFormat);
-				return modelValue.toDate();
-			}
-
-			function validator(value) {
-				$log.debug('[uiDateMask] Validator called: ', value);
-
-				var isValid = moment(value, dateFormat).isValid() &&
-					value.length === dateFormat.length;
-				ctrl.$setValidity('date', ctrl.$isEmpty(value) || isValid);
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$parsers.push(parser);
-		}
-	};
-}]);
-
-'use strict';
-
-angular.module('ui.utils.masks.helpers', [])
-.factory('PreFormatters', [function(){
-	function clearDelimitersAndLeadingZeros(value) {
-		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
-		cleanValue = cleanValue.replace(/[^0-9]/g, '');
-		return cleanValue;
-	}
-
-	function prepareNumberToFormatter (value, decimals) {
-		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
-	}
-
-	return {
-		clearDelimitersAndLeadingZeros: clearDelimitersAndLeadingZeros,
-		prepareNumberToFormatter: prepareNumberToFormatter
-	};
-}])
-.factory('NumberValidators', [function() {
-	return {
-		maxNumber: function maxValidator(ctrl, value, limit) {
-			var max = parseFloat(limit);
-			var validity = ctrl.$isEmpty(value) || isNaN(max)|| value <= max;
-			ctrl.$setValidity('max', validity);
-			return value;
-		},
-		minNumber: function minValidator(ctrl, value, limit) {
-			var min = parseFloat(limit);
-			var validity = ctrl.$isEmpty(value) || isNaN(min) || value >= min;
-			ctrl.$setValidity('min', validity);
-			return value;
-		}
-	};
-}])
-.factory('NumberMasks', [function(){
-	return {
-		viewMask: function (decimals, decimalDelimiter, thousandsDelimiter) {
-			var mask = '#' + thousandsDelimiter + '##0';
-
-			if(decimals > 0) {
-				mask += decimalDelimiter;
-				for (var i = 0; i < decimals; i++) {
-					mask += '0';
-				}
-			}
-
-			return new StringMask(mask, {
-				reverse: true
-			});
-		},
-		modelMask: function (decimals) {
-			var mask = '###0';
-
-			if(decimals > 0) {
-				mask += '.';
-				for (var i = 0; i < decimals; i++) {
-					mask += '0';
-				}
-			}
-
-			return new StringMask(mask, {
-				reverse: true
-			});
-		}
-	};
-}]);
-
-'use strict';
-
-angular.module('ui.utils.masks.ie', [])
+angular.module('ui.utils.masks.br.ie', [])
 .directive('uiBrIeMask', ['$parse', function($parse) {
 	var ieMasks = {
 		'AC': [{mask: new StringMask('00.000.000/000-00')}],
@@ -1354,27 +1285,251 @@ angular.module('ui.utils.masks.ie', [])
 
 'use strict';
 
-angular.module('ui.utils.masks', [
-	'ui.utils.masks.helpers',
-	'ui.utils.masks.number',
-	'ui.utils.masks.percentage',
-	'ui.utils.masks.money',
-	'ui.utils.masks.phone',
-	'ui.utils.masks.cep',
-	'ui.utils.masks.ie',
-	'ui.utils.masks.cpfCnpj',
-	'ui.utils.masks.date',
-	'ui.utils.masks.time',
-	'ui.utils.masks.scientific-notation',
-	'ui.utils.masks.nfe'
-])
-.config(['$logProvider', function($logProvider) {
-	$logProvider.debugEnabled(false);
+angular.module('ui.utils.masks.br.nfe', [])
+.directive('uiNfeAccessKeyMask', ['$log', function($log) {
+	var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
+		' 0000 0000 0000 0000 0000 0000');
+
+	function clearValue (value) {
+		if (angular.isUndefined(value) || value.length === 0) {
+			return value;
+		}
+
+		return value.replace(/[^0-9]/g, '').slice(0, 44);
+	}
+
+	return {
+		restrict: 'A',
+		require: 'ngModel',
+		link: function(scope, element, attrs, ctrl) {
+			function formatter (value) {
+				$log.debug('[uiNfeAccessKeyMask] Formatter called: ', value);
+				if(angular.isUndefined(value) || value.length === 0) {
+					return value;
+				}
+
+				var formattedValue = nfeAccessKeyMask.apply(value);
+				return formattedValue.replace(/[^0-9]$/, '');
+			}
+
+			function parser (value) {
+				$log.debug('[uiNfeAccessKeyMask] Parser called: ', value);
+
+				var modelValue = clearValue(value);
+				var viewValue = formatter(modelValue);
+
+				if(ctrl.$viewValue !== viewValue) {
+					ctrl.$setViewValue(viewValue);
+					ctrl.$render();
+				}
+
+				return modelValue;
+			}
+
+			function validator (value) {
+				$log.debug('[uiNfeAccessKeyMask] Validator called: ', value);
+
+				if(angular.isUndefined(value)) {
+					return value;
+				}
+
+				var isValid = value.toString().length === 44;
+
+				ctrl.$setValidity('nfe-access-key', ctrl.$isEmpty(value) || isValid);
+				return value;
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$formatters.push(validator);
+			ctrl.$parsers.push(parser);
+			ctrl.$parsers.push(validator);
+		}
+	};
 }]);
 
 'use strict';
 
-angular.module('ui.utils.masks.money', [])
+angular.module('ui.utils.masks.br.phone', [])
+.factory('PhoneValidators', [function() {
+	return {
+		brPhoneNumber: function (ctrl, value) {
+			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
+			ctrl.$setValidity('br-phone-number', valid);
+			return value;
+		}
+	};
+}])
+.directive('uiBrPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
+	/**
+	 * FIXME: all numbers will have 9 digits after 2016.
+	 * see http://portal.embratel.com.br/embratel/9-digito/
+	 */
+	var phoneMask8D = new StringMask('(00) 0000-0000'),
+		phoneMask9D = new StringMask('(00) 00000-0000');
+
+	function clearValue (value) {
+		if(!value) {
+			return value;
+		}
+
+		return value.replace(/[^0-9]/g, '');
+	}
+
+	function applyPhoneMask (value) {
+		if(!value) {
+			return value;
+		}
+
+		var formatedValue;
+		if(value.length < 11){
+			formatedValue = phoneMask8D.apply(value);
+		}else{
+			formatedValue = phoneMask9D.apply(value);
+		}
+
+		return formatedValue.trim().replace(/[^0-9]$/, '');
+	}
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ctrl) {
+			if (!ctrl) {
+				return;
+			}
+
+			ctrl.$formatters.push(function(value) {
+				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
+			});
+
+			ctrl.$parsers.push(function(value) {
+				if (!value) {
+					return value;
+				}
+
+				var cleanValue = clearValue(value);
+				var formatedValue = applyPhoneMask(cleanValue);
+
+				if (ctrl.$viewValue !== formatedValue) {
+					ctrl.$setViewValue(formatedValue);
+					ctrl.$render();
+				}
+
+				return clearValue(formatedValue);
+			});
+
+			ctrl.$parsers.push(function(value) {
+				return PhoneValidators.brPhoneNumber(ctrl, value);
+			});
+		}
+	};
+}]);
+
+'use strict';
+
+/*global moment*/
+var globalMomentJS;
+if (typeof moment !== 'undefined') {
+	globalMomentJS = moment;
+}
+
+var dependencies = [];
+
+try {
+	//Check if angular-momentjs is available
+	angular.module('angular-momentjs');
+	dependencies.push('angular-momentjs');
+} catch (e) {}
+
+angular.module('ui.utils.masks.global.date', dependencies)
+.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
+	var moment;
+
+	if (typeof globalMomentJS === 'undefined') {
+		if ($injector.has('MomentJS')) {
+			moment = $injector.get('MomentJS');
+		} else {
+			throw new Error('Moment.js not found. Check if it is available.');
+		}
+	} else {
+		moment = globalMomentJS;
+	}
+
+	var dateFormatMapByLocalle = {
+		'pt-br': 'DD/MM/YYYY',
+	};
+
+	var dateFormat = dateFormatMapByLocalle[$locale.id] || 'YYYY-MM-DD';
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ctrl) {
+			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
+
+			function clearValue (value) {
+				if(angular.isUndefined(value)) {
+					return value;
+				}
+
+				return value.replace(/[^0-9]/g, '');
+			}
+
+			function applyMask (value) {
+				if(angular.isUndefined(value) || value.length === 0) {
+					return;
+				}
+
+				var cleanValue = clearValue(value);
+				var formatedValue = dateMask.process(cleanValue).result;
+
+				return formatedValue.trim().replace(/[^0-9]$/, '');
+			}
+
+			function formatter (value) {
+				$log.debug('[uiDateMask] Formatter called: ', value);
+				if(angular.isUndefined(value)) {
+					return;
+				}
+
+				var formatedValue = applyMask(moment(value).format(dateFormat));
+				validator(formatedValue);
+				return formatedValue;
+			}
+
+			function parser(value) {
+				$log.debug('[uiDateMask] Parser called: ', value);
+
+				var formatedValue = applyMask(value);
+				$log.debug('[uiDateMask] Formated value: ', formatedValue);
+
+				if (ctrl.$viewValue !== formatedValue) {
+					ctrl.$setViewValue(formatedValue);
+					ctrl.$render();
+				}
+				validator(formatedValue);
+
+				var modelValue = moment(formatedValue, dateFormat);
+				return modelValue.toDate();
+			}
+
+			function validator(value) {
+				$log.debug('[uiDateMask] Validator called: ', value);
+
+				var isValid = moment(value, dateFormat).isValid() &&
+					value.length === dateFormat.length;
+				ctrl.$setValidity('date', ctrl.$isEmpty(value) || isValid);
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$parsers.push(parser);
+		}
+	};
+}]);
+
+'use strict';
+
+angular.module('ui.utils.masks.global.money', [])
 .directive('uiMoneyMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberValidators) {
@@ -1471,71 +1626,7 @@ angular.module('ui.utils.masks.money', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.nfe', [])
-.directive('uiNfeAccessKeyMask', ['$log', function($log) {
-	var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
-		' 0000 0000 0000 0000 0000 0000');
-
-	function clearValue (value) {
-		if (angular.isUndefined(value) || value.length === 0) {
-			return value;
-		}
-
-		return value.replace(/[^0-9]/g, '').slice(0, 44);
-	}
-
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			function formatter (value) {
-				$log.debug('[uiNfeAccessKeyMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
-				var formattedValue = nfeAccessKeyMask.apply(value);
-				return formattedValue.replace(/[^0-9]$/, '');
-			}
-
-			function parser (value) {
-				$log.debug('[uiNfeAccessKeyMask] Parser called: ', value);
-
-				var modelValue = clearValue(value);
-				var viewValue = formatter(modelValue);
-
-				if(ctrl.$viewValue !== viewValue) {
-					ctrl.$setViewValue(viewValue);
-					ctrl.$render();
-				}
-
-				return modelValue;
-			}
-
-			function validator (value) {
-				$log.debug('[uiNfeAccessKeyMask] Validator called: ', value);
-
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				var isValid = value.toString().length === 44;
-
-				ctrl.$setValidity('nfe-access-key', ctrl.$isEmpty(value) || isValid);
-				return value;
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
-		}
-	};
-}]);
-
-'use strict';
-
-angular.module('ui.utils.masks.number', [])
+angular.module('ui.utils.masks.global.number', [])
 .directive('uiNumberMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
@@ -1646,7 +1737,7 @@ angular.module('ui.utils.masks.number', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.percentage', [])
+angular.module('ui.utils.masks.global.percentage', [])
 .directive('uiPercentageMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
@@ -1749,85 +1840,7 @@ angular.module('ui.utils.masks.percentage', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.phone', [])
-.factory('PhoneValidators', [function() {
-	return {
-		brPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
-			ctrl.$setValidity('br-phone-number', valid);
-			return value;
-		}
-	};
-}])
-.directive('uiBrPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
-	/**
-	 * FIXME: all numbers will have 9 digits after 2016.
-	 * see http://portal.embratel.com.br/embratel/9-digito/
-	 */
-	var phoneMask8D = new StringMask('(00) 0000-0000'),
-		phoneMask9D = new StringMask('(00) 00000-0000');
-
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
-
-		return value.replace(/[^0-9]/g, '');
-	}
-
-	function applyPhoneMask (value) {
-		if(!value) {
-			return value;
-		}
-
-		var formatedValue;
-		if(value.length < 11){
-			formatedValue = phoneMask8D.apply(value);
-		}else{
-			formatedValue = phoneMask9D.apply(value);
-		}
-
-		return formatedValue.trim().replace(/[^0-9]$/, '');
-	}
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
-			ctrl.$formatters.push(function(value) {
-				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return value;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = applyPhoneMask(cleanValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return clearValue(formatedValue);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				return PhoneValidators.brPhoneNumber(ctrl, value);
-			});
-		}
-	};
-}]);
-
-'use strict';
-
-angular.module('ui.utils.masks.scientific-notation', [])
+angular.module('ui.utils.masks.global.scientific-notation', [])
 .directive('uiScientificNotationMask', ['$locale', '$parse', '$log',
 	function($locale, $parse, $log) {
 		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
@@ -1964,7 +1977,7 @@ angular.module('ui.utils.masks.scientific-notation', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.time', [])
+angular.module('ui.utils.masks.global.time', [])
 .directive('uiTimeMask', ['$log', function($log) {
 	if(typeof StringMask === 'undefined') {
 		throw new Error('StringMask not found. Check if it is available.');
