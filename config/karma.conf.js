@@ -7,7 +7,14 @@ module.exports = function(config) {
 			'bower_components/angular-mocks/angular-mocks.js',
 			'bower_components/string-mask/src/string-mask.js',
 			'bower_components/br-validations/releases/br-validations.js',
-			'src/*.js'
+			'config/test-utils.js',
+			{ //ignore e2e specs
+				pattern: 'src/**/*.spec.js',
+				included: false,
+				served: false,
+				watched: false
+			},
+			'src/**/*.js',
 		],
 		port: 9876,
 		reporters: ['progress', 'coverage'],
