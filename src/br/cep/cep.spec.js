@@ -1,6 +1,6 @@
 var StringMask = require('string-mask');
 
-describe('ui.utils.masks.number', function() {
+describe('ui.utils.masks.br.cep', function() {
 	beforeEach(function() {
 		browser.get('/demo');
 	});

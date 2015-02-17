@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	path = require('path'),
 	jshintReporter = require('jshint-stylish'),
+	karma = require('karma').server,
 	plugins = require('gulp-load-plugins')({
 		config: path.join(__dirname, 'package.json')
 	});
@@ -70,7 +71,26 @@ gulp.task('serve', ['build'], function() {
 	});
 });
 
-gulp.task('test', ['serve'], function() {
+gulp.task('test:unit', function(done) {
+	var karmaConfig = {
+		singleRun: true,
+		configFile: __dirname + '/config/karma.conf.js'
+	};
+
+	karma.start(karmaConfig, done);
+});
+
+gulp.task('test-watch', function(done) {
+	var karmaConfig = {
+		singleRun: false,
+		autoWatch: true,
+		configFile: __dirname + '/config/karma.conf.js'
+	};
+
+	karma.start(karmaConfig, done);
+});
+
+gulp.task('test:e2e', ['serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(path.src.e2e)
@@ -79,6 +99,8 @@ gulp.task('test', ['serve'], function() {
 	}))
 	.pipe(plugins.exit());
 });
+
+gulp.task('test', ['test:unit', 'test:e2e']);
 
 function filterNonCodeFiles() {
 	return plugins.filter(function(file) {

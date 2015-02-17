@@ -1,9 +1,5 @@
-angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=feature%2Ftravis)](https://travis-ci.org/assisrafael/angular-input-masks)
+angular-mask [![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg?branch=master)](https://travis-ci.org/assisrafael/angular-input-masks)
 ============
-
-[![NPM version](https://badge.fury.io/js/angular-mask.svg)](http://badge.fury.io/js/angular-mask)
-[![Build Status](https://travis-ci.org/assisrafael/angular-input-masks.svg)](https://travis-ci.org/assisrafael/angular-input-masks)
-
 
 Personalized and localized input masks for AngularJS
 
