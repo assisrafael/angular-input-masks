@@ -106,6 +106,6 @@ gulp.task('test', ['test:unit', 'test:e2e']);
 
 function filterNonCodeFiles() {
 	return plugins.filter(function(file) {
-		return !/\.json|\.spec.js/.test(file.path);
+		return !/\.json|\.spec.js|\.test.js/.test(file.path);
 	});
 }
