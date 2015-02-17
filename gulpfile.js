@@ -7,7 +7,8 @@ var gulp = require('gulp'),
 
 var path = {
 	src: {
-		files: ['src/**/*.js']
+		files: ['src/**/*.js'],
+		e2e: ['src/**/*.spec.js']
 	},
 	lib: {
 		files: [
@@ -45,6 +46,7 @@ gulp.task('build', function() {
 	gulp.src(
 		path.lib.files.concat(path.src.files)
 	)
+	.pipe(filterNonCodeFiles())
 	.pipe(plugins.concat('masks.js'))
 	.pipe(plugins.header(header, {pkg: pkg}))
 	.pipe(plugins.footer(footer))
@@ -71,9 +73,15 @@ gulp.task('serve', ['build'], function() {
 gulp.task('test', ['serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
-	gulp.src(['./test/spec.js'])
+	gulp.src(path.src.e2e)
 	.pipe(protractor({
-		configFile: 'test/conf.js'
+		configFile: 'config/protractor.conf.js'
 	}))
 	.pipe(plugins.exit());
 });
+
+function filterNonCodeFiles() {
+	return plugins.filter(function(file) {
+		return !/\.json|\.spec.js/.test(file.path);
+	});
+}
