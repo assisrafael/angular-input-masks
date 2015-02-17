@@ -58,8 +58,6 @@ gulp.task('default', ['jshint', 'build'], function() {
 	gulp.watch(path.src.files, ['jshint', 'build']);
 });
 
-gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
-
 gulp.task('serve', ['build'], function() {
 	var express = require('express');
 	var server = express();
@@ -70,7 +68,7 @@ gulp.task('serve', ['build'], function() {
 	});
 });
 
-gulp.task('test', ['webdriver_update', 'serve'], function() {
+gulp.task('test', ['serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(['./test/spec.js'])

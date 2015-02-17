@@ -1,4 +1,5 @@
 var config = {
+	directConnect: true,
 	multiCapabilities: [{
 		'browserName': 'chrome'
 	}],
