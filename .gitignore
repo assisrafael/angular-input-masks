@@ -1,4 +1,4 @@
 bower_components
 node_modules
-test/coverage
+coverage
 npm-debug.log
