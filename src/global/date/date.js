@@ -65,7 +65,7 @@ angular.module('ui.utils.masks.global.date', dependencies)
 					return;
 				}
 
-				var formatedValue = applyMask(moment(value).format(dateFormat));
+				var formatedValue = applyMask(moment().locale($locale.id).format(value));
 				validator(formatedValue);
 				return formatedValue;
 			}
