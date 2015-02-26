@@ -10,7 +10,7 @@ angular.module('ui.utils.masks.global.money', [])
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+					currencySym = attrs.currencySymbol || $locale.NUMBER_FORMATS.CURRENCY_SYM,
 					decimals = parseInt(attrs.uiMoneyMask);
 
 				if (!ctrl) {
@@ -61,6 +61,20 @@ angular.module('ui.utils.masks.global.money', [])
 						if(isNaN(decimals)) {
 							decimals = 2;
 						}
+						decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+						maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
+						moneyMask = new StringMask(maskPattern, {reverse: true});
+
+						parse(ctrl.$viewValue || '');
+					});
+				}
+
+				if (attrs.currencySymbol) {
+					scope.$watch(attrs.currencySymbol, function(symbol) {
+						if (!symbol) {
+							return ;
+						}
+						currencySym = symbol;
 						decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
 						maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
 						moneyMask = new StringMask(maskPattern, {reverse: true});
