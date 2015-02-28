@@ -4,7 +4,7 @@ angular.module('ui.utils.masks.us.phone', [])
 .factory('PhoneValidators', [function() {
 	return {
 		usPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || value.length >= 14;
+			var valid = ctrl.$isEmpty(value) || value.length > 9;
 			ctrl.$setValidity('us-phone-number', valid);
 			return value;
 		}
