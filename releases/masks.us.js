@@ -255,9 +255,7 @@ angular.module('ui.utils.masks.global', [
 	'ui.utils.masks.helpers',
 	'ui.utils.masks.global.money',
 	'ui.utils.masks.global.number',
-	'ui.utils.masks.global.percentage',
-	'ui.utils.masks.global.scientific-notation',
-	'ui.utils.masks.global.time'
+	'ui.utils.masks.global.percentage'
 ]);
 
 angular.module('ui.utils.masks.us', [
@@ -461,141 +459,6 @@ angular.module('ui.utils.masks.global.percentage', [])
 	}
 ]);
 
-angular.module('ui.utils.masks.global.scientific-notation', [])
-.directive('uiScientificNotationMask', ['$locale', '$parse', '$log',
-	function($locale, $parse, $log) {
-		var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
-			defaultPrecision = 2;
-
-		function significandMaskBuilder (decimals) {
-			var mask = '0';
-
-			if(decimals > 0) {
-				mask += decimalDelimiter;
-				for (var i = 0; i < decimals; i++) {
-					mask += '0';
-				}
-			}
-
-			return new StringMask(mask, {
-				reverse: true
-			});
-		}
-
-		return {
-			restrict: 'A',
-			require: 'ngModel',
-			link: function(scope, element, attrs, ctrl) {
-				var decimals = $parse(attrs.uiScientificNotationMask)(scope);
-
-				if(isNaN(decimals)) {
-					decimals = defaultPrecision;
-				}
-
-				var significandMask = significandMaskBuilder(decimals);
-
-				function splitNumber (value) {
-					var stringValue = value.toString(),
-						splittedNumber = stringValue.match(/(-?[0-9]*)[\.]?([0-9]*)?[Ee]?([\+-]?[0-9]*)?/);
-
-					return {
-						integerPartOfSignificand: splittedNumber[1],
-						decimalPartOfSignificand: splittedNumber[2],
-						exponent: splittedNumber[3] | 0
-					};
-				}
-
-				function formatter (value) {
-					$log.debug('[uiScientificNotationMask] Formatter called: ', value);
-
-					if (angular.isUndefined(value)) {
-						return value;
-					}
-
-					if (typeof value === 'string') {
-						if (value.length === 0) {
-							return value;
-						}
-
-						value = value.replace(decimalDelimiter, '.');
-					} else if (typeof value === 'number') {
-						value = value.toExponential(decimals);
-					}
-
-					var formattedValue, exponent;
-					var splittedNumber = splitNumber(value);
-
-					var integerPartOfSignificand = splittedNumber.integerPartOfSignificand | 0;
-					var numberToFormat = integerPartOfSignificand.toString();
-					if (angular.isDefined(splittedNumber.decimalPartOfSignificand)) {
-						numberToFormat += splittedNumber.decimalPartOfSignificand;
-					}
-
-					var needsNormalization =
-						(integerPartOfSignificand >= 1 || integerPartOfSignificand <= -1) &&
-						(
-							(angular.isDefined(splittedNumber.decimalPartOfSignificand) &&
-							splittedNumber.decimalPartOfSignificand.length > decimals) ||
-							(decimals === 0 && numberToFormat.length >= 2)
-						);
-
-					if (needsNormalization) {
-						exponent = numberToFormat.slice(decimals + 1, numberToFormat.length);
-						numberToFormat = numberToFormat.slice(0, decimals + 1);
-					}
-
-					formattedValue = significandMask.apply(numberToFormat);
-
-					if (splittedNumber.exponent !== 0) {
-						exponent = splittedNumber.exponent;
-					}
-
-					if (angular.isDefined(exponent)) {
-						formattedValue += 'e' + exponent;
-					}
-
-					return formattedValue;
-				}
-
-				function parser (value) {
-					$log.debug('[uiScientificNotationMask] Parser called: ', value);
-
-					if(angular.isUndefined(value) || value.toString().length === 0) {
-						return value;
-					}
-
-					var viewValue = formatter(value),
-						modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));
-
-					if (ctrl.$viewValue !== viewValue) {
-						ctrl.$setViewValue(viewValue);
-						ctrl.$render();
-					}
-
-					return modelValue;
-				}
-
-				function validator (value) {
-					$log.debug('[uiScientificNotationMask] Validator called: ', value);
-
-					if(angular.isUndefined(value)) {
-						return value;
-					}
-
-					var isMaxValid = value < Number.MAX_VALUE;
-					ctrl.$setValidity('max', ctrl.$isEmpty(value) || isMaxValid);
-					return value;
-				}
-
-				ctrl.$formatters.push(formatter);
-				ctrl.$formatters.push(validator);
-				ctrl.$parsers.push(parser);
-				ctrl.$parsers.push(validator);
-			}
-		};
-	}
-]);
-
 angular.module('ui.utils.masks.global.number', [])
 .directive('uiNumberMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
@@ -705,97 +568,11 @@ angular.module('ui.utils.masks.global.number', [])
 	}
 ]);
 
-angular.module('ui.utils.masks.global.time', [])
-.directive('uiTimeMask', ['$log', function($log) {
-	if(typeof StringMask === 'undefined') {
-		throw new Error('StringMask not found. Check if it is available.');
-	}
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			var unformattedValueLength = 6,
-				formattedValueLength = 8,
-				timeFormat = '00:00:00';
-
-			if (angular.isDefined(attrs.uiTimeMask) && attrs.uiTimeMask === 'short') {
-				unformattedValueLength = 4;
-				formattedValueLength = 5;
-				timeFormat = '00:00';
-			}
-
-			var timeMask = new StringMask(timeFormat);
-
-			function clearValue (value) {
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
-				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
-			}
-
-			function formatter (value) {
-				$log.debug('[uiTimeMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
-				var formattedValue = timeMask.process(clearValue(value)).result;
-				return formattedValue.replace(/[^0-9]$/, '');
-			}
-
-			function parser (value) {
-				$log.debug('[uiTimeMask] Parser called: ', value);
-
-				var modelValue = formatter(value);
-				var viewValue = modelValue;
-
-				if(ctrl.$viewValue !== viewValue) {
-					ctrl.$setViewValue(viewValue);
-					ctrl.$render();
-				}
-
-				return modelValue;
-			}
-
-			function validator (value) {
-				$log.debug('[uiTimeMask] Validator called: ', value);
-
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				var splittedValue = value.toString().split(/:/).filter(function(v) {
-					return !!v;
-				});
-
-				var hours = parseInt(splittedValue[0]),
-					minutes = parseInt(splittedValue[1]),
-					seconds = parseInt(splittedValue[2] || 0);
-
-				var isValid = value.toString().length === formattedValueLength &&
-					hours < 24 && minutes < 60 && seconds < 60;
-
-				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
-				return value;
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
-		}
-	};
-}]);
-
-'use strict';
-
 angular.module('ui.utils.masks.us.phone', [])
 .factory('PhoneValidators', [function() {
 	return {
 		usPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || value.length >= 14;
+			var valid = ctrl.$isEmpty(value) || value.length > 9;
 			ctrl.$setValidity('us-phone-number', valid);
 			return value;
 		}
