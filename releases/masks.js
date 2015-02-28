@@ -904,7 +904,8 @@ angular.module('ui.utils.masks.helpers', [])
 
 angular.module('ui.utils.masks', [
 	'ui.utils.masks.global',
-	'ui.utils.masks.br'
+	'ui.utils.masks.br',
+	'ui.utils.masks.us'
 ])
 .config(['$logProvider', function($logProvider) {
 	$logProvider.debugEnabled(false);
@@ -931,6 +932,13 @@ angular.module('ui.utils.masks.global', [
 	'ui.utils.masks.global.percentage',
 	'ui.utils.masks.global.scientific-notation',
 	'ui.utils.masks.global.time'
+]);
+
+'use strict';
+
+angular.module('ui.utils.masks.us', [
+	'ui.utils.masks.helpers',
+	'ui.utils.masks.us.phone'
 ]);
 
 'use strict';
@@ -1349,84 +1357,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.br.phone', [])
-.factory('PhoneValidators', [function() {
-	return {
-		brPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
-			ctrl.$setValidity('br-phone-number', valid);
-			return value;
-		}
-	};
-}])
-.directive('uiBrPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
-	/**
-	 * FIXME: all numbers will have 9 digits after 2016.
-	 * see http://portal.embratel.com.br/embratel/9-digito/
-	 */
-	var phoneMask8D = new StringMask('(00) 0000-0000'),
-		phoneMask9D = new StringMask('(00) 00000-0000');
-
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
-
-		return value.replace(/[^0-9]/g, '');
-	}
-
-	function applyPhoneMask (value) {
-		if(!value) {
-			return value;
-		}
-
-		var formatedValue;
-		if(value.length < 11){
-			formatedValue = phoneMask8D.apply(value);
-		}else{
-			formatedValue = phoneMask9D.apply(value);
-		}
-
-		return formatedValue.trim().replace(/[^0-9]$/, '');
-	}
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
-			ctrl.$formatters.push(function(value) {
-				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return value;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = applyPhoneMask(cleanValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return clearValue(formatedValue);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				return PhoneValidators.brPhoneNumber(ctrl, value);
-			});
-		}
-	};
-}]);
-
-'use strict';
-
 /*global moment*/
 var globalMomentJS;
 if (typeof moment !== 'undefined') {
@@ -1523,6 +1453,84 @@ angular.module('ui.utils.masks.global.date', dependencies)
 
 			ctrl.$formatters.push(formatter);
 			ctrl.$parsers.push(parser);
+		}
+	};
+}]);
+
+'use strict';
+
+angular.module('ui.utils.masks.br.phone', [])
+.factory('PhoneValidators', [function() {
+	return {
+		brPhoneNumber: function (ctrl, value) {
+			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
+			ctrl.$setValidity('br-phone-number', valid);
+			return value;
+		}
+	};
+}])
+.directive('uiBrPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
+	/**
+	 * FIXME: all numbers will have 9 digits after 2016.
+	 * see http://portal.embratel.com.br/embratel/9-digito/
+	 */
+	var phoneMask8D = new StringMask('(00) 0000-0000'),
+		phoneMask9D = new StringMask('(00) 00000-0000');
+
+	function clearValue (value) {
+		if(!value) {
+			return value;
+		}
+
+		return value.replace(/[^0-9]/g, '');
+	}
+
+	function applyPhoneMask (value) {
+		if(!value) {
+			return value;
+		}
+
+		var formatedValue;
+		if(value.length < 11){
+			formatedValue = phoneMask8D.apply(value);
+		}else{
+			formatedValue = phoneMask9D.apply(value);
+		}
+
+		return formatedValue.trim().replace(/[^0-9]$/, '');
+	}
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ctrl) {
+			if (!ctrl) {
+				return;
+			}
+
+			ctrl.$formatters.push(function(value) {
+				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
+			});
+
+			ctrl.$parsers.push(function(value) {
+				if (!value) {
+					return value;
+				}
+
+				var cleanValue = clearValue(value);
+				var formatedValue = applyPhoneMask(cleanValue);
+
+				if (ctrl.$viewValue !== formatedValue) {
+					ctrl.$setViewValue(formatedValue);
+					ctrl.$render();
+				}
+
+				return clearValue(formatedValue);
+			});
+
+			ctrl.$parsers.push(function(value) {
+				return PhoneValidators.brPhoneNumber(ctrl, value);
+			});
 		}
 	};
 }]);
@@ -1840,6 +1848,92 @@ angular.module('ui.utils.masks.global.percentage', [])
 
 'use strict';
 
+angular.module('ui.utils.masks.global.time', [])
+.directive('uiTimeMask', ['$log', function($log) {
+	if(typeof StringMask === 'undefined') {
+		throw new Error('StringMask not found. Check if it is available.');
+	}
+
+	return {
+		restrict: 'A',
+		require: '?ngModel',
+		link: function(scope, element, attrs, ctrl) {
+			var unformattedValueLength = 6,
+				formattedValueLength = 8,
+				timeFormat = '00:00:00';
+
+			if (angular.isDefined(attrs.uiTimeMask) && attrs.uiTimeMask === 'short') {
+				unformattedValueLength = 4;
+				formattedValueLength = 5;
+				timeFormat = '00:00';
+			}
+
+			var timeMask = new StringMask(timeFormat);
+
+			function clearValue (value) {
+				if(angular.isUndefined(value) || value.length === 0) {
+					return value;
+				}
+
+				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
+			}
+
+			function formatter (value) {
+				$log.debug('[uiTimeMask] Formatter called: ', value);
+				if(angular.isUndefined(value) || value.length === 0) {
+					return value;
+				}
+
+				var formattedValue = timeMask.process(clearValue(value)).result;
+				return formattedValue.replace(/[^0-9]$/, '');
+			}
+
+			function parser (value) {
+				$log.debug('[uiTimeMask] Parser called: ', value);
+
+				var modelValue = formatter(value);
+				var viewValue = modelValue;
+
+				if(ctrl.$viewValue !== viewValue) {
+					ctrl.$setViewValue(viewValue);
+					ctrl.$render();
+				}
+
+				return modelValue;
+			}
+
+			function validator (value) {
+				$log.debug('[uiTimeMask] Validator called: ', value);
+
+				if(angular.isUndefined(value)) {
+					return value;
+				}
+
+				var splittedValue = value.toString().split(/:/).filter(function(v) {
+					return !!v;
+				});
+
+				var hours = parseInt(splittedValue[0]),
+					minutes = parseInt(splittedValue[1]),
+					seconds = parseInt(splittedValue[2] || 0);
+
+				var isValid = value.toString().length === formattedValueLength &&
+					hours < 24 && minutes < 60 && seconds < 60;
+
+				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
+				return value;
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$formatters.push(validator);
+			ctrl.$parsers.push(parser);
+			ctrl.$parsers.push(validator);
+		}
+	};
+}]);
+
+'use strict';
+
 angular.module('ui.utils.masks.global.scientific-notation', [])
 .directive('uiScientificNotationMask', ['$locale', '$parse', '$log',
 	function($locale, $parse, $log) {
@@ -1977,86 +2071,73 @@ angular.module('ui.utils.masks.global.scientific-notation', [])
 
 'use strict';
 
-angular.module('ui.utils.masks.global.time', [])
-.directive('uiTimeMask', ['$log', function($log) {
-	if(typeof StringMask === 'undefined') {
-		throw new Error('StringMask not found. Check if it is available.');
+angular.module('ui.utils.masks.us.phone', [])
+.factory('PhoneValidators', [function() {
+	return {
+		usPhoneNumber: function (ctrl, value) {
+			var valid = ctrl.$isEmpty(value) || value.length >= 14;
+			ctrl.$setValidity('us-phone-number', valid);
+			return value;
+		}
+	};
+}])
+.directive('uiUsPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
+	var phoneMaskUS = new StringMask('(000) 000-0000'),
+		phoneMaskINTL = new StringMask('+00-00-000-00000');
+
+	function clearValue (value) {
+		if(!value) {
+			return value;
+		}
+		return value.replace(/[^0-9]/g, '');
+	}
+
+	function applyPhoneMask (value) {
+		if(!value) {
+			return value;
+		}
+
+		var formatedValue;
+		if(value.length < 11){
+			formatedValue = phoneMaskUS.apply(value);
+		}else{
+			formatedValue = phoneMaskINTL.apply(value);
+		}
+
+		return formatedValue.trim().replace(/[^0-9]$/, '');
 	}
 
 	return {
 		restrict: 'A',
 		require: '?ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			var unformattedValueLength = 6,
-				formattedValueLength = 8,
-				timeFormat = '00:00:00';
-
-			if (angular.isDefined(attrs.uiTimeMask) && attrs.uiTimeMask === 'short') {
-				unformattedValueLength = 4;
-				formattedValueLength = 5;
-				timeFormat = '00:00';
+			if (!ctrl) {
+				return;
 			}
 
-			var timeMask = new StringMask(timeFormat);
+			ctrl.$formatters.push(function(value) {
+				return applyPhoneMask(PhoneValidators.usPhoneNumber(ctrl, value));
+			});
 
-			function clearValue (value) {
-				if(angular.isUndefined(value) || value.length === 0) {
+			ctrl.$parsers.push(function(value) {
+				if (!value) {
 					return value;
 				}
 
-				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
-			}
+				var cleanValue = clearValue(value);
+				var formatedValue = applyPhoneMask(cleanValue);
 
-			function formatter (value) {
-				$log.debug('[uiTimeMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
-				var formattedValue = timeMask.process(clearValue(value)).result;
-				return formattedValue.replace(/[^0-9]$/, '');
-			}
-
-			function parser (value) {
-				$log.debug('[uiTimeMask] Parser called: ', value);
-
-				var modelValue = formatter(value);
-				var viewValue = modelValue;
-
-				if(ctrl.$viewValue !== viewValue) {
-					ctrl.$setViewValue(viewValue);
+				if (ctrl.$viewValue !== formatedValue) {
+					ctrl.$setViewValue(formatedValue);
 					ctrl.$render();
 				}
 
-				return modelValue;
-			}
+				return clearValue(formatedValue);
+			});
 
-			function validator (value) {
-				$log.debug('[uiTimeMask] Validator called: ', value);
-
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				var splittedValue = value.toString().split(/:/).filter(function(v) {
-					return !!v;
-				});
-
-				var hours = parseInt(splittedValue[0]),
-					minutes = parseInt(splittedValue[1]),
-					seconds = parseInt(splittedValue[2] || 0);
-
-				var isValid = value.toString().length === formattedValueLength &&
-					hours < 24 && minutes < 60 && seconds < 60;
-
-				ctrl.$setValidity('time', ctrl.$isEmpty(value) || isValid);
-				return value;
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
+			ctrl.$parsers.push(function(value) {
+				return PhoneValidators.usPhoneNumber(ctrl, value);
+			});
 		}
 	};
 }]);
