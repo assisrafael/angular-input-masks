@@ -23,6 +23,7 @@
 			$scope.moneyInitializedWithString = '3.53';
 
 			$scope.initializedPhoneNumber = '3133536767';
+			$scope.initializedPhoneNumberUS = '3133536767';
 
 			$scope.initializedCep = '30112010';
 
@@ -119,6 +120,14 @@
 		<br>
 		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ui-br-phone-number><br>
 		<span ng-bind="initializedPhoneNumber">-</span> - {{form.initializedPhoneNumber.$error}}<br>
+		<br>
+
+		<h2>ui-us-phone-number</h2>
+		<input type="text" name="phoneNumberUS" ng-model="phoneNumberUS" ui-us-phone-number><br>
+		<span ng-bind="phoneNumberUS">-</span> - {{form.phoneNumberUS.$error}}<br>
+		<br>
+		<input type="text" name="initializedPhoneNumberUS" ng-model="initializedPhoneNumberUS" ui-us-phone-number><br>
+		<span ng-bind="initializedPhoneNumberUS">-</span> - {{form.initializedPhoneNumberUS.$error}}<br>
 		<br>
 
 		<h2>ui-br-cep-mask</h2>
