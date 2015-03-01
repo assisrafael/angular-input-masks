@@ -18,6 +18,7 @@
     "trailing": true,
     "smarttabs": false,
     "expr": true,
+    "jasmine": true,
     "globals": {
         "angular": true
     },
@@ -33,6 +34,7 @@
         "afterEach",
         "it",
         "StringMask",
+        "TestUtil",
         "BrV"
     ],
     "indent": 4,
