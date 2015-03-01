@@ -8,13 +8,20 @@ var gulp = require('gulp'),
 
 var path = {
 	src: {
-		files: ['src/**/*.js'],
-		e2e: ['src/**/*.spec.js']
+		files: ['src/**/*.js', '!src/us/**/*.js'],
+		e2e: ['src/**/*.spec.js', '!src/global/us/*.spec.js']
+	},
+	us: {
+		files: ['src/helpers.js', 'src/global/**/*.js', 'src/us/**/*.js'],
+		e2e: ['src/global/**/*.spec.js', 'src/global/us/*.spec.js']
 	},
 	lib: {
 		files: [
 			'bower_components/string-mask/src/string-mask.js',
 			'bower_components/br-validations/releases/br-validations.js'
+		],
+		us: [
+			'bower_components/string-mask/src/string-mask.js'
 		]
 	}
 }
@@ -54,6 +61,18 @@ gulp.task('build', function() {
 	.pipe(gulp.dest('./releases/'))
 	.pipe(plugins.uglify())
 	.pipe(plugins.concat('masks.min.js'))
+	.pipe(gulp.dest('./releases/'));
+
+	gulp.src(
+		path.lib.us.concat(path.us.files)
+	)
+	.pipe(filterNonCodeFiles())
+	.pipe(plugins.concat('masks.us.js'))
+	.pipe(plugins.header(header, {pkg: pkg}))
+	.pipe(plugins.footer(footer))
+	.pipe(gulp.dest('./releases/'))
+	.pipe(plugins.uglify())
+	.pipe(plugins.concat('masks.us.min.js'))
 	.pipe(gulp.dest('./releases/'));
 });
 
