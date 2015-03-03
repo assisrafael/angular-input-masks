@@ -23,10 +23,6 @@ angular.module('ui.utils.masks.global.time', [])
 			var timeMask = new StringMask(timeFormat);
 
 			function clearValue (value) {
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
 				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
 			}
 
@@ -36,7 +32,13 @@ angular.module('ui.utils.masks.global.time', [])
 					return value;
 				}
 
-				var formattedValue = timeMask.process(clearValue(value)).result;
+				var cleanValue = clearValue(value);
+
+				if (cleanValue.length == 0) {
+					return '';
+				}
+
+				var formattedValue = timeMask.process(cleanValue).result;
 				return formattedValue.replace(/[^0-9]$/, '');
 			}
 

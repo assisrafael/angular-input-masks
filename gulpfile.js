@@ -6,29 +6,8 @@ var gulp = require('gulp'),
 		config: path.join(__dirname, 'package.json')
 	});
 
-var path = {
-	src: {
-		files: ['src/**/*.js'],
-		e2e: ['src/**/*.spec.js']
-	},
-	lib: {
-		files: [
-			'bower_components/string-mask/src/string-mask.js',
-			'bower_components/br-validations/releases/br-validations.js'
-		]
-	}
-}
-
-gulp.task('jshint', function() {
-	gulp.src(path.src.files)
-	.pipe(plugins.jshint('.jshintrc'))
-	.pipe(plugins.jshint.reporter(jshintReporter));
-});
-
-gulp.task('build', function() {
-	var pkg = require('./package.json');
-
-	var header = ['/**',
+var pkg = require('./package.json'),
+	header = ['/**',
 		' * <%= pkg.name %>',
 		' * <%= pkg.description %>',
 		' * @version v<%= pkg.version %>',
@@ -37,24 +16,79 @@ gulp.task('build', function() {
 		' */',
 		'(function (angular) {',
 		'',
-		''].join('\n');
-
-	var footer = [
+		''
+	].join('\n'),
+	footer = [
 		'',
 		'})(angular);',
-		''].join('\n');
+		''
+	].join('\n');
 
-	gulp.src(
-		path.lib.files.concat(path.src.files)
-	)
-	.pipe(filterNonCodeFiles())
-	.pipe(plugins.concat('masks.js'))
-	.pipe(plugins.header(header, {pkg: pkg}))
-	.pipe(plugins.footer(footer))
-	.pipe(gulp.dest('./releases/'))
-	.pipe(plugins.uglify())
-	.pipe(plugins.concat('masks.min.js'))
-	.pipe(gulp.dest('./releases/'));
+var path = {
+	src: {
+		files: ['src/**/*.js'],
+		e2e: ['src/**/*.spec.js']
+	}
+};
+
+var commonBuild = {
+	libs: [
+		'bower_components/string-mask/src/string-mask.js',
+	],
+	files: [
+		'src/global/**/*.js',
+		'src/*.js'
+	]
+};
+
+var builds = {
+	br: [
+		'bower_components/br-validations/releases/br-validations.js',
+		'src/br/**/*.js'
+	],
+	us: [
+		'src/us/**/*.js'
+	],
+};
+
+function customBuild(files, buildName) {
+	var buildFilename = 'angular-input-masks';
+
+	if (buildName) {
+		buildFilename += '.' + buildName;
+	}
+
+	var buildFiles = commonBuild.libs.concat(files).concat(commonBuild.files);
+
+	return function() {
+		return gulp.src(buildFiles)
+			.pipe(filterNonCodeFiles())
+			.pipe(plugins.concat(buildFilename + '.js'))
+			.pipe(plugins.header(header, {pkg: pkg}))
+			.pipe(plugins.footer(footer))
+			.pipe(gulp.dest('./releases/'))
+			.pipe(plugins.uglify())
+			.pipe(plugins.concat(buildFilename + '.min.js'))
+			.pipe(gulp.dest('./releases/'));
+	};
+}
+
+var buildTasks = [];
+var fullBuildFiles = [];
+Object.keys(builds).forEach(function(buildName) {
+	var taskName = 'build:' + buildName;
+	var buildFiles = builds[buildName];
+	gulp.task(taskName, customBuild(buildFiles, buildName));
+	buildTasks.push(taskName);
+	fullBuildFiles = fullBuildFiles.concat(buildFiles);
+});
+
+gulp.task('build', buildTasks, customBuild(fullBuildFiles));
+
+gulp.task('jshint', function() {
+	gulp.src(path.src.files)
+	.pipe(plugins.jshint('.jshintrc'))
+	.pipe(plugins.jshint.reporter(jshintReporter));
 });
 
 gulp.task('default', ['jshint', 'build'], function() {
@@ -106,6 +140,6 @@ gulp.task('test', ['test:unit', 'test:e2e']);
 
 function filterNonCodeFiles() {
 	return plugins.filter(function(file) {
-		return !/\.json|\.spec.js|\.test.js/.test(file.path);
+		return !/\.json$|\.spec\.js$|\.test\.js$/.test(file.path);
 	});
 }

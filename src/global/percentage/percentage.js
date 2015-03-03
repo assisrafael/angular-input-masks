@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('ui.utils.masks.global.percentage', [])
+angular.module('ui.utils.masks.global.percentage', [
+	'ui.utils.masks.helpers'
+])
 .directive('uiPercentageMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {

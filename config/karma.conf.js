@@ -5,6 +5,7 @@ module.exports = function(config) {
 		files: [
 			'bower_components/angular/angular.js',
 			'bower_components/angular-mocks/angular-mocks.js',
+			'bower_components/moment/moment.js',
 			'bower_components/string-mask/src/string-mask.js',
 			'bower_components/br-validations/releases/br-validations.js',
 			'config/test-utils.js',

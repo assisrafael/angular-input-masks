@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('ui.utils.masks.global.number', [])
+angular.module('ui.utils.masks.global.number', [
+	'ui.utils.masks.helpers'
+])
 .directive('uiNumberMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
