@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('ui.utils.masks.global.money', [])
+angular.module('ui.utils.masks.global.money', [
+	'ui.utils.masks.helpers'
+])
 .directive('uiMoneyMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberValidators) {
