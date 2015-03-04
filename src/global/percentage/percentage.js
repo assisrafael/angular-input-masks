@@ -34,7 +34,7 @@ angular.module('ui.utils.masks.global.percentage', [
 					modelMask = NumberMasks.modelMask(numberDecimals);
 
 				ctrl.$formatters.push(function(value) {
-					if(!value) {
+					if(angular.isUndefined(value)) {
 						return value;
 					}
 
