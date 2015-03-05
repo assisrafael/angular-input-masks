@@ -27,6 +27,7 @@ var pkg = require('./package.json'),
 var path = {
 	src: {
 		files: ['src/**/*.js'],
+		jshint: ['src/**/*.js', '!src/**/*.spec.js'],
 		e2e: ['src/**/*.spec.js']
 	}
 };
@@ -86,7 +87,7 @@ Object.keys(builds).forEach(function(buildName) {
 gulp.task('build', buildTasks, customBuild(fullBuildFiles));
 
 gulp.task('jshint', function() {
-	gulp.src(path.src.files)
+	gulp.src(path.src.jshint)
 	.pipe(plugins.jshint('.jshintrc'))
 	.pipe(plugins.jshint.reporter(jshintReporter));
 });
