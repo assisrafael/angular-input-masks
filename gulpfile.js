@@ -8,7 +8,7 @@ var gulp = require('gulp'),
 
 var path = {
 	src: {
-		files: ['src/**/*.js'],
+		files: ['src/br/cep/*.js', 'src/br/data/*.js', 'src/br/cpf-cnpj/*.js', 'src/br/phone/*.js'],
 		e2e: ['src/**/*.spec.js']
 	},
 	lib: {
