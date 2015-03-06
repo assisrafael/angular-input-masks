@@ -51,4 +51,22 @@ describe('ui-percentage-mask', function() {
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('1,234.50 %');
 	}));
+
+	it('should handle corner cases', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: '0', viewValue: '0.00 %'},
+			{modelValue: '0.0', viewValue: '0.00 %'},
+			{modelValue: 0, viewValue: '0.00 %'},
+		];
+
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+	}));
 });
