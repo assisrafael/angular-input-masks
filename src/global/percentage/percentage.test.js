@@ -52,12 +52,21 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	}));
 	
-	it('should format a field with 0 as the initial value', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>', {
-			model: '0'
-		});
-
+	it('should format a field with 0 as the initial value', function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>');
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('0.00 %');
+		
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: '0', viewValue: '0.00 %'},
+			{modelValue: '0.0', viewValue: '0.00 %'},
+			{modelValue: 0, viewValue: '0.00 %'},
+		];
+		
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
 	});
 });
