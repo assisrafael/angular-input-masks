@@ -12,13 +12,13 @@
     "demo"
   ],
   "dependencies": {
-    "angular": "~1.2.9",
-    "br-validations": "~0.2.3",
-    "string-mask": "~0.1.1"
+    "angular": ">=1.2.9",
+    "br-validations": ">=0.2.3",
+    "string-mask": ">=0.1.1"
   },
   "devDependencies": {
-    "angular-mocks": "~1.2.9",
-    "moment": "~2.9.0"
+    "angular-mocks": ">=1.2.9",
+    "moment": ">=2.9.0"
   },
   "main": "./releases/angular-input-masks.min.js"
 }
