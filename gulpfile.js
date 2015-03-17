@@ -59,11 +59,15 @@ gulp.task('build', ['build-dependencies'], function() {
 		debug: false,
 		bundleExternal: false
 	}, {
-		fileName: 'angular-input-masks.us.js',
+		fileName: 'angular-input-masks.ch.js',
 		debug: false,
 		bundleExternal: false
 	}, {
-		fileName: 'angular-input-masks.ch.js',
+		fileName: 'angular-input-masks.fr.js',
+		debug: false,
+		bundleExternal: false
+	}, {
+		fileName: 'angular-input-masks.us.js',
 		debug: false,
 		bundleExternal: false
 	}, {

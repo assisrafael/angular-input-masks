@@ -66,6 +66,8 @@
     "releases/",
     "index.js",
     "br.js",
+    "ch.js",
+    "fr.js",
     "us.js",
     "LICENSE",
     "CHANGELOG.md",
