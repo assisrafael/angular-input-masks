@@ -3,7 +3,8 @@
 var availableDependencies = [
 	'ui.utils.masks.global',
 	'ui.utils.masks.br',
-	'ui.utils.masks.us'
+    'ui.utils.masks.us',
+    'ui.utils.masks.fr'
 ].filter(function(dependency) {
 	try {
 		angular.module(dependency);
