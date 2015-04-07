@@ -28,9 +28,6 @@
 
 	function uiBrCpfMask() {
 		function applyCpfMask (value) {
-			if(!value) {
-				return value;
-			}
 			var formatedValue = cpfPattern.apply(value);
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
@@ -40,11 +37,15 @@
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				ctrl.$formatters.push(function(value) {
+					if (ctrl.$isEmpty(value)) {
+						return value;
+					}
+
 					return applyCpfMask(validateCPF(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
-					if(!value) {
+					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
@@ -68,26 +69,28 @@
 
 	function uiBrCnpjMask() {
 		function applyCnpjMask (value) {
-			if(!value) {
-				return value;
-			}
 			var formatedValue = cnpjPattern.apply(value);
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
+
 		return {
 			restrict: 'A',
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				ctrl.$formatters.push(function(value) {
+					if (ctrl.$isEmpty(value)) {
+						return value;
+					}
+
 					return applyCnpjMask(validateCNPJ(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
-					if(!value) {
+					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]+/g,'');
+					var actualNumber = value.replace(/[^\d]+/g, '');
 					var formatedValue = applyCnpjMask(actualNumber);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -95,7 +98,7 @@
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g,'');
+					return formatedValue.replace(/[^\d]+/g, '');
 				});
 
 				ctrl.$parsers.push(function(value) {
@@ -107,9 +110,6 @@
 
 	function uiBrCpfCnpjMask() {
 		function applyCpfCnpjMask (value) {
-			if(!value) {
-				return value;
-			}
 			var formatedValue;
 			if (value.length > 11) {
 				formatedValue = cnpjPattern.apply(value);
@@ -118,20 +118,25 @@
 			}
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
+
 		return {
 			restrict: 'A',
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				ctrl.$formatters.push(function(value) {
+					if (ctrl.$isEmpty(value)) {
+						return value;
+					}
+
 					return applyCpfCnpjMask(validateCPForCNPJ(ctrl, value));
 				});
 
 				ctrl.$parsers.push(function(value) {
-					if(!value) {
+					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]+/g,'');
+					var actualNumber = value.replace(/[^\d]+/g, '');
 					var formatedValue = applyCpfCnpjMask(actualNumber);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -139,7 +144,7 @@
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g,'');
+					return formatedValue.replace(/[^\d]+/g, '');
 				});
 
 				ctrl.$parsers.push(function(value) {
