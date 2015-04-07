@@ -47,15 +47,11 @@ angular.module('ui.utils.masks.global.scientific-notation', [])
 				function formatter (value) {
 					$log.debug('[uiScientificNotationMask] Formatter called: ', value);
 
-					if (angular.isUndefined(value)) {
+					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
 					if (typeof value === 'string') {
-						if (value.length === 0) {
-							return value;
-						}
-
 						value = value.replace(decimalDelimiter, '.');
 					} else if (typeof value === 'number') {
 						value = value.toExponential(decimals);
@@ -64,7 +60,7 @@ angular.module('ui.utils.masks.global.scientific-notation', [])
 					var formattedValue, exponent;
 					var splittedNumber = splitNumber(value);
 
-					var integerPartOfSignificand = splittedNumber.integerPartOfSignificand | 0;
+					var integerPartOfSignificand = splittedNumber.integerPartOfSignificand || 0;
 					var numberToFormat = integerPartOfSignificand.toString();
 					if (angular.isDefined(splittedNumber.decimalPartOfSignificand)) {
 						numberToFormat += splittedNumber.decimalPartOfSignificand;
@@ -99,7 +95,7 @@ angular.module('ui.utils.masks.global.scientific-notation', [])
 				function parser (value) {
 					$log.debug('[uiScientificNotationMask] Parser called: ', value);
 
-					if(angular.isUndefined(value) || value.toString().length === 0) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
@@ -117,12 +113,12 @@ angular.module('ui.utils.masks.global.scientific-notation', [])
 				function validator (value) {
 					$log.debug('[uiScientificNotationMask] Validator called: ', value);
 
-					if(angular.isUndefined(value)) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
 					var isMaxValid = value < Number.MAX_VALUE;
-					ctrl.$setValidity('max', ctrl.$isEmpty(value) || isMaxValid);
+					ctrl.$setValidity('max', isMaxValid);
 					return value;
 				}
 
