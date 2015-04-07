@@ -15,7 +15,7 @@ describe('ui-br-cpf', function() {
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
 	});
 
 	//FIXME: br-validations is not being properly loaded
