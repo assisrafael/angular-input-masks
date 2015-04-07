@@ -49,7 +49,7 @@ angular.module('ui.utils.masks.br.nfe', [])
 
 				var isValid = ctrl.$isEmpty(value) || value.toString().length === 44;
 
-				ctrl.$setValidity('nfe-access-key', isValid);
+				ctrl.$setValidity('nfeAccessKey', isValid);
 				return value;
 			}
 
