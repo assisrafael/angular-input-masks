@@ -39,7 +39,7 @@ angular.module('ui.utils.masks.us.phone', [])
 				}
 
 				var formatedValue = applyPhoneMask(removeNonDigits(value));
-				var actualValue = removeNonDigits(formatedValue)
+				var actualValue = removeNonDigits(formatedValue);
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
