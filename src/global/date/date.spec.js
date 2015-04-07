@@ -17,7 +17,7 @@ describe('ui.utils.masks.date', function() {
 					formatedDateAsString, numberToFormat = '', inputKeysToSend = '19991231';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.binding('dateMask'));
+					value = element(by.exactBinding('dateMask'));
 
 				for (var i = 0; i < 8; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -41,7 +41,7 @@ describe('ui.utils.masks.date', function() {
 
 			it('should format a model initialized with a date object', function() {
 				var input = element(by.model('initializedDateMask')),
-					value = element(by.binding('initializedDateMask'));
+					value = element(by.exactBinding('initializedDateMask'));
 
 				var dateValue = moment(value.getText(), 'YYYY-MM-DD').toDate(),
 					parsedViewValue = moment(input.getAttribute('value'), 'YYYY-MM-DD').toDate();
@@ -51,7 +51,7 @@ describe('ui.utils.masks.date', function() {
 
 			it('should format a model initialized with a ISO string', function() {
 				var input = element(by.model('initializedWithISOStringDateMask')),
-					value = element(by.binding('initializedWithISOStringDateMask'));
+					value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
 				var dateValue = moment(value.getText(), 'YYYY-MM-DD').toDate(),
 					parsedViewValue = moment(input.getAttribute('value'), 'YYYY-MM-DD').toDate();
@@ -63,7 +63,7 @@ describe('ui.utils.masks.date', function() {
 				var inputKeysToSend = '19991231';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.binding('dateMask')),
+					value = element(by.exactBinding('dateMask')),
 					valid = element(by.binding('form.dateMaskInput.$error'));
 
 				for (var i = 0; i < 7; i++) {
@@ -100,7 +100,7 @@ describe('ui.utils.masks.date', function() {
 					formatedDateAsString, numberToFormat = '', inputKeysToSend = '31121999';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.binding('dateMask'));
+					value = element(by.exactBinding('dateMask'));
 
 				for (var i = 0; i < 8; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -124,7 +124,7 @@ describe('ui.utils.masks.date', function() {
 
 			it('should format a model initialized with a date object', function() {
 				var input = element(by.model('initializedDateMask')),
-					value = element(by.binding('initializedDateMask'));
+					value = element(by.exactBinding('initializedDateMask'));
 
 				var dateValue = moment(value.getText(), 'DD/MM/YYYY').toDate(),
 					parsedViewValue = moment(input.getAttribute('value'), 'DD/MM/YYYY').toDate();
@@ -134,7 +134,7 @@ describe('ui.utils.masks.date', function() {
 
 			it('should format a model initialized with a ISO string', function() {
 				var input = element(by.model('initializedWithISOStringDateMask')),
-					value = element(by.binding('initializedWithISOStringDateMask'));
+					value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
 				var dateValue = moment(value.getText(), 'DD/MM/YYYY').toDate(),
 					parsedViewValue = moment(input.getAttribute('value'), 'DD/MM/YYYY').toDate();
@@ -146,7 +146,7 @@ describe('ui.utils.masks.date', function() {
 				var inputKeysToSend = '31121999';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.binding('dateMask')),
+					value = element(by.exactBinding('dateMask')),
 					valid = element(by.binding('form.dateMaskInput.$error'));
 
 				for (var i = 0; i < 7; i++) {
