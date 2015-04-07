@@ -61,6 +61,7 @@ angular.module('ui.utils.masks.global.date', dependencies)
 			function parser(value) {
 				$log.debug('[uiDateMask] Parser called: ', value);
 				if(ctrl.$isEmpty(value)) {
+					validator(value);
 					return value;
 				}
 

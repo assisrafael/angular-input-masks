@@ -80,7 +80,7 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-					expect(valid.getText()).toEqual('{ "date": false }');
+				expect(valid.getText()).toEqual('{ "date": false }');
 			});
 		});
 	});
