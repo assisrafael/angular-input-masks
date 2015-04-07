@@ -1,3 +1,17 @@
+<a name"1.4.1"></a>
+### 1.4.1 (2015-04-07)
+
+
+#### Bug Fixes
+
+* throw an error if a directive is used without ng-model ([31c7d518](http://github.com/assisrafael/angular-input-masks/commit/31c7d518))
+* **number:** fix the result for 0 and other edge cases ([ba9bdf71](http://github.com/assisrafael/angular-input-masks/commit/ba9bdf71))
+* **percentage:** fix the result for 0 and other edge cases ([5d0f456b](http://github.com/assisrafael/angular-input-masks/commit/5d0f456b))
+* **ui-br-phone-number:** change validationErrorKey to camelCase (brPhoneNumber) ([406136a5](http://github.com/assisrafael/angular-input-masks/commit/406136a5))
+* **ui-date-mask:** validate empty dates ([bfcb3c07](http://github.com/assisrafael/angular-input-masks/commit/bfcb3c07))
+* **ui-money-mask:** fix the result for 0 and other edge cases ([9993ebc2](http://github.com/assisrafael/angular-input-masks/commit/9993ebc2))
+
+
 <a name="1.4.0"></a>
 # 1.4.0
 
