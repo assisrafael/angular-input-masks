@@ -34,7 +34,7 @@ angular.module('ui.utils.masks.global.time', [])
 
 				var cleanValue = clearValue(value);
 
-				if (cleanValue.length == 0) {
+				if (cleanValue.length === 0) {
 					return '';
 				}
 
