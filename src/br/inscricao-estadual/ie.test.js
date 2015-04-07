@@ -14,8 +14,8 @@ describe('ui-br-ie-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-ie-mask="\'MG\'">');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
 	});
 
 	//FIXME: br-validations is not being properly loaded
