@@ -59,7 +59,7 @@ describe('ui-number-mask', function() {
 		expect(model.$valid).toBe(true);
 	});
 
-	it('should validate minimum value', function() {
+	it('should validate maximum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask max="50">', {
 			model: '3456.79'
 		});
@@ -106,4 +106,19 @@ describe('ui-number-mask', function() {
 			expect(model.$viewValue).toBe(test.viewValue);
 		});
 	}));
+
+	it('should accept negative numbers if "ui-negative-number" is defined', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask ui-negative-number>');
+		var model = input.controller('ngModel');
+
+		input.val('-1234.56').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1,234.56');
+		expect(model.$modelValue).toBe(-1234.56);
+		input.val('-1,234.56-').triggerHandler('input');
+		expect(model.$viewValue).toBe('1,234.56');
+		expect(model.$modelValue).toBe(1234.56);
+		input.val('1,234.56-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1,234.56');
+		expect(model.$modelValue).toBe(-1234.56);
+	});
 });
