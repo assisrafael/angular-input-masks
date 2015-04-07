@@ -55,4 +55,15 @@ describe('ui-br-phone-number', function() {
 			expect(model.$modelValue).toBe(test.modelValue);
 		});
 	});
+
+	it('should validate a phone number', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error['brPhoneNumber']).toBe(true);
+		input.val('12345678901').triggerHandler('input');
+		expect(model.$error['brPhoneNumber']).toBe(false);
+	});
 });
