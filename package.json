@@ -46,6 +46,7 @@
     "moment": "^2.8.4",
     "protractor": "^2.0.0",
     "requirejs": "~2.1.10",
+    "run-sequence": "^1.0.2",
     "string-mask": "^0.2.0"
   }
 }

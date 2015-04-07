@@ -2,6 +2,7 @@ var gulp = require('gulp'),
 	path = require('path'),
 	jshintReporter = require('jshint-stylish'),
 	karma = require('karma').server,
+	runSequence = require('run-sequence'),
 	plugins = require('gulp-load-plugins')({
 		config: path.join(__dirname, 'package.json')
 	});
@@ -108,7 +109,7 @@ gulp.task('serve', ['build'], function(done) {
 	});
 });
 
-gulp.task('test:unit', ['jshint'], function(done) {
+gulp.task('test:unit', function(done) {
 	var karmaConfig = {
 		singleRun: true,
 		configFile: __dirname + '/config/karma.conf.js'
@@ -129,7 +130,7 @@ gulp.task('test-watch', function(done) {
 
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
 
-gulp.task('test:e2e', ['jshint', 'webdriver_update', 'serve'], function() {
+gulp.task('test:e2e', ['webdriver_update', 'serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(path.src.e2e)
@@ -139,7 +140,9 @@ gulp.task('test:e2e', ['jshint', 'webdriver_update', 'serve'], function() {
 	.pipe(plugins.exit());
 });
 
-gulp.task('test', ['jshint', 'test:unit', 'test:e2e']);
+gulp.task('test', function(done) {
+	runSequence('jshint', 'test:unit', 'test:e2e', done);
+});
 
 function filterNonCodeFiles() {
 	return plugins.filter(function(file) {
