@@ -40,29 +40,17 @@ angular.module('ui.utils.masks.global.date', dependencies)
 		link: function(scope, element, attrs, ctrl) {
 			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
 
-			function clearValue (value) {
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				return value.replace(/[^0-9]/g, '');
-			}
-
 			function applyMask (value) {
-				if(angular.isUndefined(value) || value.length === 0) {
-					return;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = dateMask.process(cleanValue).result;
+				var cleanValue = value.replace(/[^0-9]/g, '');
+				var formatedValue = dateMask.process(cleanValue).result || '';
 
 				return formatedValue.trim().replace(/[^0-9]$/, '');
 			}
 
 			function formatter (value) {
 				$log.debug('[uiDateMask] Formatter called: ', value);
-				if(angular.isUndefined(value)) {
-					return;
+				if(ctrl.$isEmpty(value)) {
+					return value;
 				}
 
 				var formatedValue = applyMask(moment(value).format(dateFormat));
@@ -72,6 +60,9 @@ angular.module('ui.utils.masks.global.date', dependencies)
 
 			function parser(value) {
 				$log.debug('[uiDateMask] Parser called: ', value);
+				if(ctrl.$isEmpty(value)) {
+					return value;
+				}
 
 				var formatedValue = applyMask(value);
 				$log.debug('[uiDateMask] Formated value: ', formatedValue);
