@@ -97,13 +97,14 @@ gulp.task('default', ['jshint', 'build'], function() {
 	gulp.watch(path.src.files, ['jshint', 'build']);
 });
 
-gulp.task('serve', ['build'], function() {
+gulp.task('serve', ['build'], function(done) {
 	var express = require('express');
 	var server = express();
 
 	server.use(express.static('./'));
 	server.listen(8000, function() {
 		console.log('Server running in port 8000');
+		done();
 	});
 });
 
@@ -128,7 +129,7 @@ gulp.task('test-watch', function(done) {
 
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
 
-gulp.task('test:e2e', ['jshint', 'webdriver_update', 'serve', 'test:unit'], function() {
+gulp.task('test:e2e', ['jshint', 'webdriver_update', 'serve'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(path.src.e2e)
