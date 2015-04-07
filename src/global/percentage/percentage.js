@@ -71,7 +71,7 @@ angular.module('ui.utils.masks.global.percentage', [
 						viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter);
 						modelMask = NumberMasks.modelMask(numberDecimals);
 
-						parse(ctrl.$viewValue || '');
+						parse(ctrl.$viewValue);
 					});
 				}
 

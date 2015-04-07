@@ -69,4 +69,32 @@ describe('ui-percentage-mask', function() {
 			expect(model.$viewValue).toBe(test.viewValue);
 		});
 	}));
+
+	it('should validate minimum value', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask min="0.7">', {
+			model: 0.75
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('75.00 %');
+		expect(model.$valid).toBe(true);
+		input.val('69920').triggerHandler('input');
+		expect(model.$valid).toBe(false);
+		input.val('108120').triggerHandler('input');
+		expect(model.$valid).toBe(true);
+	});
+
+	it('should validate maximum value', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask max="1.0">', {
+			model: 0.75
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('75.00 %');
+		expect(model.$valid).toBe(true);
+		input.val('101000').triggerHandler('input');
+		expect(model.$valid).toBe(false);
+		input.val('99990').triggerHandler('input');
+		expect(model.$valid).toBe(true);
+	});
 });
