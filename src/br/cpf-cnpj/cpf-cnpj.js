@@ -26,9 +26,13 @@
 		}
 	}
 
+	function removeNonDigits(value) {
+		return value.replace(/[^\d]/g, '');
+	}
+
 	function uiBrCpfMask() {
 		function applyCpfMask (value) {
-			var formatedValue = cpfPattern.apply(value);
+			var formatedValue = cpfPattern.apply(value) || '';
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
 
@@ -36,40 +40,45 @@
 			restrict: 'A',
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				ctrl.$formatters.push(function(value) {
+				function formatter(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					return applyCpfMask(validateCPF(ctrl, value));
-				});
+					return applyCpfMask(removeNonDigits(value));
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function parser(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]/g,'');
-					var formatedValue = applyCpfMask(actualNumber);
+					var formatedValue = applyCpfMask(removeNonDigits(value));
+					var actualNumber = removeNonDigits(formatedValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g,'');
-				});
+					return actualNumber;
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function validator(value) {
 					return validateCPF(ctrl, value);
-				});
+				}
+
+				ctrl.$formatters.push(formatter);
+				ctrl.$formatters.push(validator);
+				ctrl.$parsers.push(parser);
+				ctrl.$parsers.push(validator);
 			}
 		};
 	}
 
 	function uiBrCnpjMask() {
 		function applyCnpjMask (value) {
-			var formatedValue = cnpjPattern.apply(value);
+			var formatedValue = cnpjPattern.apply(value) || '';
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
 
@@ -77,33 +86,37 @@
 			restrict: 'A',
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				ctrl.$formatters.push(function(value) {
+				function formatter(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					return applyCnpjMask(validateCNPJ(ctrl, value));
-				});
+					return applyCnpjMask(removeNonDigits(value));
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function parser(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]+/g, '');
-					var formatedValue = applyCnpjMask(actualNumber);
+					var formatedValue = applyCnpjMask(removeNonDigits(value));
+					var actualNumber = removeNonDigits(formatedValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g, '');
-				});
+					return actualNumber;
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function validator(value) {
 					return validateCNPJ(ctrl, value);
-				});
+				}
+
+				ctrl.$formatters.push(formatter);
+				ctrl.$parsers.push(parser);
+				ctrl.$parsers.push(validator);
 			}
 		};
 	}
@@ -123,33 +136,37 @@
 			restrict: 'A',
 			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				ctrl.$formatters.push(function(value) {
+				function formatter(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					return applyCpfCnpjMask(validateCPForCNPJ(ctrl, value));
-				});
+					return applyCpfCnpjMask(removeNonDigits(value));
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function parser(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
-					var actualNumber = value.replace(/[^\d]+/g, '');
-					var formatedValue = applyCpfCnpjMask(actualNumber);
+					var formatedValue = applyCpfCnpjMask(removeNonDigits(value));
+					var actualNumber = removeNonDigits(formatedValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
 						ctrl.$setViewValue(formatedValue);
 						ctrl.$render();
 					}
 
-					return formatedValue.replace(/[^\d]+/g, '');
-				});
+					return actualNumber;
+				}
 
-				ctrl.$parsers.push(function(value) {
+				function validator(value) {
 					return validateCPForCNPJ(ctrl, value);
-				});
+				}
+
+				ctrl.$formatters.push(formatter);
+				ctrl.$parsers.push(parser);
+				ctrl.$parsers.push(validator);
 			}
 		};
 	}
