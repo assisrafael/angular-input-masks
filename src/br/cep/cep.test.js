@@ -14,8 +14,8 @@ describe('ui-br-cep-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-cep-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
 	});
 
 	it('should format initial model values', function() {

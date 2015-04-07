@@ -4,22 +4,13 @@ angular.module('ui.utils.masks.br.cep', [])
 .directive('uiBrCepMask', [function() {
 	var cepMask = new StringMask('00000-000');
 
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
-
+	function clearValue(value) {
 		return value.replace(/[^0-9]/g, '');
 	}
 
-	function applyCepMask (value, ctrl) {
-		if(!value) {
-			ctrl.$setValidity('cep', true);
-			return value;
-		}
+	function applyCepMask (value) {
 		var processed = cepMask.process(value);
-		ctrl.$setValidity('cep', processed.valid);
-		var formatedValue = processed.result;
+		var formatedValue = processed.result || '';
 		return formatedValue.trim().replace(/[^0-9]$/, '');
 	}
 
@@ -27,17 +18,28 @@ angular.module('ui.utils.masks.br.cep', [])
 		restrict: 'A',
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			ctrl.$formatters.push(function(value) {
-				return applyCepMask(value, ctrl);
-			});
+			function validator(value) {
+				var processed = cepMask.process(value);
+				ctrl.$setValidity('cep', ctrl.$isEmpty(value) || processed.valid);
 
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return applyCepMask(value, ctrl);
+				return value;
+			}
+
+			function formatter(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
+				}
+
+				return applyCepMask(value);
+			}
+
+			function parser(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
 				}
 
 				var cleanValue = clearValue(value);
-				var formatedValue = applyCepMask(cleanValue, ctrl);
+				var formatedValue = applyCepMask(cleanValue);
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
@@ -45,7 +47,12 @@ angular.module('ui.utils.masks.br.cep', [])
 				}
 
 				return clearValue(formatedValue);
-			});
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$formatters.push(validator);
+			ctrl.$parsers.push(parser);
+			ctrl.$parsers.push(validator);
 		}
 	};
 }]);
