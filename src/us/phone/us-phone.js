@@ -1,36 +1,21 @@
 'use strict';
 
 angular.module('ui.utils.masks.us.phone', [])
-.factory('usPhoneValidators', [function() {
-	return {
-		usPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || (value.length > 9);
-			ctrl.$setValidity('us-phone-number', valid);
-			return value;
-		}
-	};
-}])
-.directive('uiUsPhoneNumber', ['usPhoneValidators', function(usPhoneValidators) {
+.directive('uiUsPhoneNumber', [function() {
 	var phoneMaskUS = new StringMask('(000) 000-0000'),
 		phoneMaskINTL = new StringMask('+00-00-000-000000');
 
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
+	function removeNonDigits(value) {
 		return value.replace(/[^0-9]/g, '');
 	}
 
 	function applyPhoneMask (value) {
-		if(!value) {
-			return value;
-		}
-
 		var formatedValue;
+
 		if(value.length < 11){
-			formatedValue = phoneMaskUS.apply(value);
+			formatedValue = phoneMaskUS.apply(value) || '';
 		}else{
-			formatedValue = phoneMaskINTL.apply(value);
+			formatedValue = phoneMaskINTL.apply(value) || '';
 		}
 
 		return formatedValue.trim().replace(/[^0-9]$/, '');
@@ -40,29 +25,40 @@ angular.module('ui.utils.masks.us.phone', [])
 		restrict: 'A',
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			ctrl.$formatters.push(function(value) {
-				return applyPhoneMask(usPhoneValidators.usPhoneNumber(ctrl, value));
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
+			function formatter(value) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
-				var cleanValue = clearValue(value);
-				var formatedValue = applyPhoneMask(cleanValue);
+				return applyPhoneMask(removeNonDigits(value));
+			}
+
+			function parser(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
+				}
+
+				var formatedValue = applyPhoneMask(removeNonDigits(value));
+				var actualValue = removeNonDigits(formatedValue)
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
 					ctrl.$render();
 				}
 
-				return clearValue(formatedValue);
-			});
+				return actualValue;
+			}
 
-			ctrl.$parsers.push(function(value) {
-				return usPhoneValidators.usPhoneNumber(ctrl, value);
-			});
+			function validator(value) {
+				var valid = ctrl.$isEmpty(value) || (value.length > 9);
+				ctrl.$setValidity('usPhoneNumber', valid);
+				return value;
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$formatters.push(validator);
+			ctrl.$parsers.push(parser);
+			ctrl.$parsers.push(validator);
 		}
 	};
 }]);
