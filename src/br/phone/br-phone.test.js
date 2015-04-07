@@ -15,7 +15,7 @@ describe('ui-br-phone-number', function() {
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
 	});
 
 	it('should format initial model values (2+8D)', function() {
