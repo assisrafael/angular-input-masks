@@ -87,9 +87,10 @@ Object.keys(builds).forEach(function(buildName) {
 gulp.task('build', buildTasks, customBuild(fullBuildFiles));
 
 gulp.task('jshint', function() {
-	gulp.src(path.src.jshint)
+	return gulp.src(path.src.jshint)
 	.pipe(plugins.jshint('.jshintrc'))
-	.pipe(plugins.jshint.reporter(jshintReporter));
+	.pipe(plugins.jshint.reporter(jshintReporter))
+	.pipe(plugins.jshint.reporter('fail'));
 });
 
 gulp.task('default', ['jshint', 'build'], function() {
@@ -106,7 +107,7 @@ gulp.task('serve', ['build'], function() {
 	});
 });
 
-gulp.task('test:unit', function(done) {
+gulp.task('test:unit', ['jshint'], function(done) {
 	var karmaConfig = {
 		singleRun: true,
 		configFile: __dirname + '/config/karma.conf.js'
@@ -127,7 +128,7 @@ gulp.task('test-watch', function(done) {
 
 gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
 
-gulp.task('test:e2e', ['webdriver_update', 'serve'], function() {
+gulp.task('test:e2e', ['jshint', 'webdriver_update', 'serve', 'test:unit'], function() {
 	var protractor = require('gulp-protractor').protractor;
 
 	gulp.src(path.src.e2e)
@@ -137,7 +138,7 @@ gulp.task('test:e2e', ['webdriver_update', 'serve'], function() {
 	.pipe(plugins.exit());
 });
 
-gulp.task('test', ['test:unit', 'test:e2e']);
+gulp.task('test', ['jshint', 'test:unit', 'test:e2e']);
 
 function filterNonCodeFiles() {
 	return plugins.filter(function(file) {
