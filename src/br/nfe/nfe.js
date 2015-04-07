@@ -17,9 +17,9 @@ angular.module('ui.utils.masks.br.nfe', [])
 		restrict: 'A',
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			function formatter (value) {
+			function formatter(value) {
 				$log.debug('[uiNfeAccessKeyMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -27,8 +27,11 @@ angular.module('ui.utils.masks.br.nfe', [])
 				return formattedValue.replace(/[^0-9]$/, '');
 			}
 
-			function parser (value) {
+			function parser(value) {
 				$log.debug('[uiNfeAccessKeyMask] Parser called: ', value);
+				if (ctrl.$isEmpty(value)) {
+					return value;
+				}
 
 				var modelValue = clearValue(value);
 				var viewValue = formatter(modelValue);
@@ -44,13 +47,9 @@ angular.module('ui.utils.masks.br.nfe', [])
 			function validator (value) {
 				$log.debug('[uiNfeAccessKeyMask] Validator called: ', value);
 
-				if(angular.isUndefined(value)) {
-					return value;
-				}
+				var isValid = ctrl.$isEmpty(value) || value.toString().length === 44;
 
-				var isValid = value.toString().length === 44;
-
-				ctrl.$setValidity('nfe-access-key', ctrl.$isEmpty(value) || isValid);
+				ctrl.$setValidity('nfe-access-key', isValid);
 				return value;
 			}
 
