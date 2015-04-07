@@ -25,21 +25,22 @@ angular.module('ui.utils.masks.global.percentage', [
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
+
 				var numberDecimals = decimals + 2;
 				var viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = NumberMasks.modelMask(numberDecimals);
 
-				ctrl.$formatters.push(function(value) {
-					if(!value) {
+				function formatter(value) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
 					var valueToFormat = preparePercentageToFormatter(value, decimals);
 					return viewMask.apply(valueToFormat) + ' %';
-				});
+				}
 
 				function parse(value) {
-					if(!value) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
@@ -58,6 +59,7 @@ angular.module('ui.utils.masks.global.percentage', [
 					return actualNumber;
 				}
 
+				ctrl.$formatters.push(formatter);
 				ctrl.$parsers.push(parse);
 
 				if (attrs.uiPercentageMask) {
