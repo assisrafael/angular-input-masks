@@ -26,4 +26,26 @@ describe('ui-scientific-notation-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('1.23e4');
 	});
+
+	it('should handle corner cases', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-scientific-notation-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: '0', viewValue: '0.00'},
+			{modelValue: '0.0', viewValue: '0.00'},
+			{modelValue: '.0', viewValue: '0.00'},
+			{modelValue: 0, viewValue: '0.00'}
+		];
+
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+
+		input.val('').triggerHandler('input');
+		expect(model.$viewValue).toBe('');
+	}));
 });

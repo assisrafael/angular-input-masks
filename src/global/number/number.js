@@ -8,15 +8,11 @@ angular.module('ui.utils.masks.global.number', [
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					decimals = $parse(attrs.uiNumberMask)(scope);
-
-				if (!ctrl) {
-					return;
-				}
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
@@ -25,11 +21,12 @@ angular.module('ui.utils.masks.global.number', [
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
+
 				var viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = NumberMasks.modelMask(decimals);
 
-				function parse(value) {
-					if(!value) {
+				function parser(value) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
@@ -57,21 +54,22 @@ angular.module('ui.utils.masks.global.number', [
 					return actualNumber;
 				}
 
-				ctrl.$formatters.push(function(value) {
+				function formatter(value) {
+					if(ctrl.$isEmpty(value)) {
+						return value;
+					}
+
 					var prefix = '';
 					if(angular.isDefined(attrs.uiNegativeNumber) && value < 0){
 						prefix = '-';
 					}
 
-					if(!value) {
-						return value;
-					}
-
 					var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 					return prefix + viewMask.apply(valueToFormat);
-				});
+				}
 
-				ctrl.$parsers.push(parse);
+				ctrl.$formatters.push(formatter);
+				ctrl.$parsers.push(parser);
 
 				if (attrs.uiNumberMask) {
 					scope.$watch(attrs.uiNumberMask, function(decimals) {
@@ -81,7 +79,7 @@ angular.module('ui.utils.masks.global.number', [
 						viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter);
 						modelMask = NumberMasks.modelMask(decimals);
 
-						parse(ctrl.$viewValue || '');
+						parser(ctrl.$viewValue);
 					});
 				}
 

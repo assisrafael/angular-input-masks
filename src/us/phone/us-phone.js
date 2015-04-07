@@ -38,12 +38,8 @@ angular.module('ui.utils.masks.us.phone', [])
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
 			ctrl.$formatters.push(function(value) {
 				return applyPhoneMask(usPhoneValidators.usPhoneNumber(ctrl, value));
 			});

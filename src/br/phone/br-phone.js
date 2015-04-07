@@ -5,7 +5,7 @@ angular.module('ui.utils.masks.br.phone', [])
 	return {
 		brPhoneNumber: function (ctrl, value) {
 			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
-			ctrl.$setValidity('br-phone-number', valid);
+			ctrl.$setValidity('brPhoneNumber', valid);
 			return value;
 		}
 	};
@@ -43,12 +43,8 @@ angular.module('ui.utils.masks.br.phone', [])
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
 			ctrl.$formatters.push(function(value) {
 				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
 			});

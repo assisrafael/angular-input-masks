@@ -16,7 +16,7 @@ describe('ui.utils.masks.time', function() {
 					formatedTimeAsString, numberToFormat = '', inputKeysToSend = '235959';
 
 				var input = element(by.model('timeMask')),
-					value = element(by.binding('timeMask'));
+					value = element(by.exactBinding('timeMask'));
 
 				for (var i = 0; i < 6; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -42,7 +42,7 @@ describe('ui.utils.masks.time', function() {
 				var inputKeysToSend = '235959';
 
 				var input = element(by.model('timeMask')),
-					value = element(by.binding('timeMask')),
+					value = element(by.exactBinding('timeMask')),
 					valid = element(by.binding('form.timeMaskInput.$error'));
 
 				for (var i = 0; i < 5; i++) {
@@ -64,7 +64,7 @@ describe('ui.utils.masks.time', function() {
 
 			it('should format properly an initialized value', function() {
 				var input = element(by.model('initializedTimeMask')),
-					value = element(by.binding('initializedTimeMask')),
+					value = element(by.exactBinding('initializedTimeMask')),
 					valid = element(by.binding('form.initializedTimeMask.$error'));
 
 				expect(input.getAttribute('value')).toEqual('14:30:00');
@@ -79,7 +79,7 @@ describe('ui.utils.masks.time', function() {
 					formatedTimeAsString, numberToFormat = '', inputKeysToSend = '2359';
 
 				var input = element(by.model('shortTimeMask')),
-					value = element(by.binding('shortTimeMask'));
+					value = element(by.exactBinding('shortTimeMask'));
 
 				for (var i = 0; i < 4; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -105,7 +105,7 @@ describe('ui.utils.masks.time', function() {
 				var inputKeysToSend = '235959';
 
 				var input = element(by.model('shortTimeMask')),
-					value = element(by.binding('shortTimeMask')),
+					value = element(by.exactBinding('shortTimeMask')),
 					valid = element(by.binding('form.shortTimeMaskInput.$error'));
 
 				for (var i = 0; i < 3; i++) {
@@ -127,7 +127,7 @@ describe('ui.utils.masks.time', function() {
 
 			it('should format properly an initialized value', function() {
 				var input = element(by.model('initializedShortTimeMask')),
-					value = element(by.binding('initializedShortTimeMask')),
+					value = element(by.exactBinding('initializedShortTimeMask')),
 					valid = element(by.binding('form.initializedShortTimeMask.$error'));
 
 				expect(input.getAttribute('value')).toEqual('14:30');

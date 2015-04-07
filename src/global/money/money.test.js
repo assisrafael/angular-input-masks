@@ -4,7 +4,7 @@ describe('ui-money-mask', function() {
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-money-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -95,4 +95,22 @@ describe('ui-money-mask', function() {
 			expect(model.$modelValue).toBe(parseFloat(formatterModel.apply(numberToFormat)));
 		}
 	});
+
+	it('should handle corner cases', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: '0', viewValue: '$ 0.00'},
+			{modelValue: '0.0', viewValue: '$ 0.00'},
+			{modelValue: 0, viewValue: '$ 0.00'},
+		];
+
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+	}));
 });

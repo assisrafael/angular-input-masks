@@ -4,7 +4,7 @@ describe('ui-br-phone-number', function() {
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-br-phone-number>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -54,5 +54,16 @@ describe('ui-br-phone-number', function() {
 			expect(model.$viewValue).toBe(test.viewValue);
 			expect(model.$modelValue).toBe(test.modelValue);
 		});
+	});
+
+	it('should validate a phone number', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error.brPhoneNumber).toBe(true);
+		input.val('12345678901').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(false);
 	});
 });
