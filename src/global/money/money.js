@@ -34,7 +34,7 @@ angular.module('ui.utils.masks.global.money', [
 
 					var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 					return moneyMask.apply(valueToFormat);
-				};
+				}
 
 				function parser(value) {
 					if (ctrl.$isEmpty(value)) {
