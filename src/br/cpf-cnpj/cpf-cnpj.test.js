@@ -1,10 +1,10 @@
 describe('ui-br-cpfcnpj', function() {
 	beforeEach(module('ui.utils.masks.br.cpfCnpj'));
 
-	it('should not throw an error if used without ng-model', function() {
+	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-br-cpfcnpj-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {

@@ -8,16 +8,12 @@ angular.module('ui.utils.masks.global.money', [
 	function ($locale, $parse, PreFormatters, NumberValidators) {
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
 					decimals = parseInt(attrs.uiMoneyMask);
-
-				if (!ctrl) {
-					return;
-				}
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
@@ -26,6 +22,7 @@ angular.module('ui.utils.masks.global.money', [
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
+
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
 				var maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
 				var moneyMask = new StringMask(maskPattern, {reverse: true});

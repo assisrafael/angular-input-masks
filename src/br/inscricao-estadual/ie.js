@@ -79,13 +79,9 @@ angular.module('ui.utils.masks.br.ie', [])
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
 			var state = $parse(attrs.uiBrIeMask)(scope);
-
-			if (!ctrl) {
-				return;
-			}
 
 			scope.$watch(attrs.uiBrIeMask, function(newState) {
 				state = newState;

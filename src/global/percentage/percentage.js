@@ -12,15 +12,11 @@ angular.module('ui.utils.masks.global.percentage', [
 
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					decimals = parseInt(attrs.uiPercentageMask);
-
-				if (!ctrl) {
-					return;
-				}
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';

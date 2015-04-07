@@ -8,7 +8,7 @@ angular.module('ui.utils.masks.global.time', [])
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
 			var unformattedValueLength = 6,
 				formattedValueLength = 8,

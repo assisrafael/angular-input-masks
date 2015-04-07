@@ -8,15 +8,11 @@ angular.module('ui.utils.masks.global.number', [
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					decimals = $parse(attrs.uiNumberMask)(scope);
-
-				if (!ctrl) {
-					return;
-				}
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
@@ -25,6 +21,7 @@ angular.module('ui.utils.masks.global.number', [
 				if(isNaN(decimals)) {
 					decimals = 2;
 				}
+
 				var viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter),
 					modelMask = NumberMasks.modelMask(decimals);
 

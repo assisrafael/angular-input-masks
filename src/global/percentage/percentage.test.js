@@ -4,7 +4,7 @@ describe('ui-percentage-mask', function() {
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-percentage-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {

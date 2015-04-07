@@ -36,7 +36,7 @@ angular.module('ui.utils.masks.global.date', dependencies)
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
 			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
 

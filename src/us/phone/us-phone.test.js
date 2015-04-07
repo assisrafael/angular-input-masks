@@ -1,10 +1,10 @@
 describe('ui-us-phone-mask', function() {
 	beforeEach(module('ui.utils.masks.us.phone'));
 
-	it('should not throw an error if used without ng-model', function() {
+	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-us-phone-number>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $formatter', function() {

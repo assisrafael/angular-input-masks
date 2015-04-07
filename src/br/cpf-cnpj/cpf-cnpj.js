@@ -37,12 +37,8 @@
 
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
 				ctrl.$formatters.push(function(value) {
 					return applyCpfMask(validateCPF(ctrl, value));
 				});
@@ -80,12 +76,8 @@
 		}
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
 				ctrl.$formatters.push(function(value) {
 					return applyCnpjMask(validateCNPJ(ctrl, value));
 				});
@@ -128,12 +120,8 @@
 		}
 		return {
 			restrict: 'A',
-			require: '?ngModel',
+			require: 'ngModel',
 			link: function (scope, element, attrs, ctrl) {
-				if (!ctrl) {
-					return;
-				}
-
 				ctrl.$formatters.push(function(value) {
 					return applyCpfCnpjMask(validateCPForCNPJ(ctrl, value));
 				});

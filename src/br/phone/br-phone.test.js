@@ -4,7 +4,7 @@ describe('ui-br-phone-number', function() {
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-br-phone-number>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {

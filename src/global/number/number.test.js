@@ -4,7 +4,7 @@ describe('ui-number-mask', function() {
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-number-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {
