@@ -13,7 +13,7 @@ angular.module('ui.utils.masks.global.money', [
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 					currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
-					decimals = parseInt(attrs.uiMoneyMask);
+					decimals = $parse(attrs.uiMoneyMask)(scope);
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
@@ -27,17 +27,17 @@ angular.module('ui.utils.masks.global.money', [
 				var maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
 				var moneyMask = new StringMask(maskPattern, {reverse: true});
 
-				ctrl.$formatters.push(function(value) {
-					if(angular.isUndefined(value)) {
+				function formatter(value) {
+					if(ctrl.$isEmpty(value)) {
 						return value;
 					}
 
 					var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 					return moneyMask.apply(valueToFormat);
-				});
+				};
 
-				function parse(value) {
-					if (!value) {
+				function parser(value) {
+					if (ctrl.$isEmpty(value)) {
 						return value;
 					}
 
@@ -53,7 +53,8 @@ angular.module('ui.utils.masks.global.money', [
 					return formatedValue ? parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals) : null;
 				}
 
-				ctrl.$parsers.push(parse);
+				ctrl.$formatters.push(formatter);
+				ctrl.$parsers.push(parser);
 
 				if (attrs.uiMoneyMask) {
 					scope.$watch(attrs.uiMoneyMask, function(decimals) {
@@ -64,7 +65,7 @@ angular.module('ui.utils.masks.global.money', [
 						maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
 						moneyMask = new StringMask(maskPattern, {reverse: true});
 
-						parse(ctrl.$viewValue || '');
+						parser(ctrl.$viewValue);
 					});
 				}
 
