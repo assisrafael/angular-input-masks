@@ -32,7 +32,7 @@ var header = ['/**',
 	].join('\n'),
 	bowerConfig = {
 		repository: 'git@github.com:assisrafael/bower-angular-input-masks.git',
-		path: './../bower-angular-input-masks-release'
+		path: './bower-angular-input-masks'
 	};
 
 var filePaths = {
@@ -213,7 +213,7 @@ gulp.task('bower-clone', ['build'], function(done) {
 gulp.task('bower-commit', ['bower-clone'], function() {
 	return mergeStream(
 			bumpVersion(bowerConfig.path),
-			gulp.src('./dist/**/*.*')
+			gulp.src('./releases/**/*.*')
 				.pipe(gulp.dest(bowerConfig.path))
 		)
 		.pipe(plugins.git.add({cwd:bowerConfig.path}))

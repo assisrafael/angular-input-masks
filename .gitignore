@@ -1,4 +1,5 @@
 bower_components
+bower-angular-input-masks
 node_modules
 coverage
 npm-debug.log

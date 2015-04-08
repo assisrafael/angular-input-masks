@@ -50,11 +50,11 @@ describe('ui.utils.masks.nfe: ', function() {
 
 			for (var i = 0; i < 43; i++) {
 				input.sendKeys(inputKeysToSend.charAt(i));
-				expect(valid.getText()).toEqual('{ "nfe-access-key": true }');
+				expect(valid.getText()).toEqual('{ "nfeAccessKey": true }');
 			}
 
 			input.sendKeys(inputKeysToSend.charAt(5));
-			expect(valid.getText()).toEqual('{ "nfe-access-key": false }');
+			expect(valid.getText()).toEqual('{ "nfeAccessKey": false }');
 
 			for (var i = 43; i > 0; i--) {
 				if (i % 4 === 0) {
@@ -62,11 +62,11 @@ describe('ui.utils.masks.nfe: ', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "nfe-access-key": true }');
+				expect(valid.getText()).toEqual('{ "nfeAccessKey": true }');
 			}
 
 			input.sendKeys(protractor.Key.BACK_SPACE);
-			expect(valid.getText()).toEqual('{ "nfe-access-key": false }');
+			expect(valid.getText()).toEqual('{ "nfeAccessKey": false }');
 		});
 	});
 });

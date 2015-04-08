@@ -28,7 +28,7 @@ angular.module('ui.utils.masks.global.time', [])
 
 			function formatter (value) {
 				$log.debug('[uiTimeMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
+				if(ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -45,8 +45,8 @@ angular.module('ui.utils.masks.global.time', [])
 			function parser (value) {
 				$log.debug('[uiTimeMask] Parser called: ', value);
 
-				var modelValue = formatter(value);
-				var viewValue = modelValue;
+				var viewValue = formatter(value);
+				var modelValue = viewValue;
 
 				if(ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
