@@ -1,17 +1,31 @@
 'use strict';
 
+/*global BrV*/
+var globalBrV;
+if (typeof BrV !== 'undefined') {
+	globalBrV = BrV;
+}
+
 (function() {
 	var cnpjPattern = new StringMask('00.000.000\/0000-00');
 	var cpfPattern = new StringMask('000.000.000-00');
 
 	function validateCPF (ctrl, value) {
-		var valid = ctrl.$isEmpty(value) || BrV.cpf.validate(value);
+		if (!globalBrV) {
+			return value;
+		}
+
+		var valid = ctrl.$isEmpty(value) || globalBrV.cpf.validate(value);
 		ctrl.$setValidity('cpf', valid);
 		return value;
 	}
 
 	function validateCNPJ (ctrl, value) {
-		var valid = ctrl.$isEmpty(value) || BrV.cnpj.validate(value);
+		if (!globalBrV) {
+			return value;
+		}
+
+		var valid = ctrl.$isEmpty(value) || globalBrV.cnpj.validate(value);
 		ctrl.$setValidity('cnpj', valid);
 		return value;
 	}
@@ -127,7 +141,7 @@
 			if (value.length > 11) {
 				formatedValue = cnpjPattern.apply(value);
 			} else {
-				formatedValue = cpfPattern.apply(value);
+				formatedValue = cpfPattern.apply(value) || '';
 			}
 			return formatedValue.trim().replace(/[^0-9]$/, '');
 		}
