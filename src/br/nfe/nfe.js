@@ -6,10 +6,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 		' 0000 0000 0000 0000 0000 0000');
 
 	function clearValue (value) {
-		if (angular.isUndefined(value) || value.length === 0) {
-			return value;
-		}
-
 		return value.replace(/[^0-9]/g, '').slice(0, 44);
 	}
 
