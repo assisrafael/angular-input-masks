@@ -105,12 +105,33 @@ describe('ui-money-mask', function() {
 			{modelValue: '0', viewValue: '$ 0.00'},
 			{modelValue: '0.0', viewValue: '$ 0.00'},
 			{modelValue: 0, viewValue: '$ 0.00'},
+			{modelValue: undefined, viewValue: undefined},
+			{modelValue: null, viewValue: null},
 		];
 
 		tests.forEach(function(test) {
 			$rootScope.model = test.modelValue;
 			$rootScope.$digest();
 			expect(model.$viewValue).toBe(test.viewValue);
+		});
+
+		it('should ignore non digits', function() {
+			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {
+				model: undefined
+			});
+			var model = input.controller('ngModel');
+
+			var tests = [
+				{value: '@', viewValue: '', modelValue: ''},
+				{value: undefined, viewValue: undefined, modelValue: undefined},
+				{value: null, viewValue: null, modelValue: null},
+			];
+
+			tests.forEach(function(test) {
+				input.val(test.value).triggerHandler('input');
+				expect(model.$viewValue).toBe(test.viewValue);
+				expect(model.$modelValue).toBe(test.modelValue);
+			});
 		});
 	}));
 });
