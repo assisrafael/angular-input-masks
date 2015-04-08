@@ -1,3 +1,13 @@
+<a name"1.4.2"></a>
+### 1.4.2 (2015-04-07)
+
+
+#### Bug Fixes
+
+* **ui-nfe-access-key-mask:** change validationErrorKey to camelCase (nfeAccessKey) ([db768beb](http://github.com/assisrafael/angular-input-masks/commit/db768beb))
+* **ui-us-phone-number:** change validationErrorKey to camelCase (usPhoneNumber) ([71560d54](http://github.com/assisrafael/angular-input-masks/commit/71560d54))
+
+
 <a name"1.4.1"></a>
 ### 1.4.1 (2015-04-07)
 
