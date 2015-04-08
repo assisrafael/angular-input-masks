@@ -38,6 +38,7 @@ describe('ui-us-phone-mask', function() {
 			{value:'23_34', viewValue:'(233) 4', modelValue:'2334'},
 			{value:'23346!', viewValue:'(233) 46', modelValue:'23346'},
 			{value:'23346!32400', viewValue:'(233) 463-2400', modelValue:'2334632400'},
+			{value:'23346!32400932', viewValue:'+23-34-632-400932', modelValue:'2334632400932'},
 		];
 
 		tests.forEach(function(test) {

@@ -15,7 +15,7 @@ angular.module('ui.utils.masks.us.phone', [])
 		if(value.length < 11){
 			formatedValue = phoneMaskUS.apply(value) || '';
 		}else{
-			formatedValue = phoneMaskINTL.apply(value) || '';
+			formatedValue = phoneMaskINTL.apply(value);
 		}
 
 		return formatedValue.trim().replace(/[^0-9]$/, '');

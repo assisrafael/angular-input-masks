@@ -1,5 +1,11 @@
 'use strict';
 
+/*global BrV*/
+var globalBrV;
+if (typeof BrV !== 'undefined') {
+	globalBrV = BrV;
+}
+
 angular.module('ui.utils.masks.br.ie', [])
 .directive('uiBrIeMask', ['$parse', function($parse) {
 	var ieMasks = {
@@ -116,7 +122,11 @@ angular.module('ui.utils.masks.br.ie', [])
 			}
 
 			function validator(value) {
-				var isValid = ctrl.$isEmpty(value) || BrV.ie(state).validate(value);
+				if (!globalBrV) {
+					return value;
+				}
+
+				var isValid = ctrl.$isEmpty(value) || globalBrV.ie(state).validate(value);
 				ctrl.$setValidity('ie', isValid);
 
 				return value;
