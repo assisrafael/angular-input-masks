@@ -1382,7 +1382,7 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$validators.uiPlNip = function (modelValue, viewValue) {
 					var valid = false;
-					if (modelValue.length === 10) {
+					if (modelValue && modelValue.length === 10) {
 						var dig = (''+modelValue).split('');
 						var controlSum = (
 							6 * parseInt(dig[0]) +
