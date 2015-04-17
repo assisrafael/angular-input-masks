@@ -1045,13 +1045,13 @@ if (objectTypes[typeof module]) {
 			];
 
 		for (var i in weights){
-			if(letter.toUpperCase() == weights[i].value)
+			if(letter.toUpperCase() === weights[i].value)
 				return weights[i].weight;
 		}
 	}
 
 	function checkBank(bankId){
-		var message = "Nie wykryto banku";
+		var message = 'Nie wykryto banku';
 		var banks = [
 			{code: '1010', name: 'Narodowy Bank Polski'},
 			{code: '1020', name: 'PKO BP'},
@@ -1094,7 +1094,7 @@ if (objectTypes[typeof module]) {
 			];
 
 		for (var i in banks)
-			if (banks[i].code.toString() == bankId.toString())
+			if (banks[i].code.toString() === bankId.toString())
 				message = banks[i].name;
 
 		return message;
@@ -1113,7 +1113,11 @@ if (objectTypes[typeof module]) {
 			link: function (scope, element, attrs, ctrl) {
 
 
-				var weights = [1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49, 5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51, 25, 56, 75, 71, 31, 19, 93, 57];
+				var weights = [
+					1, 10, 3, 30, 9, 90, 27, 76, 81, 34, 49,
+					5, 50, 15, 53, 45, 62, 38, 89, 17, 73, 51,
+					25, 56, 75, 71, 31, 19, 93, 57
+				];
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
@@ -1131,22 +1135,23 @@ if (objectTypes[typeof module]) {
 					return actualValue;
 				});
 
-				ctrl.$parsers.push(function(value) {
+				ctrl.$formatters.push(applyPlBankAccountNoMask);
+
+				ctrl.$validators.uiPlBankAccountNo = function(value) {
 					var valid = false;
-					if (value.length == 26) {
+					if (value && value.length === 26) {
 						// var bankName = checkBank(value.substr(2,4));
-						value = value + "2521";
+						value = value + '2521';
         		value = value.substr(2) + value.substr(0, 2);
         		var controlSum = 0;
         		for (var i = 0; i < 30; i++) {
             	controlSum += value[29 - i] * weights[i];
         		}
-        		if (controlSum % 97 == 1)
+        		if (controlSum % 97 === 1)
 	  	      	valid = true;
 					}
-					ctrl.$setValidity('pl-bank-account-no', valid);
-						return value;
-				});
+					return valid;
+				};
 			}
 		};
 	}
@@ -1183,11 +1188,21 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
-					if (value.length == 9) {
-						var digs = (""+value).split("");
-        		var controlSum = (convertToWeight(digs[0].toString()) * 7 + convertToWeight(digs[1].toString()) * 3 + digs[2] * 9 + digs[3] * 1 + digs[4] *7 + digs[5] *3 + digs[6] *1 + digs[7] *7 +digs[8] * 3 )%10;
+					if (value.length === 9) {
+						var digs = (''+value).split('');
+        		var controlSum = (
+        			convertToWeight(digs[0].toString()) * 7 +
+        			convertToWeight(digs[1].toString()) * 3 +
+        			digs[2] * 9 +
+        			digs[3] * 1 +
+        			digs[4] *7 +
+        			digs[5] *3 +
+        			digs[6] *1 +
+        			digs[7] *7 +
+        			digs[8] * 3
+        		) % 10;
 
-	        	if (controlSum == 0)
+	        	if (controlSum === 0)
 	  	      	valid = true;
 					}
 					ctrl.$setValidity('pl-passport-no', valid);
@@ -1228,11 +1243,20 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
-					if (value.length == 9) {
-						var digs = (""+value).split("");
-        		var controlSum = (convertToWeight(digs[0].toString()) * 7 + convertToWeight(digs[1].toString()) * 3 + convertToWeight(digs[2].toString()) * 1 + digs[4] *7 + digs[5] *3 + digs[6] *1 + digs[7] *7 +digs[8] * 3 )%10;
+					if (value.length === 9) {
+						var digs = (''+value).split('');
+        		var controlSum = (
+        			convertToWeight(digs[0].toString()) * 7 +
+        			convertToWeight(digs[1].toString()) * 3 +
+        			convertToWeight(digs[2].toString()) * 1 +
+        			digs[4] * 7 +
+        			digs[5] * 3 +
+        			digs[6] * 1 +
+        			digs[7] * 7 +
+        			digs[8] * 3
+        		) % 10;
 
-	        	if (parseInt(digs[3]) == controlSum)
+	        	if (parseInt(digs[3]) === controlSum)
 	  	      	valid = true;
 					}
 					ctrl.$setValidity('pl-id-no', valid);
@@ -1312,13 +1336,25 @@ if (objectTypes[typeof module]) {
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
 
-					if (value.length == 11) {
-						var dig = (""+value).split("");
-        		var controlSum = (1*parseInt(dig[0]) + 3*parseInt(dig[1]) + 7*parseInt(dig[2]) + 9*parseInt(dig[3]) + 1*parseInt(dig[4]) + 3*parseInt(dig[5]) + 7*parseInt(dig[6]) + 9*parseInt(dig[7]) + 1*parseInt(dig[8]) + 3*parseInt(dig[9]))%10;
-	        if(controlSum==0) controlSum = 10;
+					if (value.length === 11) {
+						var dig = (''+value).split('');
+        		var controlSum = (
+        			1 * parseInt(dig[0]) +
+        			3 * parseInt(dig[1]) +
+        			7 * parseInt(dig[2]) +
+        			9 * parseInt(dig[3]) +
+        			1 * parseInt(dig[4]) +
+        			3 * parseInt(dig[5]) +
+        			7 * parseInt(dig[6]) +
+        			9 * parseInt(dig[7]) +
+        			1 * parseInt(dig[8]) +
+        			3 * parseInt(dig[9])
+        		) % 10;
+
+	        if (controlSum === 0) controlSum = 10;
 		        controlSum = 10 - controlSum;
 
-	        if(parseInt(dig[10])==controlSum)
+	        if (parseInt(dig[10]) === controlSum)
 	  	      valid = true;
 					}
 					ctrl.$setValidity('pl-pesel', valid);
@@ -1342,33 +1378,42 @@ if (objectTypes[typeof module]) {
 			require: '^ngModel',
 			link: function (scope, element, attrs, ctrl) {
 
-				ctrl.$parsers.push(function(value) {
-					if(!value) {
-						return value;
-					}
+				ctrl.$formatters.push(applyPlNipMask);
 
-					var actualValue = value.replace(/[^\d]/g, '');
-					if (actualValue.length > 10)
-						actualValue = actualValue.replace(/[\d]$/, '');
-					var formatedValue = applyPlNipMask(actualValue);
-
-					if (ctrl.$viewValue !== formatedValue) {
-						ctrl.$setViewValue(formatedValue);
-						ctrl.$render();
-					}
-					return actualValue;
-				});
-				ctrl.$parsers.push(function(value) {
+				ctrl.$validators.uiPlNip = function (modelValue, viewValue) {
 					var valid = false;
-					if (value.length == 10) {
-						var dig = (""+value).split("");
-						var controlSum = (6*parseInt(dig[0]) + 5*parseInt(dig[1]) + 7*parseInt(dig[2]) + 2*parseInt(dig[3]) + 3*parseInt(dig[4]) + 4*parseInt(dig[5]) + 5*parseInt(dig[6]) + 6*parseInt(dig[7]) + 7*parseInt(dig[8]))%11;
-						if(parseInt(dig[9])==controlSum)
+					if (modelValue.length === 10) {
+						var dig = (''+modelValue).split('');
+						var controlSum = (
+							6 * parseInt(dig[0]) +
+							5 * parseInt(dig[1]) +
+							7 * parseInt(dig[2]) +
+							2 * parseInt(dig[3]) +
+							3 * parseInt(dig[4]) +
+							4 * parseInt(dig[5]) +
+							5 * parseInt(dig[6]) +
+							6 * parseInt(dig[7]) +
+							7 * parseInt(dig[8])
+						) % 11;
+
+						if (parseInt(dig[9]) === controlSum)
   	      		valid = true;
 					}
-					ctrl.$setValidity('pl-nip', valid);
-					return value;
-				});
+					return valid;
+				};
+
+				function parse(value) {
+					if (!value)
+						return value;
+					else {
+						var parsedValue = value.replace(/[^\d]/g, '').substring(0,10);
+						ctrl.$setViewValue(applyPlNipMask(parsedValue));
+						ctrl.$render();
+						return parsedValue;
+					}
+				}
+
+				ctrl.$parsers.push(parse);
 			}
 		};
 	}
@@ -1403,22 +1448,49 @@ if (objectTypes[typeof module]) {
 				});
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
-					if (value.length == 9) {
-						var dig = (""+value).split("");
-						var controlSum = (8*parseInt(dig[0]) + 9*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]) + 7*parseInt(dig[7]))%11;
-						if(controlSum == 10)
+					var dig = null;
+					var controlSum = null;
+					if (value.length === 9) {
+						dig = (''+value).split('');
+						controlSum = (
+							8 * parseInt(dig[0]) +
+							9 * parseInt(dig[1]) +
+							2 * parseInt(dig[2]) +
+							3 * parseInt(dig[3]) +
+							4 * parseInt(dig[4]) +
+							5 * parseInt(dig[5]) +
+							6 * parseInt(dig[6]) +
+							7 * parseInt(dig[7])
+						) % 11;
+
+						if (controlSum === 10)
 							controlSum = 0;
 
-						if(parseInt(dig[8])==controlSum)
+						if (parseInt(dig[8]) === controlSum)
 							valid = true;
 					}
-					else if (value.length == 14) {
-						var dig = (""+value).split("");
-						var controlSum = (2*parseInt(dig[0]) + 4*parseInt(dig[1]) + 8*parseInt(dig[2]) + 5*parseInt(dig[3]) + 0*parseInt(dig[4]) + 9*parseInt(dig[5]) + 7*parseInt(dig[6]) + 3*parseInt(dig[7]) + 6*parseInt(dig[8]) + 1*parseInt(dig[9]) + 2*parseInt(dig[10]) + 4*parseInt(dig[11]) + 8*parseInt(dig[12]))%11;
-						if(controlSum == 10)
+					else if (value.length === 14) {
+						dig = (''+value).split('');
+						controlSum = (
+							2 * parseInt(dig[0]) +
+							4 * parseInt(dig[1]) +
+							8 * parseInt(dig[2]) +
+							5 * parseInt(dig[3]) +
+							0 * parseInt(dig[4]) +
+							9 * parseInt(dig[5]) +
+							7 * parseInt(dig[6]) +
+							3 * parseInt(dig[7]) +
+							6 * parseInt(dig[8]) +
+							1 * parseInt(dig[9]) +
+							2 * parseInt(dig[10]) +
+							4 * parseInt(dig[11]) +
+							8 * parseInt(dig[12])
+						) % 11;
+
+						if (controlSum === 10)
 							controlSum = 0;
 
-						if(parseInt(dig[13])==controlSum)
+						if (parseInt(dig[13]) === controlSum)
 							valid = true;
 					}
 					ctrl.$setValidity('pl-regon', valid);
@@ -1442,7 +1514,7 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
-						return "";
+						return '';
 					}
 
 					var actualValue = value.replace(/[^\d]/g, '');
@@ -1458,11 +1530,18 @@ if (objectTypes[typeof module]) {
 				});
 				ctrl.$parsers.push(function(value) {
 					var valid = false;
-					var dig = (""+value).split("");
-					if ((value.length == 7) && (parseInt(dig[0]) != 0)) {
-        		var controlSum = (1*parseInt(dig[1]) + 2*parseInt(dig[2]) + 3*parseInt(dig[3]) + 4*parseInt(dig[4]) + 5*parseInt(dig[5]) + 6*parseInt(dig[6]))%11;
+					var dig = (''+value).split('');
+					if ((value.length === 7) && (parseInt(dig[0]) !== 0)) {
+        		var controlSum = (
+        			1 * parseInt(dig[1]) +
+        			2 * parseInt(dig[2]) +
+        			3 * parseInt(dig[3]) +
+        			4 * parseInt(dig[4]) +
+        			5 * parseInt(dig[5]) +
+        			6 * parseInt(dig[6])
+        		) % 11;
 
-	        	if (parseInt(dig[0]) == controlSum)
+	        	if (parseInt(dig[0]) === controlSum)
 	  	      	valid = true;
 					}
 
