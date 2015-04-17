@@ -2113,6 +2113,12 @@ if (objectTypes[typeof module]) {
 			require: '^ngModel',
 			link: function (scope, element, attrs, ctrl) {
 
+				ctrl.$formatters.push(applyPlPostalCodeMask);
+
+				ctrl.$validators.uiPlPostalCode = function(value) {
+					return value && value.length === 5;
+				};
+
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
 						return value;
@@ -2129,11 +2135,7 @@ if (objectTypes[typeof module]) {
 					}
 					return actualValue;
 				});
-				ctrl.$parsers.push(function(value) {
-					var valid = ctrl.$isEmpty(value) || value.length === 5;
-					ctrl.$setValidity('pl-postal-code', valid);
-					return value;
-				});
+
 			}
 		};
 	}
