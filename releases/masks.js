@@ -2115,8 +2115,8 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$formatters.push(applyPlPostalCodeMask);
 
-				ctrl.$validators.uiPlPostalCode = function(value) {
-					return value && value.length === 5;
+				ctrl.$validators.uiPlPostalCode = function(modelValue) {
+					return !modelValue || modelValue.length === 5;
 				};
 
 				ctrl.$parsers.push(function(value) {
