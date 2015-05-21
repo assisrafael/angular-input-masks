@@ -1884,55 +1884,55 @@ if (objectTypes[typeof module]) {
 		}
 	}
 
-	function checkBank(bankId){
-		var message = 'Nie wykryto banku';
-		var banks = [
-			{code: '1010', name: 'Narodowy Bank Polski'},
-			{code: '1020', name: 'PKO BP'},
-			{code: '1030', name: 'Citybank Handlowy'},
-			{code: '1050', name: 'ING'},
-			{code: '1060', name: 'BPH'},
-			{code: '1090', name: 'BZ WBK'},
-			{code: '1130', name: 'BGK'},
-			{code: '1140', name: 'mBank'},
-			{code: '1160', name: 'Bank Millennium'},
-			{code: '1240', name: 'Pekao'},
-			{code: '1280', name: 'HSBC'},
-			{code: '1300', name: 'Meritum Bank'},
-			{code: '1320', name: 'Bank Pocztowy'},
-			{code: '1440', name: 'Nordea Bank'},
-			{code: '1470', name: 'Euro Bank'},
-			{code: '1540', name: 'BOŚ'},
-			{code: '1580', name: 'Mercedes-Benz Bank Polska'},
-			{code: '1600', name: 'BNP Paribas Fortis'},
-			{code: '1610', name: 'SGB - Bank'},
-			{code: '1670', name: 'RBS Bank (Polska)'},
-			{code: '1680', name: 'Plus Bank'},
-			{code: '1750', name: 'Raiffeisen Bank'},
-			{code: '1840', name: 'Societe Generale'},
-			{code: '1870', name: 'FM Bank PBP'},
-			{code: '1910', name: 'Deutsche Bank Polska'},
-			{code: '1930', name: 'Bank Polskiej Spółdzielczości'},
-			{code: '1940', name: 'Credit Agricole Bank Polska'},
-			{code: '1950', name: 'Idea Bank'},
-			{code: '2000', name: 'Rabobank Polska'},
-			{code: '2030', name: 'BGŻ'},
-			{code: '2070', name: 'FCE Bank Polska'},
-			{code: '2120', name: 'Santander Consumer Bank'},
-			{code: '2130', name: 'Volkswagen Bank'},
-			{code: '2140', name: 'Fiat Bank Polska'},
-			{code: '2160', name: 'Toyota Bank'},
-			{code: '2190', name: 'DnB Nord'},
-			{code: '2480', name: 'Getin Noble Bank'},
-			{code: '2490', name: 'Alior Bank'}
-			];
+	// function checkBank(bankId){
+	// 	var message = 'Nie wykryto banku';
+	// 	var banks = [
+	// 		{code: '1010', name: 'Narodowy Bank Polski'},
+	// 		{code: '1020', name: 'PKO BP'},
+	// 		{code: '1030', name: 'Citybank Handlowy'},
+	// 		{code: '1050', name: 'ING'},
+	// 		{code: '1060', name: 'BPH'},
+	// 		{code: '1090', name: 'BZ WBK'},
+	// 		{code: '1130', name: 'BGK'},
+	// 		{code: '1140', name: 'mBank'},
+	// 		{code: '1160', name: 'Bank Millennium'},
+	// 		{code: '1240', name: 'Pekao'},
+	// 		{code: '1280', name: 'HSBC'},
+	// 		{code: '1300', name: 'Meritum Bank'},
+	// 		{code: '1320', name: 'Bank Pocztowy'},
+	// 		{code: '1440', name: 'Nordea Bank'},
+	// 		{code: '1470', name: 'Euro Bank'},
+	// 		{code: '1540', name: 'BOŚ'},
+	// 		{code: '1580', name: 'Mercedes-Benz Bank Polska'},
+	// 		{code: '1600', name: 'BNP Paribas Fortis'},
+	// 		{code: '1610', name: 'SGB - Bank'},
+	// 		{code: '1670', name: 'RBS Bank (Polska)'},
+	// 		{code: '1680', name: 'Plus Bank'},
+	// 		{code: '1750', name: 'Raiffeisen Bank'},
+	// 		{code: '1840', name: 'Societe Generale'},
+	// 		{code: '1870', name: 'FM Bank PBP'},
+	// 		{code: '1910', name: 'Deutsche Bank Polska'},
+	// 		{code: '1930', name: 'Bank Polskiej Spółdzielczości'},
+	// 		{code: '1940', name: 'Credit Agricole Bank Polska'},
+	// 		{code: '1950', name: 'Idea Bank'},
+	// 		{code: '2000', name: 'Rabobank Polska'},
+	// 		{code: '2030', name: 'BGŻ'},
+	// 		{code: '2070', name: 'FCE Bank Polska'},
+	// 		{code: '2120', name: 'Santander Consumer Bank'},
+	// 		{code: '2130', name: 'Volkswagen Bank'},
+	// 		{code: '2140', name: 'Fiat Bank Polska'},
+	// 		{code: '2160', name: 'Toyota Bank'},
+	// 		{code: '2190', name: 'DnB Nord'},
+	// 		{code: '2480', name: 'Getin Noble Bank'},
+	// 		{code: '2490', name: 'Alior Bank'}
+	// 		];
 
-		for (var i in banks)
-			if (banks[i].code.toString() === bankId.toString())
-				message = banks[i].name;
+	// 	for (var i in banks)
+	// 		if (banks[i].code.toString() === bankId.toString())
+	// 			message = banks[i].name;
 
-		return message;
-	}
+	// 	return message;
+	// }
 
 	function uiPlBankAccountNoMask() {
 		function applyPlBankAccountNoMask (value) {
@@ -1974,12 +1974,13 @@ if (objectTypes[typeof module]) {
 				ctrl.$validators.uiPlBankAccountNo = function(value) {
 					var valid = false;
 					if (value && value.length === 26) {
-						// var bankName = checkBank(value.substr(2,4));
-						value = value + '2521';
-        		value = value.substr(2) + value.substr(0, 2);
+						var tempValue = value;
+						// var bankName = checkBank(tempValue.substr(2,4));
+						tempValue = tempValue + '2521';
+        		tempValue = tempValue.substr(2) + tempValue.substr(0, 2);
         		var controlSum = 0;
         		for (var i = 0; i < 30; i++) {
-            	controlSum += value[29 - i] * weights[i];
+            	controlSum += tempValue[29 - i] * weights[i];
         		}
         		if (controlSum % 97 === 1)
 	  	      	valid = true;
@@ -2003,6 +2004,45 @@ if (objectTypes[typeof module]) {
 			require: '^ngModel',
 			link: function (scope, element, attrs, ctrl) {
 
+        var writeToModelPrematurely = false;
+
+        if (attrs['ui-pl-passport-no-mask']) {
+          if (attrs['ui-pl-passport-no-mask'].val() === 't') {
+            writeToModelPrematurely = true;
+          }
+        }
+
+        ctrl.$formatters.push(applyPlPassportNoMask);
+
+				ctrl.$validators.uiPlPassportNo = function(value) {
+ 					if (writeToModelPrematurely)
+            ctrl.$modelValue = value;
+
+					var valid = false;
+					if (value) {
+						if (value.length === 9) {
+							var digs = (''+value).split('');
+	        		var controlSum = (
+	        			convertToWeight(digs[0].toString()) * 7 +
+	        			convertToWeight(digs[1].toString()) * 3 +
+	        			digs[2] * 9 +
+	        			digs[3] * 1 +
+	        			digs[4] *7 +
+	        			digs[5] *3 +
+	        			digs[6] *1 +
+	        			digs[7] *7 +
+	        			digs[8] * 3
+	        		) % 10;
+
+		        	if (controlSum === 0)
+		  	      	valid = true;
+		  	    }
+					}
+					// ctrl.$setValidity('pl-passport-no', valid);
+					// 	return value;
+					return valid;
+				};
+
 				ctrl.$parsers.push(function(value) {
 					if(!value) {
 						return value;
@@ -2020,32 +2060,9 @@ if (objectTypes[typeof module]) {
 					return actualValue;
 				});
 
-				ctrl.$parsers.push(function(value) {
-					var valid = false;
-					if (value.length === 9) {
-						var digs = (''+value).split('');
-        		var controlSum = (
-        			convertToWeight(digs[0].toString()) * 7 +
-        			convertToWeight(digs[1].toString()) * 3 +
-        			digs[2] * 9 +
-        			digs[3] * 1 +
-        			digs[4] *7 +
-        			digs[5] *3 +
-        			digs[6] *1 +
-        			digs[7] *7 +
-        			digs[8] * 3
-        		) % 10;
-
-	        	if (controlSum === 0)
-	  	      	valid = true;
-					}
-					ctrl.$setValidity('pl-passport-no', valid);
-						return value;
-				});
 			}
 		};
 	}
-
 	function uiPlIdNoMask() {
 		function applyPlIdNoMask (value) {
 			if(!value) {
@@ -2066,6 +2083,7 @@ if (objectTypes[typeof module]) {
 					var actualValue =  value.replace(/[^\da-zA-Z]/, '');
 					if (actualValue.length > 9)
 						actualValue = actualValue.replace(/[\da-zA-Z]$/, '');
+
 					var formatedValue = applyPlIdNoMask(actualValue);
 
 					if (ctrl.$viewValue !== formatedValue) {
@@ -2075,7 +2093,9 @@ if (objectTypes[typeof module]) {
 					return actualValue;
 				});
 
-				ctrl.$parsers.push(function(value) {
+				ctrl.$formatters.push(applyPlIdNoMask);
+
+				ctrl.$validators.uiPlIdNo = function(value){
 					var valid = false;
 					if (value.length === 9) {
 						var digs = (''+value).split('');
@@ -2093,9 +2113,8 @@ if (objectTypes[typeof module]) {
 	        	if (parseInt(digs[3]) === controlSum)
 	  	      	valid = true;
 					}
-					ctrl.$setValidity('pl-id-no', valid);
-						return value;
-				});
+					return valid;
+				};
 			}
 		};
 	}
@@ -2113,9 +2132,17 @@ if (objectTypes[typeof module]) {
 			require: '^ngModel',
 			link: function (scope, element, attrs, ctrl) {
 
+				var writeToModelPrematurely = false;
+
+				if (attrs.uiPlPostalCodeMask === 't') {
+					writeToModelPrematurely = true;
+				}
+
 				ctrl.$formatters.push(applyPlPostalCodeMask);
 
 				ctrl.$validators.uiPlPostalCode = function(modelValue) {
+					if (writeToModelPrematurely)
+						ctrl.$modelValue = modelValue;
 					return !modelValue || modelValue.length === 5;
 				};
 
@@ -2169,10 +2196,12 @@ if (objectTypes[typeof module]) {
 					}
 					return actualValue;
 				});
-				ctrl.$parsers.push(function(value) {
+
+				ctrl.$formatters.push(applyPlPeselMask);
+				ctrl.$validators.uiPlPostalCode = function(value) {
 					var valid = false;
 
-					if (value.length === 11) {
+					if (value && value.length === 11) {
 						var dig = (''+value).split('');
         		var controlSum = (
         			1 * parseInt(dig[0]) +
@@ -2193,9 +2222,8 @@ if (objectTypes[typeof module]) {
 	        if (parseInt(dig[10]) === controlSum)
 	  	      valid = true;
 					}
-					ctrl.$setValidity('pl-pesel', valid);
-						return value;
-				});
+					return valid;
+				};
 			}
 		};
 	}
@@ -2216,7 +2244,7 @@ if (objectTypes[typeof module]) {
 
 				ctrl.$formatters.push(applyPlNipMask);
 
-				ctrl.$validators.uiPlNip = function (modelValue, viewValue) {
+				ctrl.$validators.uiPlNip = function (modelValue) {
 					var valid = false;
 					if (modelValue && modelValue.length === 10) {
 						var dig = (''+modelValue).split('');
@@ -2282,11 +2310,14 @@ if (objectTypes[typeof module]) {
 					}
 					return actualValue;
 				});
-				ctrl.$parsers.push(function(value) {
+
+				ctrl.$formatters.push(applyPlRegonMask);
+
+				ctrl.$validators.uiPlRegon = function(value) {
 					var valid = false;
 					var dig = null;
 					var controlSum = null;
-					if (value.length === 9) {
+					if (value && value.length === 9) {
 						dig = (''+value).split('');
 						controlSum = (
 							8 * parseInt(dig[0]) +
@@ -2305,7 +2336,8 @@ if (objectTypes[typeof module]) {
 						if (parseInt(dig[8]) === controlSum)
 							valid = true;
 					}
-					else if (value.length === 14) {
+					// this part doesn't work
+					else if (value && value.length === 14) {
 						dig = (''+value).split('');
 						controlSum = (
 							2 * parseInt(dig[0]) +
@@ -2329,9 +2361,8 @@ if (objectTypes[typeof module]) {
 						if (parseInt(dig[13]) === controlSum)
 							valid = true;
 					}
-					ctrl.$setValidity('pl-regon', valid);
-					return value;
-				});
+					return valid;
+				};
 			}
 		};
 	}
@@ -2364,26 +2395,28 @@ if (objectTypes[typeof module]) {
 					}
 					return actualValue;
 				});
-				ctrl.$parsers.push(function(value) {
+				ctrl.$formatters.push(applyPlMedicalNoMask);
+
+				ctrl.$validators.uiPlMedicalNo = function(value) {
 					var valid = false;
-					var dig = (''+value).split('');
-					if ((value.length === 7) && (parseInt(dig[0]) !== 0)) {
-        		var controlSum = (
-        			1 * parseInt(dig[1]) +
-        			2 * parseInt(dig[2]) +
-        			3 * parseInt(dig[3]) +
-        			4 * parseInt(dig[4]) +
-        			5 * parseInt(dig[5]) +
-        			6 * parseInt(dig[6])
-        		) % 11;
+					if (value){
+						var dig = (''+value).split('');
+						if ((value.length === 7) && (parseInt(dig[0]) !== 0)) {
+	        		var controlSum = (
+	        			1 * parseInt(dig[1]) +
+	        			2 * parseInt(dig[2]) +
+	        			3 * parseInt(dig[3]) +
+	        			4 * parseInt(dig[4]) +
+	        			5 * parseInt(dig[5]) +
+	        			6 * parseInt(dig[6])
+	        		) % 11;
 
 	        	if (parseInt(dig[0]) === controlSum)
 	  	      	valid = true;
+	  	    	}
 					}
-
-					ctrl.$setValidity('pl-medical-no', valid);
-						return value;
-				});
+					return valid;
+				};
 			}
 		};
 	}
