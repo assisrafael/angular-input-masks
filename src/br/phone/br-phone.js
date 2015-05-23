@@ -1,7 +1,6 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.br.phone', [])
-.directive('uiBrPhoneNumber', [function() {
+function BrPhoneNumberDirective() {
 	/**
 	 * FIXME: all numbers will have 9 digits after 2016.
 	 * see http://portal.embratel.com.br/embratel/9-digito/
@@ -65,4 +64,6 @@ angular.module('ui.utils.masks.br.phone', [])
 			ctrl.$parsers.push(validator);
 		}
 	};
-}]);
+}
+
+module.exports = BrPhoneNumberDirective;

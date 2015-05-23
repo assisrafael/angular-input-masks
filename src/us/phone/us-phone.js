@@ -1,7 +1,6 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.us.phone', [])
-.directive('uiUsPhoneNumber', [function() {
+function UsPhoneNumber() {
 	var phoneMaskUS = new StringMask('(000) 000-0000'),
 		phoneMaskINTL = new StringMask('+00-00-000-000000');
 
@@ -61,4 +60,6 @@ angular.module('ui.utils.masks.us.phone', [])
 			ctrl.$parsers.push(validator);
 		}
 	};
-}]);
+}
+
+module.exports = UsPhoneNumber;

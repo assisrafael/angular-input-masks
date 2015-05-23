@@ -1,7 +1,6 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.br.cep', [])
-.directive('uiBrCepMask', [function() {
+function BrCepMaskDirective() {
 	var cepMask = new StringMask('00000-000');
 
 	function clearValue(value) {
@@ -55,4 +54,6 @@ angular.module('ui.utils.masks.br.cep', [])
 			ctrl.$parsers.push(validator);
 		}
 	};
-}]);
+}
+
+module.exports = BrCepMaskDirective;

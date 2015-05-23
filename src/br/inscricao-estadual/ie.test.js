@@ -1,5 +1,7 @@
+require('../br-masks');
+
 describe('ui-br-ie-mask', function() {
-	beforeEach(module('ui.utils.masks.br.ie'));
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {

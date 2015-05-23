@@ -1,5 +1,7 @@
+require('../br-masks');
+
 describe('ui-nfe-access-key-mask', function() {
-	beforeEach(module('ui.utils.masks.br.nfe'));
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {

@@ -1,5 +1,7 @@
+require('../us-masks');
+
 describe('ui-us-phone-mask', function() {
-	beforeEach(module('ui.utils.masks.us.phone'));
+	beforeEach(angular.mock.module('ui.utils.masks.us'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {

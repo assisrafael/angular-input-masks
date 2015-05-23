@@ -1,7 +1,6 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.br.nfe', [])
-.directive('uiNfeAccessKeyMask', ['$log', function($log) {
+function NfeAccessKeyMaskDirective() {
 	var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
 		' 0000 0000 0000 0000 0000 0000');
 
@@ -14,7 +13,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
 			function formatter(value) {
-				$log.debug('[uiNfeAccessKeyMask] Formatter called: ', value);
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
@@ -24,7 +22,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 			}
 
 			function parser(value) {
-				$log.debug('[uiNfeAccessKeyMask] Parser called: ', value);
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
@@ -41,8 +38,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 			}
 
 			function validator (value) {
-				$log.debug('[uiNfeAccessKeyMask] Validator called: ', value);
-
 				var isValid = ctrl.$isEmpty(value) || value.toString().length === 44;
 
 				ctrl.$setValidity('nfeAccessKey', isValid);
@@ -55,4 +50,6 @@ angular.module('ui.utils.masks.br.nfe', [])
 			ctrl.$parsers.push(validator);
 		}
 	};
-}]);
+}
+
+module.exports = NfeAccessKeyMaskDirective;

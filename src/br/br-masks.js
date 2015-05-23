@@ -1,10 +1,10 @@
-'use strict';
+var m = angular.module('ui.utils.masks.br', [
+	require('../helpers'),
+	require('./cpf-cnpj/cpf-cnpj')
+])
+.directive('uiBrCepMask', require('./cep/cep'))
+.directive('uiBrIeMask', require('./inscricao-estadual/ie'))
+.directive('uiNfeAccessKeyMask', require('./nfe/nfe'))
+.directive('uiBrPhoneNumber', require('./phone/br-phone'));
 
-angular.module('ui.utils.masks.br', [
-	'ui.utils.masks.helpers',
-	'ui.utils.masks.br.cep',
-	'ui.utils.masks.br.cpfCnpj',
-	'ui.utils.masks.br.ie',
-	'ui.utils.masks.br.nfe',
-	'ui.utils.masks.br.phone'
-]);
+module.exports = m.name;

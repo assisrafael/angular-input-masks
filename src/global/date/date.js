@@ -1,33 +1,7 @@
-'use strict';
+var moment = require('moment');
+var StringMask = require('string-mask');
 
-/*global moment*/
-var globalMomentJS;
-if (typeof moment !== 'undefined') {
-	globalMomentJS = moment;
-}
-
-var dependencies = [];
-
-try {
-	//Check if angular-momentjs is available
-	angular.module('angular-momentjs');
-	dependencies.push('angular-momentjs');
-} catch (e) {}
-
-angular.module('ui.utils.masks.global.date', dependencies)
-.directive('uiDateMask', ['$locale', '$log', '$injector', function($locale, $log, $injector) {
-	var moment;
-
-	if (typeof globalMomentJS === 'undefined') {
-		if ($injector.has('MomentJS')) {
-			moment = $injector.get('MomentJS');
-		} else {
-			throw new Error('Moment.js not found. Check if it is available.');
-		}
-	} else {
-		moment = globalMomentJS;
-	}
-
+function DateMaskDirective($locale) {
 	var dateFormatMapByLocalle = {
 		'pt-br': 'DD/MM/YYYY',
 	};
@@ -48,7 +22,6 @@ angular.module('ui.utils.masks.global.date', dependencies)
 			}
 
 			function formatter (value) {
-				$log.debug('[uiDateMask] Formatter called: ', value);
 				if(ctrl.$isEmpty(value)) {
 					return value;
 				}
@@ -59,14 +32,12 @@ angular.module('ui.utils.masks.global.date', dependencies)
 			}
 
 			function parser(value) {
-				$log.debug('[uiDateMask] Parser called: ', value);
 				if(ctrl.$isEmpty(value)) {
 					validator(value);
 					return value;
 				}
 
 				var formatedValue = applyMask(value);
-				$log.debug('[uiDateMask] Formated value: ', formatedValue);
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
@@ -79,8 +50,6 @@ angular.module('ui.utils.masks.global.date', dependencies)
 			}
 
 			function validator(value) {
-				$log.debug('[uiDateMask] Validator called: ', value);
-
 				var isValid = moment(value, dateFormat).isValid() &&
 					value.length === dateFormat.length;
 				ctrl.$setValidity('date', ctrl.$isEmpty(value) || isValid);
@@ -90,4 +59,7 @@ angular.module('ui.utils.masks.global.date', dependencies)
 			ctrl.$parsers.push(parser);
 		}
 	};
-}]);
+}
+DateMaskDirective.$inject = ['$locale'];
+
+module.exports = DateMaskDirective;

@@ -1,5 +1,9 @@
+require('../global-masks');
+
+var StringMask = require('string-mask');
+
 describe('ui-number-mask', function() {
-	beforeEach(module('ui.utils.masks.global.number'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {

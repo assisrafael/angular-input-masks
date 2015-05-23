@@ -1,12 +1,10 @@
 module.exports = function(config) {
 	var configuration = {
 		basePath: __dirname + '/..',
-		frameworks: ['jasmine'],
+		frameworks: ['browserify', 'jasmine'],
 		files: [
-			'bower_components/angular/angular.js',
-			'bower_components/angular-mocks/angular-mocks.js',
-			'bower_components/moment/moment.js',
-			'bower_components/string-mask/src/string-mask.js',
+			'node_modules/angular/angular.js',
+			'node_modules/angular-mocks/angular-mocks.js',
 			'bower_components/br-validations/releases/br-validations.js',
 			'config/test-utils.js',
 			{ //ignore e2e specs
@@ -20,7 +18,11 @@ module.exports = function(config) {
 		port: 9876,
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
-			'src/**/!(*spec|*test).js': ['coverage']
+			'src/**/*.js': [ 'browserify' ],
+			'src/**/!(*test).js': ['coverage']
+		},
+		browserify: {
+			debug: true
 		},
 		coverageReporter: {
 			dir: 'coverage',
