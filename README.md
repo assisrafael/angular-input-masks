@@ -67,11 +67,17 @@ bower install --save angular-input-masks
 <input type="text" name="field" ng-model="percentage" ui-percentage-mask="4">
 ```
 
+- The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
+
+- You can use the same value in $modelValue and $viewValue using ```ui-percentage-value```:
+
+```html
+<input type="text" name="field" ng-model="percentage" ui-percentage-mask ui-percentage-value>
+```
+
 - Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
 - Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.
-
-- The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
 
 ### ui-money-mask ###
 
