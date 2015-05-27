@@ -6,8 +6,8 @@ angular.module('ui.utils.masks.global.percentage', [
 .directive('uiPercentageMask',
 	['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators',
 	function ($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
-		function preparePercentageToFormatter (value, decimals) {
-			return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*100).toFixed(decimals));
+		function preparePercentageToFormatter (value, decimals, modelMultiplier) {
+			return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*modelMultiplier).toFixed(decimals));
 		}
 
 		return {
@@ -16,10 +16,15 @@ angular.module('ui.utils.masks.global.percentage', [
 			link: function (scope, element, attrs, ctrl) {
 				var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 					thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-					decimals = parseInt(attrs.uiPercentageMask);
+					decimals = parseInt(attrs.uiPercentageMask),
+					modelMultiplier = 100;
 
 				if (angular.isDefined(attrs.uiHideGroupSep)){
 					thousandsDelimiter = '';
+				}
+
+				if (angular.isDefined(attrs.uiPercentageValue)) {
+					modelMultiplier = 1;
 				}
 
 				if(isNaN(decimals)) {
@@ -35,7 +40,7 @@ angular.module('ui.utils.masks.global.percentage', [
 						return value;
 					}
 
-					var valueToFormat = preparePercentageToFormatter(value, decimals);
+					var valueToFormat = preparePercentageToFormatter(value, decimals, modelMultiplier);
 					return viewMask.apply(valueToFormat) + ' %';
 				}
 
