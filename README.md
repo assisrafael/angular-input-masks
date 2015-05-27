@@ -71,6 +71,8 @@ bower install --save angular-input-masks
 
 - Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.
 
+- The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
+
 ### ui-money-mask ###
 
  - Example:
