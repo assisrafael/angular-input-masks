@@ -4,3 +4,8 @@ node_modules
 coverage
 npm-debug.log
 releases
+
+.DS_Store
+*.swp
+.idea
+*.iml

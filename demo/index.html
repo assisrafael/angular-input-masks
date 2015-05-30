@@ -63,8 +63,8 @@
 		<br>
 
 		<h2>ui-percentage-mask</h2>
-		<input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>
-		<span ng-bind="percentageWithDefaultDecimals"></span>
+		$viewValue - <input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ui-percentage-mask> <br>
+		$modelValue - <span ng-bind="percentageWithDefaultDecimals"></span>
 		<br>
 		<input type="text" name="field6" ng-model="percentageWith4Decimals" ui-percentage-mask="4" min="percentageWithDefaultDecimals" max="115"> <br>
 		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
@@ -73,6 +73,10 @@
 		Decimals: <input type="text" name="field26" ng-model="pdecimals" ui-number-mask=0><br>
 		<span ng-bind="percentWithDynamicDecimals"></span> - {{form.field25.$error}}
 		<br>
+		<h4>ui-percentage-value</h4>
+		$viewValue - <input type="text" name="field6" ng-model="percentageValue" ui-percentage-mask="4" ui-percentage-value min="percentageWithDefaultDecimals" max="115"> <br>
+		$modelValue - <span ng-bind="percentageValue"></span>
+		<br />
 
 		<h2>ui-br-cpf-mask</h2>
 		<i>Same as the deprecated <b>ui-cpf-mask</b></i><br><br>
