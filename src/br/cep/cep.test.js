@@ -27,6 +27,15 @@ describe('ui-br-cep-mask', function() {
 		expect(model.$viewValue).toBe('30112-010');
 	});
 
+	it('should accept formatted initial model values', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>', {
+			model: '30112-010'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('30112-010');
+	});
+
 	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>');
 		var model = input.controller('ngModel');

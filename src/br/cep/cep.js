@@ -29,7 +29,7 @@ angular.module('ui.utils.masks.br.cep', [])
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
-
+				value = clearValue(value);
 				return applyCepMask(value);
 			}
 
