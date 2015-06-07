@@ -1,5 +1,6 @@
 var StringMask = require('string-mask');
 var BrV = require('br-validations');
+var maskFactory = require('mask-factory');
 
 var cnpjPattern = new StringMask('00.000.000\/0000-00');
 var cpfPattern = new StringMask('000.000.000-00');
@@ -30,99 +31,34 @@ function removeNonDigits(value) {
 	return value.replace(/[^\d]/g, '');
 }
 
-function uiBrCpfMask() {
-	function applyCpfMask (value) {
-		var formatedValue = cpfPattern.apply(value) || '';
-		return formatedValue.trim().replace(/[^0-9]$/, '');
+var uiBrCpfMask = maskFactory({
+	validationErrorKey: 'cpf',
+	clearValue: function(rawValue) {
+		return rawValue.replace(/[^\d]/g, '').slice(0, 11);
+	},
+	format: function(cleanValue) {
+		return (cpfPattern.apply(cleanValue) || '').trim().replace(/[^0-9]$/, '');
+	},
+	validate: function(value) {
+		return BrV.cpf.validate(value);
 	}
+});
 
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: function (scope, element, attrs, ctrl) {
-			function formatter(value) {
-				if (ctrl.$isEmpty(value)) {
-					return value;
-				}
-
-				return applyCpfMask(removeNonDigits(value));
-			}
-
-			function parser(value) {
-				if (ctrl.$isEmpty(value)) {
-					return value;
-				}
-
-				var formatedValue = applyCpfMask(removeNonDigits(value));
-				var actualNumber = removeNonDigits(formatedValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return actualNumber;
-			}
-
-			function validator(value) {
-				return validateCPF(ctrl, value);
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
-		}
-	};
-}
-
-function uiBrCnpjMask() {
-	function applyCnpjMask (value) {
-		var formatedValue = cnpjPattern.apply(value) || '';
-		return formatedValue.trim().replace(/[^0-9]$/, '');
+var uiBrCnpjMask = maskFactory({
+	validationErrorKey: 'cnpj',
+	clearValue: function(rawValue) {
+		return rawValue.replace(/[^\d]/g, '').slice(0, 14);
+	},
+	format: function(cleanValue) {
+		return (cnpjPattern.apply(cleanValue) || '').trim().replace(/[^0-9]$/, '');
+	},
+	validate: function(value) {
+		return BrV.cnpj.validate(value);
 	}
-
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: function (scope, element, attrs, ctrl) {
-			function formatter(value) {
-				if (ctrl.$isEmpty(value)) {
-					return value;
-				}
-
-				return applyCnpjMask(removeNonDigits(value));
-			}
-
-			function parser(value) {
-				if (ctrl.$isEmpty(value)) {
-					return value;
-				}
-
-				var formatedValue = applyCnpjMask(removeNonDigits(value));
-				var actualNumber = removeNonDigits(formatedValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return actualNumber;
-			}
-
-			function validator(value) {
-				return validateCNPJ(ctrl, value);
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
-		}
-	};
-}
+});
 
 function uiBrCpfCnpjMask() {
-	function applyCpfCnpjMask (value) {
+	function applyCpfCnpjMask(value) {
 		var formatedValue;
 		if (value.length > 11) {
 			formatedValue = cnpjPattern.apply(value);
