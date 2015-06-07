@@ -1,19 +1,12 @@
+require('../global-masks');
+
 describe('ui-time-mask', function() {
-	beforeEach(module('ui.utils.masks.global.time'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-time-mask>');
 		}).toThrow();
-	});
-
-	it('should throw an error if StringMask is not found', function() {
-		var _StringMask = StringMask;
-		StringMask = undefined;
-		expect(function() {
-			TestUtil.compile('<input ng-model="model" ui-time-mask>');
-		}).toThrow();
-		StringMask = _StringMask;
 	});
 
 	it('should register a $parser and a $formatter', function() {

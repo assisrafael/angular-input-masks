@@ -1,11 +1,11 @@
-'use strict';
+var m = angular.module('ui.utils.masks.global', [
+	require('../helpers'),
+])
+.directive('uiDateMask', require('./date/date'))
+.directive('uiMoneyMask', require('./money/money'))
+.directive('uiNumberMask', require('./number/number'))
+.directive('uiPercentageMask', require('./percentage/percentage'))
+.directive('uiScientificNotationMask', require('./scientific-notation/scientific-notation'))
+.directive('uiTimeMask', require('./time/time'));
 
-angular.module('ui.utils.masks.global', [
-	'ui.utils.masks.helpers',
-	'ui.utils.masks.global.date',
-	'ui.utils.masks.global.money',
-	'ui.utils.masks.global.number',
-	'ui.utils.masks.global.percentage',
-	'ui.utils.masks.global.scientific-notation',
-	'ui.utils.masks.global.time'
-]);
+module.exports = m.name;

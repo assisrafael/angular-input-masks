@@ -1,5 +1,7 @@
+require('../br-masks');
+
 describe('ui-br-phone-number', function() {
-	beforeEach(module('ui.utils.masks.br.phone'));
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
@@ -65,5 +67,18 @@ describe('ui-br-phone-number', function() {
 		expect(model.$error.brPhoneNumber).toBe(true);
 		input.val('12345678901').triggerHandler('input');
 		expect(model.$error.brPhoneNumber).toBe(false);
+	});
+
+	it('should use the type of the model value (if initialized)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+			model: 1234567890
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('(12) 3456-7890');
+		expect(model.$modelValue).toBe(1234567890);
+		input.val('12345678901').triggerHandler('input');
+		expect(model.$viewValue).toBe('(12) 34567-8901');
+		expect(model.$modelValue).toBe(12345678901);
 	});
 });

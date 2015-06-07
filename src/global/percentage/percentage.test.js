@@ -1,5 +1,7 @@
+require('../global-masks');
+
 describe('ui-percentage-mask', function() {
-	beforeEach(module('ui.utils.masks.global.percentage'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
@@ -97,4 +99,30 @@ describe('ui-percentage-mask', function() {
 		input.val('99990').triggerHandler('input');
 		expect(model.$valid).toBe(true);
 	});
+
+	it('should format initial model values with percentage value', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask ui-percentage-value>', {
+			model: '1234.5'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('1,234.50 %');
+	});
+
+	it('should allow changing the number of decimals', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals" ui-percentage-value>', {
+			model: '1234.501',
+			decimals: 2
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('1,234.50 %');
+		$rootScope.decimals = 3;
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('123.450 %');
+		$rootScope.decimals = 'invalid value';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('1,234.50 %');
+	}));
+
 });

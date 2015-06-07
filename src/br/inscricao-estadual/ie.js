@@ -1,13 +1,7 @@
-'use strict';
+var StringMask = require('string-mask');
+var BrV = require('br-validations');
 
-/*global BrV*/
-var globalBrV;
-if (typeof BrV !== 'undefined') {
-	globalBrV = BrV;
-}
-
-angular.module('ui.utils.masks.br.ie', [])
-.directive('uiBrIeMask', ['$parse', function($parse) {
+function BrIeMaskDirective($parse) {
 	var ieMasks = {
 		'AC': [{mask: new StringMask('00.000.000/000-00')}],
 		'AL': [{mask: new StringMask('000000000')}],
@@ -122,11 +116,7 @@ angular.module('ui.utils.masks.br.ie', [])
 			}
 
 			function validator(value) {
-				if (!globalBrV) {
-					return value;
-				}
-
-				var isValid = ctrl.$isEmpty(value) || globalBrV.ie(state).validate(value);
+				var isValid = ctrl.$isEmpty(value) || BrV.ie(state).validate(value);
 				ctrl.$setValidity('ie', isValid);
 
 				return value;
@@ -146,4 +136,7 @@ angular.module('ui.utils.masks.br.ie', [])
 			});
 		}
 	};
-}]);
+}
+BrIeMaskDirective.$inject = ['$parse'];
+
+module.exports = BrIeMaskDirective;

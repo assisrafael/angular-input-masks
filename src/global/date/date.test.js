@@ -1,19 +1,12 @@
+require('../global-masks');
+
 describe('ui-date-mask', function() {
-	beforeEach(module('ui.utils.masks.global.date'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-date-mask>');
 		}).toThrow();
-	});
-
-	it('should throw an error if moment.js is not found', function() {
-		var _globalMomentJS = globalMomentJS;
-		globalMomentJS = undefined;
-		expect(function() {
-			TestUtil.compile('<input ng-model="model" ui-date-mask>');
-		}).toThrow();
-		globalMomentJS = _globalMomentJS;
 	});
 
 	it('should register a $parser and a $formatter', function() {

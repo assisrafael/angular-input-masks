@@ -1,5 +1,7 @@
+require('../br-masks');
+
 describe('ui-br-cnpj-mask', function() {
-	beforeEach(module('ui.utils.masks.br.cpfCnpj'));
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
@@ -15,7 +17,7 @@ describe('ui-br-cnpj-mask', function() {
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
 	});
 
 	it('should format initial model values', function() {

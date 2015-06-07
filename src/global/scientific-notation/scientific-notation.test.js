@@ -1,5 +1,7 @@
+require('../global-masks');
+
 describe('ui-scientific-notation-mask', function() {
-	beforeEach(module('ui.utils.masks.global.scientific-notation'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {

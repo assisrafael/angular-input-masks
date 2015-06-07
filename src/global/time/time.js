@@ -1,11 +1,6 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.global.time', [])
-.directive('uiTimeMask', ['$log', function($log) {
-	if(typeof StringMask === 'undefined') {
-		throw new Error('StringMask not found. Check if it is available.');
-	}
-
+function TimeMaskDirective() {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -22,13 +17,12 @@ angular.module('ui.utils.masks.global.time', [])
 
 			var timeMask = new StringMask(timeFormat);
 
-			function clearValue (value) {
+			function clearValue(value) {
 				return value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength);
 			}
 
-			function formatter (value) {
-				$log.debug('[uiTimeMask] Formatter called: ', value);
-				if(ctrl.$isEmpty(value)) {
+			function formatter(value) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -43,12 +37,10 @@ angular.module('ui.utils.masks.global.time', [])
 			}
 
 			function parser (value) {
-				$log.debug('[uiTimeMask] Parser called: ', value);
-
 				var viewValue = formatter(value);
 				var modelValue = viewValue;
 
-				if(ctrl.$viewValue !== viewValue) {
+				if (ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
 					ctrl.$render();
 				}
@@ -57,9 +49,7 @@ angular.module('ui.utils.masks.global.time', [])
 			}
 
 			function validator (value) {
-				$log.debug('[uiTimeMask] Validator called: ', value);
-
-				if(angular.isUndefined(value)) {
+				if (angular.isUndefined(value)) {
 					return value;
 				}
 
@@ -84,4 +74,6 @@ angular.module('ui.utils.masks.global.time', [])
 			ctrl.$parsers.push(validator);
 		}
 	};
-}]);
+}
+
+module.exports = TimeMaskDirective;
