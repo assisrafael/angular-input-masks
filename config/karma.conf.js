@@ -13,12 +13,12 @@ module.exports = function(config) {
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
 			'src/**/*.test.js': [ 'browserify' ],
-			'src/**/*!(test|spec).js': ['coverage']
+			'src/**/!(*test).js': ['coverage']
 		},
 		browserify: {
 			debug: true,
 			transform: [require('browserify-istanbul')({
-				ignore: '*.test.js'
+				ignore: '**/*.test.js'
 			})]
 		},
 		coverageReporter: {
