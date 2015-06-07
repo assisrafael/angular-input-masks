@@ -1,6 +1,6 @@
 {
   "name": "angular-input-masks",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Personalized input masks for AngularJS",
   "main": "releases/angular-input-masks-standalone.min.js",
   "repository": {
@@ -10,8 +10,6 @@
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "bower install",
-    "postupdate": "bower update",
     "prepublish": "gulp build"
   },
   "keywords": [
