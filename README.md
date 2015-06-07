@@ -14,7 +14,7 @@ bower install --save angular-input-masks
 
 ## How to use
 
-1. Import the ```masks.min.js``` script in your page.
+1. Import the ```releases/angular-input-masks-standalone.min.js``` script in your page.
 
 2. Include the module ```ui.utils.masks``` in your angular app.
 
