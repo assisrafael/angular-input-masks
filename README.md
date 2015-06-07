@@ -14,7 +14,7 @@ With Bower:
 bower install --save angular-input-masks
 ```
 
-With NPM:
+With NPM/Browserify:
 
 ```
 npm install --save angular-input-masks
