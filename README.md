@@ -12,6 +12,12 @@ With Bower:
 bower install --save angular-input-masks
 ```
 
+With NPM:
+
+```
+npm install --save angular-input-masks
+```
+
 ## How to use
 
 1. Import the ```releases/angular-input-masks-standalone.min.js``` script in your page.
