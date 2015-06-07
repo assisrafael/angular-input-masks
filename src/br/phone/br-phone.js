@@ -9,7 +9,7 @@ function BrPhoneNumberDirective() {
 		phoneMask9D = new StringMask('(00) 00000-0000');
 
 	function removeNonDigits(value) {
-		return value.replace(/[^0-9]/g, '');
+		return value.toString().replace(/[^0-9]/g, '');
 	}
 
 	function applyPhoneMask(value) {
@@ -49,11 +49,12 @@ function BrPhoneNumberDirective() {
 					ctrl.$render();
 				}
 
-				return actualValue;
+				return angular.isNumber(ctrl.$modelValue) ? parseInt(actualValue) : actualValue;
 			}
 
 			function validator(value) {
-				var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
+				var valueLength = value && value.toString().length;
+				var valid = ctrl.$isEmpty(value) || valueLength === 10 || valueLength === 11;
 				ctrl.$setValidity('brPhoneNumber', valid);
 				return value;
 			}
