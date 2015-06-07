@@ -1,6 +1,6 @@
 function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
-	function preparePercentageToFormatter (value, decimals) {
-		return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*100).toFixed(decimals));
+	function preparePercentageToFormatter (value, decimals, modelMultiplier) {
+		return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*modelMultiplier).toFixed(decimals));
 	}
 
 	return {
@@ -11,15 +11,25 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				decimals = parseInt(attrs.uiPercentageMask);
 
+			var modelValue = {
+				multiplier : 100,
+				decimalMask: 2 
+			};
+
 			if (angular.isDefined(attrs.uiHideGroupSep)){
 				thousandsDelimiter = '';
+			}
+
+			if (angular.isDefined(attrs.uiPercentageValue)) {
+				modelValue.multiplier  = 1;
+				modelValue.decimalMask = 0;
 			}
 
 			if(isNaN(decimals)) {
 				decimals = 2;
 			}
 
-			var numberDecimals = decimals + 2;
+			var numberDecimals = decimals + modelValue.decimalMask;
 			var viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter),
 				modelMask = NumberMasks.modelMask(numberDecimals);
 
@@ -28,7 +38,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 					return value;
 				}
 
-				var valueToFormat = preparePercentageToFormatter(value, decimals);
+				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
 				return viewMask.apply(valueToFormat) + ' %';
 			}
 
@@ -60,7 +70,13 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 					if(isNaN(decimals)) {
 						decimals = 2;
 					}
-					numberDecimals = decimals + 2;
+					
+					if (angular.isDefined(attrs.uiPercentageValue)) {
+						modelValue.multiplier  = 1;
+						modelValue.decimalMask = 0;
+					}
+
+					numberDecimals = decimals + modelValue.decimalMask;
 					viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter);
 					modelMask = NumberMasks.modelMask(numberDecimals);
 
