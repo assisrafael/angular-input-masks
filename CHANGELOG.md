@@ -1,3 +1,15 @@
+<a name"1.5.0"></a>
+## 1.5.0 (2015-06-07)
+
+
+#### Features
+
+* **mask-factory:** implement a module to help write new masks ([757e3204](http://github.com/assisrafael/angular-input-masks/commit/757e3204))
+* **ui-br-boleto-bancario:** define a component to parse and format brazilian "boleto bancário" ([b6582452](http://github.com/assisrafael/angular-input-masks/commit/b6582452))
+* **ui-br-phone-number:** preserve the original model type ([340ee6d7](http://github.com/assisrafael/angular-input-masks/commit/340ee6d7))
+* **ui-percentage-value:** add attribute ui-percentage-value to use and as the same ([df8f9418](http://github.com/assisrafael/angular-input-masks/commit/df8f9418))
+
+
 <a name"1.4.2"></a>
 ### 1.4.2 (2015-04-07)
 
