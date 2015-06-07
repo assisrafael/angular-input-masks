@@ -10,8 +10,6 @@
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
     "test": "gulp test",
-    "postinstall": "bower install",
-    "postupdate": "bower update",
     "prepublish": "gulp build"
   },
   "keywords": [
