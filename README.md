@@ -151,6 +151,15 @@ npm install --save angular-input-masks
 
 _See more usage examples in the [Demo page](http://assisrafael.github.io/angular-input-masks/)_
 
+### Masks undocumented (PR plz!)
+
+- ui-nfe-acces-key-mask
+- ui-time-mask
+- ui-date-mask
+- ui-br-boleto-bancario-mask
+- ui-scientific-notation-mask
+- ui-us-phone-number
+
 ## Filters
 
 Looking for related filters? Take a look at [angular-br-filters](https://github.com/the-darc/angular-br-filters)
