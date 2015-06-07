@@ -7,22 +7,19 @@ module.exports = function(config) {
 			'node_modules/angular-mocks/angular-mocks.js',
 			'bower_components/br-validations/releases/br-validations.js',
 			'config/test-utils.js',
-			{ //ignore e2e specs
-				pattern: 'src/**/*.spec.js',
-				included: false,
-				served: false,
-				watched: false
-			},
-			'src/**/*.js',
+			'src/**/*.test.js',
 		],
 		port: 9876,
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
-			'src/**/*.js': [ 'browserify' ],
-			'src/**/!(*test).js': ['coverage']
+			'src/**/*.test.js': [ 'browserify' ],
+			'src/**/*!(test|spec).js': ['coverage']
 		},
 		browserify: {
-			debug: true
+			debug: true,
+			transform: [require('browserify-istanbul')({
+				ignore: '*.test.js'
+			})]
 		},
 		coverageReporter: {
 			dir: 'coverage',
@@ -32,6 +29,10 @@ module.exports = function(config) {
 			}, {
 				type: 'html',
 				subdir: 'report-html'
+			}, {
+				type: 'text',
+			}, {
+				type: 'text-summary',
 			}]
 		},
 		colors: true,
