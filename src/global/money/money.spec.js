@@ -18,7 +18,7 @@ describe('ui.utils.masks.money', function() {
 			var input = element(by.model('defaultMoney')),
 				value = element(by.binding('defaultMoney'));
 
-			expect(input.getAttribute('value')).toEqual(currency+'15.312,00');
+			expect(input.getAttribute('value')).toEqual(currency + '153,12');
 			input.clear();
 
 			for (var i = 1; i <= 9; i++) {
