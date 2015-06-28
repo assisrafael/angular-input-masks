@@ -12,6 +12,16 @@ var gulp = require('gulp'),
 
 var pkg = require('./package.json');
 
+var header = ['/**',
+		' * <%= pkg.name %>',
+		' * <%= pkg.description %>',
+		' * @version v<%= pkg.version %>',
+		' * @link <%= pkg.homepage %>',
+		' * @license <%= pkg.license %>',
+		' */',
+		''
+	].join('\n');
+
 gulp.task('build-dependencies', function() {
 	return browserify()
 		.require('string-mask', {
@@ -73,6 +83,7 @@ gulp.task('build', ['build-dependencies'], function() {
 			.bundle()
 			.pipe(source(entry.outputFileName || entry.fileName))
 			.pipe(buffer())
+			.pipe(plugins.header(header, {pkg: pkg}))
 			.pipe(gulp.dest('./releases/'))
 			.pipe(plugins.uglify())
 			.pipe(plugins.rename({

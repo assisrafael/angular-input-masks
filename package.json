@@ -28,13 +28,13 @@
     "angular-mocks": "~1.2.28",
     "browserify": "^10.2.1",
     "browserify-istanbul": "^0.2.1",
-    "browserify-versionify": "^1.0.4",
     "conventional-changelog": "0.0.17",
     "express": "^4.8.5",
     "gulp": "^3.7.0",
     "gulp-bump": "^0.3.0",
     "gulp-exit": "0.0.2",
     "gulp-git": "^1.1.0",
+    "gulp-header": "^1.2.2",
     "gulp-jshint": "^1.6.1",
     "gulp-load-plugins": "^0.10.0",
     "gulp-protractor": "~1.0.0",
@@ -54,11 +54,6 @@
     "run-sequence": "^1.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "browserify": {
-    "transform": [
-      "browserify-versionify"
-    ]
   },
   "files": [
     "src/",
