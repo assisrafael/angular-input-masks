@@ -2,11 +2,11 @@ var moment = require('moment');
 var StringMask = require('string-mask');
 
 function DateMaskDirective($locale) {
-	var dateFormatMapByLocalle = {
+	var dateFormatMapByLocale = {
 		'pt-br': 'DD/MM/YYYY',
 	};
 
-	var dateFormat = dateFormatMapByLocalle[$locale.id] || 'YYYY-MM-DD';
+	var dateFormat = dateFormatMapByLocale[$locale.id] || 'YYYY-MM-DD';
 
 	return {
 		restrict: 'A',
