@@ -31,6 +31,15 @@ describe('ui-money-mask', function() {
 		expect(model.$viewValue).toBe('$ 3,456.79');
 	});
 
+	it('should support number values', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 345.00');
+	});
+
 	it('should hide thousands delimiter when ui-hide-group-sep is present', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-hide-group-sep>', {
 			model: '3456.79'
