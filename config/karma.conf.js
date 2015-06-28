@@ -8,11 +8,13 @@ module.exports = function(config) {
 			'bower_components/br-validations/releases/br-validations.js',
 			'config/test-utils.js',
 			'src/**/*.test.js',
+			'*.test.js'
 		],
 		port: 9876,
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
 			'src/**/*.test.js': [ 'browserify' ],
+			'*.test.js': [ 'browserify' ],
 			'src/**/!(*test).js': ['coverage']
 		},
 		browserify: {

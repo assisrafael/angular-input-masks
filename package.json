@@ -2,7 +2,6 @@
   "name": "angular-input-masks",
   "version": "1.5.1",
   "description": "Personalized input masks for AngularJS",
-  "main": "releases/angular-input-masks-standalone.min.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/assisrafael/angular-input-masks.git"
@@ -62,7 +61,11 @@
     ]
   },
   "files": [
+    "src/",
     "releases/",
+    "index.js",
+    "br.js",
+    "us.js",
     "LICENSE",
     "CHANGELOG.md",
     "README.md"
