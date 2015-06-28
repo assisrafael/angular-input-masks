@@ -8,35 +8,34 @@
 	<script src="../releases/angular-input-masks-dependencies.js"></script>
 	<script src="../releases/angular-input-masks.js"></script>
 	<script>
-		angular.module('demo', ['ui.utils.masks']);
+		angular.module('demo', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.numberWith2Decimals = -1234.178;
+				$scope.percentageWithDefaultDecimals = 0.7654;
 
-		function ctrl($scope) {
-			$scope.numberWith2Decimals = -1234.178;
-			$scope.percentageWithDefaultDecimals = 0.7654;
+				$scope.initializedCpf = '35244457640';
+				$scope.initializedCnpj = '13883875000120';
+				$scope.initializedCpfCnpj1 = '56338332958';
+				$scope.initializedCpfCnpj2 = '23212161000144';
 
-			$scope.initializedCpf = '35244457640';
-			$scope.initializedCnpj = '13883875000120';
-			$scope.initializedCpfCnpj1 = '56338332958';
-			$scope.initializedCpfCnpj2 = '23212161000144';
+				$scope.defaultMoney = 153.12;
+				$scope.moneyStartedWith0 = 0;
+				$scope.moneyInitializedWithString = '3.53';
 
-			$scope.defaultMoney = 153.12;
-			$scope.moneyStartedWith0 = 0;
-			$scope.moneyInitializedWithString = '3.53';
+				$scope.initializedPhoneNumber = '3133536767';
 
-			$scope.initializedPhoneNumber = '3133536767';
+				$scope.initializedCep = '30112010';
 
-			$scope.initializedCep = '30112010';
+				$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
+					'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
+					'RS','SC','SE','SP','TO'];
+				$scope.fixedStateIE = '0623079040081';
+				$scope.initializedState = 'SP';
+				$scope.initializedIE = 'P3588747709710';
 
-			$scope.states = ['AC','AL','AM','AP','BA','CE','DF','ES','GO','MA',
-				'MG','MS','MT','PA','PB','PE','PI','PR','RJ','RN','RO','RR',
-				'RS','SC','SE','SP','TO'];
-			$scope.fixedStateIE = '0623079040081';
-			$scope.initializedState = 'SP';
-			$scope.initializedIE = 'P3588747709710';
-
-			$scope.initializedDateMask = new Date();
-			$scope.initializedWithISOStringDateMask = (new Date()).toISOString();
-		}
+				$scope.initializedDateMask = new Date();
+				$scope.initializedWithISOStringDateMask = (new Date()).toISOString();
+			});
 	</script>
 </head>
 <body ng-app="demo">

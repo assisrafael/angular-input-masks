@@ -3,11 +3,8 @@ var StringMask = require('string-mask'),
 
 describe('ui.utils.masks.date', function() {
 	describe('default ("YYYY-MM-DD") mask', function() {
-		beforeEach(function() {
-			browser.get('/src/global/date/date.html');
-		});
-
 		it('should load the demo page', function() {
+			browser.get('/src/global/date/date.html');
 			expect(browser.getTitle()).toEqual('Date Spec');
 		});
 
@@ -72,7 +69,7 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(7));
-				expect(valid.getText()).toEqual('{ "date": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 7; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -80,17 +77,14 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "date": false }');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 	});
 
 	describe('pt-br ("DD/MM/YYYY") mask', function() {
-		beforeEach(function() {
-			browser.get('/src/global/date/date-pt-br.html');
-		});
-
 		it('should load the demo page', function() {
+			browser.get('/src/global/date/date-pt-br.html');
 			expect(browser.getTitle()).toEqual('Date Spec');
 		});
 
@@ -155,7 +149,7 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(7));
-				expect(valid.getText()).toEqual('{ "date": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 7; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -163,7 +157,7 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-					expect(valid.getText()).toEqual('{ "date": false }');
+					expect(valid.getText()).toEqual('{}');
 			});
 		});
 	});

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Money Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.defaultMoney = 153.12;
+				$scope.moneyStartedWith0 = 0;
+				$scope.moneyInitializedWithString = '3.53';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-money-mask</h2>
+		<input type="text" name="field14" ng-model="defaultMoney" ui-money-mask> <br>
+		<span ng-bind="defaultMoney"></span> - {{form.field14.$error}}<br>
+		<input type="text" name="moneyField" ng-model="moneyStartedWith0" ui-money-mask> <br>
+		<span ng-bind="moneyStartedWith0"></span> - {{form.moneyField.$error}}<br>
+		<input type="text" name="moneyField2" ng-model="moneyInitializedWithString" ui-money-mask> <br>
+		<span ng-bind="moneyInitializedWithString"></span> - {{form.moneyField2.$error}}<br>
+		<input type="text" name="field15" ng-model="money3Decimals" ui-money-mask="3" min="defaultMoney" max="field16"> <br>
+		<span ng-bind="money3Decimals"></span> - {{form.field15.$error}}<br>
+		<input type="text" name="field16" ng-model="field16" ui-money-mask="0"> <br>
+		{{field16}} - {{form.field16.$error}}
+		<br>
+		Money: <input type="text" name="field27" ng-model="moneyWithDynamicDecimals" ui-money-mask="mdecimals">
+		Decimals: <input type="text" name="field28" ng-model="mdecimals" ui-number-mask=0><br>
+		<span ng-bind="moneyWithDynamicDecimals"></span> - {{form.field27.$error}}
+	</form>
+</body>
+</html>

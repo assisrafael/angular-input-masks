@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.money', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/global/money/money.html');
+		expect(browser.getTitle()).toEqual('Money Spec');
 	});
 
 	describe('ui-money-mask:', function() {

@@ -80,6 +80,9 @@ gulp.task('build', ['build-dependencies'], function() {
 			.require('mask-factory', {
 				expose: 'mask-factory'
 			})
+			.require('validators', {
+				expose: 'validators'
+			})
 			.bundle()
 			.pipe(source(entry.outputFileName || entry.fileName))
 			.pipe(buffer())

@@ -1,8 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui-br-cpf:', function() {
-	beforeEach(function() {
-		browser.get('/demo');
+	it('should load the demo page', function() {
+		browser.get('/src/br/cpf/cpf.html');
+		expect(browser.getTitle()).toEqual('CPF Spec');
 	});
 
 	it('should apply a CPF mask while the user is typping:', function() {
@@ -42,13 +43,5 @@ describe('ui-br-cpf:', function() {
 			expect(input.getAttribute('value')).toEqual(tests[i].viewValue);
 			expect(value.getText()).toEqual(tests[i].modelValue);
 		}
-	});
-
-	it('should apply a CPF mask in a model with default value:', function() {
-		var input = element(by.model('initializedCpf')),
-			value = element(by.binding('initializedCpf'));
-
-		expect(input.getAttribute('value')).toEqual('352.444.576-40');
-		input.clear();
 	});
 });

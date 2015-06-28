@@ -16,7 +16,7 @@ describe('ui-br-cpfcnpj-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-cpfcnpj-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
 		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
@@ -48,7 +48,8 @@ describe('ui-br-cpfcnpj-mask', function() {
 	}));
 
 		it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-cpfcnpj-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-cpfcnpj-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [

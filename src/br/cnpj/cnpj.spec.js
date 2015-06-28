@@ -1,8 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui-br-cnpj:', function() {
-	beforeEach(function() {
-		browser.get('/demo');
+	it('should load the demo page', function() {
+		browser.get('/src/br/cnpj/cnpj.html');
+		expect(browser.getTitle()).toEqual('CNPJ Spec');
 	});
 
 	it('should apply a CNPJ mask while the user is typping:', function() {
@@ -47,13 +48,5 @@ describe('ui-br-cnpj:', function() {
 			expect(input.getAttribute('value')).toEqual(tests[i].viewValue);
 			expect(value.getText()).toEqual(tests[i].modelValue);
 		}
-	});
-
-	it('should apply a CNPJ mask in a model with default value:', function() {
-		var input = element(by.model('initializedCnpj')),
-			value = element(by.binding('initializedCnpj'));
-
-		expect(input.getAttribute('value')).toEqual('13.883.875/0001-20');
-		input.clear();
 	});
 });

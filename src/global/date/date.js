@@ -14,49 +14,46 @@ function DateMaskDirective($locale) {
 		link: function(scope, element, attrs, ctrl) {
 			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
 
-			function applyMask (value) {
-				var cleanValue = value.replace(/[^0-9]/g, '');
-				var formatedValue = dateMask.process(cleanValue).result || '';
+			function formatter(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
+				}
+
+				var cleanValue = value;
+				if (typeof value === 'object') {
+					cleanValue = moment(value).format(dateFormat);
+				}
+
+				cleanValue = cleanValue.replace(/[^0-9]/g, '');
+				var formatedValue = dateMask.apply(cleanValue) || '';
 
 				return formatedValue.trim().replace(/[^0-9]$/, '');
 			}
 
-			function formatter (value) {
-				if(ctrl.$isEmpty(value)) {
+			ctrl.$formatters.push(formatter);
+
+			ctrl.$parsers.push(function parser(value) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
-				var formatedValue = applyMask(moment(value).format(dateFormat));
-				validator(formatedValue);
-				return formatedValue;
-			}
-
-			function parser(value) {
-				if(ctrl.$isEmpty(value)) {
-					validator(value);
-					return value;
-				}
-
-				var formatedValue = applyMask(value);
+				var formatedValue = formatter(value);
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
 					ctrl.$render();
 				}
-				validator(formatedValue);
 
-				var modelValue = moment(formatedValue, dateFormat);
-				return modelValue.toDate();
-			}
+				return moment(formatedValue, dateFormat).toDate();
+			});
 
-			function validator(value) {
-				var isValid = moment(value, dateFormat).isValid() &&
-					value.length === dateFormat.length;
-				ctrl.$setValidity('date', ctrl.$isEmpty(value) || isValid);
-			}
+			ctrl.$validators.date =	function validator(modelValue, viewValue) {
+				if (ctrl.$isEmpty(modelValue)) {
+					return true;
+				}
 
-			ctrl.$formatters.push(formatter);
-			ctrl.$parsers.push(parser);
+				return moment(viewValue, dateFormat).isValid() && viewValue.length === dateFormat.length;
+			};
 		}
 	};
 }

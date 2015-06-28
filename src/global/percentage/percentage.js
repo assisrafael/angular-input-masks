@@ -1,5 +1,7 @@
-function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
-	function preparePercentageToFormatter (value, decimals, modelMultiplier) {
+var validators = require('validators');
+
+function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
+	function preparePercentageToFormatter(value, decimals, modelMultiplier) {
 		return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*modelMultiplier).toFixed(decimals));
 	}
 
@@ -13,7 +15,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 
 			var modelValue = {
 				multiplier : 100,
-				decimalMask: 2 
+				decimalMask: 2
 			};
 
 			if (angular.isDefined(attrs.uiHideGroupSep)){
@@ -34,7 +36,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 				modelMask = NumberMasks.modelMask(numberDecimals);
 
 			function formatter(value) {
-				if(ctrl.$isEmpty(value)) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -43,12 +45,12 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 			}
 
 			function parse(value) {
-				if(ctrl.$isEmpty(value)) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-				if(value.length > 1 && value.indexOf('%') === -1) {
+				if (value.length > 1 && value.indexOf('%') === -1) {
 					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
 				}
 				var formatedValue = viewMask.apply(valueToFormat) + ' %';
@@ -66,11 +68,9 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 			ctrl.$parsers.push(parse);
 
 			if (attrs.uiPercentageMask) {
-				scope.$watch(attrs.uiPercentageMask, function(decimals) {
-					if(isNaN(decimals)) {
-						decimals = 2;
-					}
-					
+				scope.$watch(attrs.uiPercentageMask, function(_decimals) {
+					decimals = isNaN(_decimals) ? 2 : _decimals;
+
 					if (angular.isDefined(attrs.uiPercentageValue)) {
 						modelValue.multiplier  = 1;
 						modelValue.decimalMask = 0;
@@ -84,30 +84,34 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks, Nu
 				});
 			}
 
-			if(attrs.min){
-				ctrl.$parsers.push(function(value) {
-					var min = $parse(attrs.min)(scope);
-					return NumberValidators.minNumber(ctrl, value, min);
-				});
+			if (attrs.min) {
+				var minVal;
 
-				scope.$watch('min', function(value) {
-					NumberValidators.minNumber(ctrl, ctrl.$modelValue, value);
+				ctrl.$validators.min = function(modelValue) {
+					return validators.minNumber(ctrl, modelValue, minVal);
+				};
+
+				scope.$watch(attrs.min, function(value) {
+					minVal = value;
+					ctrl.$validate();
 				});
 			}
 
-			if(attrs.max) {
-				ctrl.$parsers.push(function(value) {
-					var max = $parse(attrs.max)(scope);
-					return NumberValidators.maxNumber(ctrl, value, max);
-				});
+			if (attrs.max) {
+				var maxVal;
 
-				scope.$watch('max', function(value) {
-					NumberValidators.maxNumber(ctrl, ctrl.$modelValue, value);
+				ctrl.$validators.max = function(modelValue) {
+					return validators.maxNumber(ctrl, modelValue, maxVal);
+				};
+
+				scope.$watch(attrs.max, function(value) {
+					maxVal = value;
+					ctrl.$validate();
 				});
 			}
 		}
 	};
 }
-PercentageMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators'];
+PercentageMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks'];
 
 module.exports = PercentageMaskDirective;

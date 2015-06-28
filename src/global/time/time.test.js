@@ -16,8 +16,8 @@ describe('ui-time-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-time-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model values', function() {
@@ -39,7 +39,7 @@ describe('ui-time-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-time-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-time-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [

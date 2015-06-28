@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CPF Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedCpf = '35244457640';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-br-cpf-mask</h2>
+		<i>Same as the deprecated <b>ui-cpf-mask</b></i><br><br>
+		<input type="text" name="field7" ng-model="initializedCpf" ui-br-cpf-mask> <br>
+		<span ng-bind="initializedCpf"></span> - {{form.field7.$error}}<br>
+		<input type="text" name="field8" ng-model="fieldCpf" ng-model-options="{allowInvalid:true}" ui-br-cpf-mask> <br>
+		<span ng-bind="fieldCpf"></span> - {{form.field8.$error}}<br>
+	</form>
+</body>
+</html>
