@@ -219,7 +219,7 @@ gulp test:unit
 
 - e2e:
  - Uses [Protractor](https://github.com/angular/protractor) + Jasmine
- - Files: src/**/*.test.js
+ - Files: src/**/*.spec.js
 
 
 ```
