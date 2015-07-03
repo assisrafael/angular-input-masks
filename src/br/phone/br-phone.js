@@ -9,7 +9,6 @@ var phoneMask8D = new StringMask('(00) 0000-0000'),
 	phoneMask9D = new StringMask('(00) 00000-0000');
 
 module.exports = maskFactory({
-	validationErrorKey: 'brPhoneNumber',
 	clearValue: function(rawValue) {
 		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 11);
 	},
@@ -29,8 +28,10 @@ module.exports = maskFactory({
 
 		return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
 	},
-	validate: function(value) {
-		var valueLength = value && value.toString().length;
-		return valueLength === 10 || valueLength === 11;
+	validations: {
+		brPhoneNumber: function(value) {
+			var valueLength = value && value.toString().length;
+			return valueLength === 10 || valueLength === 11;
+		}
 	}
 });

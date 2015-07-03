@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Number Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.numberWith2Decimals = -1234.178;
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-number-mask</h2>
+		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ng-model-options="{allowInvalid:true}" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<br>
+		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ng-model-options="{allowInvalid:true}" ui-number-mask> <br>
+		<span ng-bind="numberWithDefaultDecimals"></span>
+		<br>
+		<input type="text" name="field2" ng-model="numberWith2Decimals" ng-model-options="{allowInvalid:true}" ui-number-mask="2" ui-negative-number> <br>
+		<span ng-bind="numberWith2Decimals"></span> - (accepts negative numbers. Press '-' to test)
+		<br>
+		<input type="text" name="field3" ng-model="numberWith3Decimals" ng-model-options="{allowInvalid:true}" ui-number-mask="3" min="3.8" max="numberWith2Decimals"> <br>
+		<span ng-bind="numberWith3Decimals"></span> {{form.field3.$error}}
+		<br>
+		<input type="text" name="field4" ng-model="numberWith0Decimals" ng-model-options="{allowInvalid:true}" ui-number-mask="0" min="numberWith3Decimals"> <br>
+		<span ng-bind="numberWith0Decimals"></span> - {{form.field4.$error}}
+		<br>
+		Number: <input type="text" name="field23" ng-model="numberWithDynamicDecimals" ng-model-options="{allowInvalid:true}" ui-number-mask="decimals">
+		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0><br>
+		<span ng-bind="numberWithDynamicDecimals"></span> - {{form.field23.$error}}
+	</form>
+</body>
+</html>

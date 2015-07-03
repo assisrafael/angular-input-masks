@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.money', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/global/money/money.html');
+		expect(browser.getTitle()).toEqual('Money Spec');
 	});
 
 	describe('ui-money-mask:', function() {
@@ -18,7 +15,7 @@ describe('ui.utils.masks.money', function() {
 			var input = element(by.model('defaultMoney')),
 				value = element(by.binding('defaultMoney'));
 
-			expect(input.getAttribute('value')).toEqual(currency+'15.312,00');
+			expect(input.getAttribute('value')).toEqual(currency + '153,12');
 			input.clear();
 
 			for (var i = 1; i <= 9; i++) {

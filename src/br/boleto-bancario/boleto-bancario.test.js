@@ -13,7 +13,8 @@ describe('ui-br-boleto-bancario-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-boleto-bancario-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"'+
+			' ui-br-boleto-bancario-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -40,6 +41,6 @@ describe('ui-br-boleto-bancario-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$error.brBoletoBancario).toBe(true);
 		input.val('10491443385511900000200000000141325230000093423').triggerHandler('input');
-		expect(model.$error.brBoletoBancario).toBe(false);
+		expect(model.$error.brBoletoBancario).toBe(undefined);
 	});
 });

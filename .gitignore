@@ -5,7 +5,7 @@ node_modules
 coverage
 npm-debug.log
 releases
-
+.tern-project
 .DS_Store
 *.swp
 .idea

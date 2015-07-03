@@ -4,7 +4,6 @@ var maskFactory = require('mask-factory');
 var boletoBancarioMask = new StringMask('00000.00000 00000.000000 00000.000000 0 00000000000000');
 
 module.exports = maskFactory({
-	validationErrorKey: 'brBoletoBancario',
 	clearValue: function(rawValue) {
 		return rawValue.replace(/[^0-9]/g, '').slice(0, 47);
 	},
@@ -15,7 +14,9 @@ module.exports = maskFactory({
 
 		return boletoBancarioMask.apply(cleanValue).replace(/[^0-9]$/, '');
 	},
-	validate: function(value) {
-		return value.length === 47;
+	validations: {
+		brBoletoBancario: function(value) {
+			return value.length === 47;
+		}
 	}
 });

@@ -16,8 +16,8 @@ describe('ui-us-phone-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-us-phone-number>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model values', function() {
@@ -30,7 +30,8 @@ describe('ui-us-phone-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-us-phone-number>');
 		var model = input.controller('ngModel');
 
 		var tests = [

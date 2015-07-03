@@ -1,11 +1,8 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.time', function() {
-	beforeEach(function() {
-		browser.get('/src/global/time/time.html');
-	});
-
 	it('should load the demo page', function() {
+		browser.get('/src/global/time/time.html');
 		expect(browser.getTitle()).toEqual('Time Spec');
 	});
 
@@ -51,7 +48,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(5));
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 5; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -59,17 +56,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "time": false }');
-			});
-
-			it('should format properly an initialized value', function() {
-				var input = element(by.model('initializedTimeMask')),
-					value = element(by.exactBinding('initializedTimeMask')),
-					valid = element(by.binding('form.initializedTimeMask.$error'));
-
-				expect(input.getAttribute('value')).toEqual('14:30:00');
-				expect(value.getText()).toEqual('14:30:00');
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 
@@ -114,7 +101,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(3));
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 3; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -122,17 +109,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "time": false }');
-			});
-
-			it('should format properly an initialized value', function() {
-				var input = element(by.model('initializedShortTimeMask')),
-					value = element(by.exactBinding('initializedShortTimeMask')),
-					valid = element(by.binding('form.initializedShortTimeMask.$error'));
-
-				expect(input.getAttribute('value')).toEqual('14:30');
-				expect(value.getText()).toEqual('14:30');
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 	});

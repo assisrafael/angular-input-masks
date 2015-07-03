@@ -16,8 +16,8 @@ describe('ui-br-phone-number', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-phone-number>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model values (2+8D)', function() {
@@ -39,7 +39,8 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-phone-number>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -66,7 +67,7 @@ describe('ui-br-phone-number', function() {
 		var model = input.controller('ngModel');
 		expect(model.$error.brPhoneNumber).toBe(true);
 		input.val('12345678901').triggerHandler('input');
-		expect(model.$error.brPhoneNumber).toBe(false);
+		expect(model.$error.brPhoneNumber).toBe(undefined);
 	});
 
 	it('should use the type of the model value (if initialized)', function() {

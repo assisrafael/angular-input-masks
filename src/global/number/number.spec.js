@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.number', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/global/number/number.html');
+		expect(browser.getTitle()).toEqual('Number Spec');
 	});
 
 	describe('ui-number-mask:', function() {
@@ -86,6 +83,7 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWith2Decimals')),
 				value = element(by.binding('numberWith2Decimals'));
 
+			input.sendKeys('123418-');
 			expect(input.getAttribute('value')).toEqual('-1.234,18');
 			input.sendKeys('-');
 			expect(input.getAttribute('value')).toEqual('1.234,18');
@@ -112,6 +110,8 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWith2Decimals')),
 				value = element(by.binding('numberWith2Decimals'));
 
+			input.clear();
+			input.sendKeys('123418-');
 			expect(input.getAttribute('value')).toEqual('-1.234,18');
 			input.sendKeys(protractor.Key.BACK_SPACE);
 			expect(input.getAttribute('value')).toEqual('-123,41');
@@ -169,6 +169,7 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWith3Decimals')),
 				value = element(by.binding('numberWith3Decimals'));
 
+			input.clear();
 			for (var i = 1; i <= 5; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;

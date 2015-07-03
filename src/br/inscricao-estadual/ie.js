@@ -84,8 +84,7 @@ function BrIeMaskDirective($parse) {
 		restrict: 'A',
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			var state = $parse(attrs.uiBrIeMask)(scope) || '';
-			state = state.toUpperCase();
+			var state = ($parse(attrs.uiBrIeMask)(scope) || '').toUpperCase();
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
@@ -115,24 +114,18 @@ function BrIeMaskDirective($parse) {
 				return actualValue;
 			}
 
-			function validator(value) {
-				var isValid = ctrl.$isEmpty(value) || BrV.ie(state).validate(value);
-				ctrl.$setValidity('ie', isValid);
-
-				return value;
-			}
-
 			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
 			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
+
+			ctrl.$validators.ie = function validator(modelValue) {
+				return ctrl.$isEmpty(modelValue) || BrV.ie(state).validate(modelValue);
+			};
 
 			scope.$watch(attrs.uiBrIeMask, function(newState) {
-				state = newState || '';
-				state = state.toUpperCase();
+				state = (newState || '').toUpperCase();
 
 				parser(ctrl.$viewValue);
-				validator(ctrl.$viewValue);
+				ctrl.$validate();
 			});
 		}
 	};

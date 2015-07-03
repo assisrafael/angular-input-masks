@@ -5,7 +5,6 @@ var phoneMaskUS = new StringMask('(000) 000-0000'),
 	phoneMaskINTL = new StringMask('+00-00-000-000000');
 
 module.exports = maskFactory({
-	validationErrorKey: 'usPhoneNumber',
 	clearValue: function(rawValue) {
 		return rawValue.toString().replace(/[^0-9]/g, '');
 	},
@@ -20,7 +19,9 @@ module.exports = maskFactory({
 
 		return formattedValue.trim().replace(/[^0-9]$/, '');
 	},
-	validate: function(value) {
-		return value.length > 9;
+	validations: {
+		usPhoneNumber: function(value) {
+			return value.length > 9;
+		}
 	}
 });

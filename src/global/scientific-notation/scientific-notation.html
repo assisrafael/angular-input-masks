@@ -3,17 +3,16 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Scientific Notation Spec</title>
-	<script src="/bower_components/angular/angular.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
 	<script src="/releases/angular-input-masks-dependencies.js"></script>
 	<script src="/releases/angular-input-masks.js"></script>
 	<script>
-		angular.module('scientificNotationTest', ['ui.utils.masks']);
-
-		function ctrl($scope) {
-			$scope.initializedScientificNotationMask = 12345.67890123456;
-			$scope.initializedScientificNotationMaskWithE = 1.23e+127;
-		}
+		angular.module('scientificNotationTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedScientificNotationMask = 12345.67890123456;
+				$scope.initializedScientificNotationMaskWithE = 1.23e+127;
+			});
 	</script>
 </head>
 <body ng-app="scientificNotationTest">

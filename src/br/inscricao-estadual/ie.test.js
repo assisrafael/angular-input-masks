@@ -16,8 +16,8 @@ describe('ui-br-ie-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-ie-mask="\'MG\'">');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model value', function() {
@@ -29,7 +29,8 @@ describe('ui-br-ie-mask', function() {
 	});
 
 	it('should handle corner cases', inject(function($rootScope) {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-ie-mask="\'MG\'">');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-ie-mask="\'MG\'">');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -46,7 +47,8 @@ describe('ui-br-ie-mask', function() {
 	}));
 
 	it('should not format when state is invalid', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-ie-mask="\'XA\'">', {
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-ie-mask="\'XA\'">', {
 			model: '0623079040081'
 		});
 		var model = input.controller('ngModel');
@@ -54,7 +56,8 @@ describe('ui-br-ie-mask', function() {
 		input.val('0623079040082').triggerHandler('input');
 		expect(model.$viewValue).toBe('0623079040082');
 
-		var input2 = TestUtil.compile('<input ng-model="model" ui-br-ie-mask>', {
+		var input2 = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-ie-mask>', {
 			model: '0623079040081'
 		});
 		var model2 = input.controller('ngModel');
@@ -64,7 +67,8 @@ describe('ui-br-ie-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-ie-mask="\'MG\'">');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-br-ie-mask="\'MG\'">');
 		var model = input.controller('ngModel');
 
 		var tests = [

@@ -4,10 +4,10 @@ function ScientificNotationMaskDirective($locale, $parse) {
 	var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 		defaultPrecision = 2;
 
-	function significandMaskBuilder (decimals) {
+	function significandMaskBuilder(decimals) {
 		var mask = '0';
 
-		if(decimals > 0) {
+		if (decimals > 0) {
 			mask += decimalDelimiter;
 			for (var i = 0; i < decimals; i++) {
 				mask += '0';
@@ -25,7 +25,7 @@ function ScientificNotationMaskDirective($locale, $parse) {
 		link: function(scope, element, attrs, ctrl) {
 			var decimals = $parse(attrs.uiScientificNotationMask)(scope);
 
-			if(isNaN(decimals)) {
+			if (isNaN(decimals)) {
 				decimals = defaultPrecision;
 			}
 
@@ -104,20 +104,12 @@ function ScientificNotationMaskDirective($locale, $parse) {
 				return modelValue;
 			}
 
-			function validator (value) {
-				if(ctrl.$isEmpty(value)) {
-					return value;
-				}
-
-				var isMaxValid = value < Number.MAX_VALUE;
-				ctrl.$setValidity('max', isMaxValid);
-				return value;
-			}
-
 			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
 			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
+
+			ctrl.$validators.max = function validator (value) {
+				return ctrl.$isEmpty(value) || value < Number.MAX_VALUE;
+			};
 		}
 	};
 }

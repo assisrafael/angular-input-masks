@@ -1,11 +1,8 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.nfe: ', function() {
-	beforeEach(function() {
-		browser.get('/src/br/nfe/nfe.html');
-	});
-
 	it('should load the demo page', function() {
+		browser.get('/src/br/nfe/nfe.html');
 		expect(browser.getTitle()).toEqual('NF-e Spec');
 	});
 
@@ -54,7 +51,7 @@ describe('ui.utils.masks.nfe: ', function() {
 			}
 
 			input.sendKeys(inputKeysToSend.charAt(5));
-			expect(valid.getText()).toEqual('{ "nfeAccessKey": false }');
+			expect(valid.getText()).toEqual('{}');
 
 			for (var i = 43; i > 0; i--) {
 				if (i % 4 === 0) {
@@ -66,7 +63,7 @@ describe('ui.utils.masks.nfe: ', function() {
 			}
 
 			input.sendKeys(protractor.Key.BACK_SPACE);
-			expect(valid.getText()).toEqual('{ "nfeAccessKey": false }');
+			expect(valid.getText()).toEqual('{}');
 		});
 	});
 });

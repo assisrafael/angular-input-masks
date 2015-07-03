@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.br.cep', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/br/cep/cep.html');
+		expect(browser.getTitle()).toEqual('CEP Spec');
 	});
 
 	describe('ui-br-cep-mask:', function() {

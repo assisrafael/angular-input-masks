@@ -1,6 +1,7 @@
 var StringMask = require('string-mask');
+var validators = require('validators');
 
-function MoneyMaskDirective($locale, $parse, PreFormatters, NumberValidators) {
+function MoneyMaskDirective($locale, $parse, PreFormatters) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -10,6 +11,12 @@ function MoneyMaskDirective($locale, $parse, PreFormatters, NumberValidators) {
 				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
+			function maskFactory(decimals) {
+					var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+					var maskPattern = currencySym + ' #' + thousandsDelimiter + '##0' + decimalsPattern;
+					return new StringMask(maskPattern, {reverse: true});
+			}
+
 			if (angular.isDefined(attrs.uiHideGroupSep)){
 				thousandsDelimiter = '';
 			}
@@ -18,12 +25,10 @@ function MoneyMaskDirective($locale, $parse, PreFormatters, NumberValidators) {
 				decimals = 2;
 			}
 
-			var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-			var maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
-			var moneyMask = new StringMask(maskPattern, {reverse: true});
+			var moneyMask = maskFactory(decimals);
 
 			function formatter(value) {
-				if(ctrl.$isEmpty(value)) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -52,42 +57,42 @@ function MoneyMaskDirective($locale, $parse, PreFormatters, NumberValidators) {
 			ctrl.$parsers.push(parser);
 
 			if (attrs.uiMoneyMask) {
-				scope.$watch(attrs.uiMoneyMask, function(decimals) {
-					if(isNaN(decimals)) {
-						decimals = 2;
-					}
-					decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-					maskPattern = currencySym+' #'+thousandsDelimiter+'##0'+decimalsPattern;
-					moneyMask = new StringMask(maskPattern, {reverse: true});
+				scope.$watch(attrs.uiMoneyMask, function(_decimals) {
+					decimals = isNaN(_decimals) ? 2 : _decimals;
+					moneyMask = maskFactory(decimals);
 
 					parser(ctrl.$viewValue);
 				});
 			}
 
-			if(attrs.min){
-				ctrl.$parsers.push(function(value) {
-					var min = $parse(attrs.min)(scope);
-					return NumberValidators.minNumber(ctrl, value, min);
-				});
+			if (attrs.min) {
+				var minVal;
+
+				ctrl.$validators.min = function(modelValue) {
+					return validators.minNumber(ctrl, modelValue, minVal);
+				};
 
 				scope.$watch(attrs.min, function(value) {
-					NumberValidators.minNumber(ctrl, ctrl.$modelValue, value);
+					minVal = value;
+					ctrl.$validate();
 				});
 			}
 
-			if(attrs.max) {
-				ctrl.$parsers.push(function(value) {
-					var max = $parse(attrs.max)(scope);
-					return NumberValidators.maxNumber(ctrl, value, max);
-				});
+			if (attrs.max) {
+				var maxVal;
+				
+				ctrl.$validators.max = function(modelValue) {
+					return validators.maxNumber(ctrl, modelValue, maxVal);
+				};
 
 				scope.$watch(attrs.max, function(value) {
-					NumberValidators.maxNumber(ctrl, ctrl.$modelValue, value);
+					maxVal = value;
+					ctrl.$validate();
 				});
 			}
 		}
 	};
 }
-MoneyMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberValidators'];
+MoneyMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters'];
 
 module.exports = MoneyMaskDirective;

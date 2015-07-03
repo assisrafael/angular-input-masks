@@ -1,4 +1,6 @@
-function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks, NumberValidators) {
+var validators = require('validators');
+
+function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -27,13 +29,13 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks, Number
 				var formatedValue = viewMask.apply(valueToFormat);
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
-				if(angular.isDefined(attrs.uiNegativeNumber)){
+				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),
 						needsToInvertSign = (value.slice(-1) === '-');
 
 					//only apply the minus sign if it is negative or(exclusive)
 					//needs to be negative and the number is different from zero
-					if(needsToInvertSign ^ isNegative && !!actualNumber) {
+					if (needsToInvertSign ^ isNegative && !!actualNumber) {
 						actualNumber *= -1;
 						formatedValue = '-' + formatedValue;
 					}
@@ -48,15 +50,11 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks, Number
 			}
 
 			function formatter(value) {
-				if(ctrl.$isEmpty(value)) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
-				var prefix = '';
-				if(angular.isDefined(attrs.uiNegativeNumber) && value < 0){
-					prefix = '-';
-				}
-
+				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 				return prefix + viewMask.apply(valueToFormat);
 			}
@@ -65,10 +63,8 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks, Number
 			ctrl.$parsers.push(parser);
 
 			if (attrs.uiNumberMask) {
-				scope.$watch(attrs.uiNumberMask, function(decimals) {
-					if(isNaN(decimals)) {
-						decimals = 2;
-					}
+				scope.$watch(attrs.uiNumberMask, function(_decimals) {
+					decimals = isNaN(_decimals) ? 2 : _decimals;
 					viewMask = NumberMasks.viewMask(decimals, decimalDelimiter, thousandsDelimiter);
 					modelMask = NumberMasks.modelMask(decimals);
 
@@ -76,30 +72,34 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks, Number
 				});
 			}
 
-			if(attrs.min){
-				ctrl.$parsers.push(function(value) {
-					var min = $parse(attrs.min)(scope);
-					return NumberValidators.minNumber(ctrl, value, min);
-				});
+			if (attrs.min) {
+				var minVal;
+
+				ctrl.$validators.min = function(modelValue) {
+					return validators.minNumber(ctrl, modelValue, minVal);
+				};
 
 				scope.$watch(attrs.min, function(value) {
-					NumberValidators.minNumber(ctrl, ctrl.$modelValue, value);
+					minVal = value;
+					ctrl.$validate();
 				});
 			}
 
-			if(attrs.max) {
-				ctrl.$parsers.push(function(value) {
-					var max = $parse(attrs.max)(scope);
-					return NumberValidators.maxNumber(ctrl, value, max);
-				});
+			if (attrs.max) {
+				var maxVal;
+
+				ctrl.$validators.max = function(modelValue) {
+					return validators.maxNumber(ctrl, modelValue, maxVal);
+				};
 
 				scope.$watch(attrs.max, function(value) {
-					NumberValidators.maxNumber(ctrl, ctrl.$modelValue, value);
+					maxVal = value;
+					ctrl.$validate();
 				});
 			}
 		}
 	};
 }
-NumberMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks', 'NumberValidators'];
+NumberMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks'];
 
 module.exports = NumberMaskDirective;

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Percentage Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.percentageWithDefaultDecimals = 0.7654;
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-percentage-mask</h2>
+		$viewValue - <input type="text" name="field5" ng-model="percentageWithDefaultDecimals" ng-model-options="{allowInvalid:true}" ui-percentage-mask> <br>
+		$modelValue - <span ng-bind="percentageWithDefaultDecimals"></span>
+		<br>
+		<input type="text" name="field6" ng-model="percentageWith4Decimals" ng-model-options="{allowInvalid:true}" ui-percentage-mask="4" min="percentageWithDefaultDecimals" max="115"> <br>
+		<span ng-bind="percentageWith4Decimals"></span> - {{form.field6.$error}}
+		<br>
+		Percentage: <input type="text" name="field25" ng-model="percentWithDynamicDecimals" ng-model-options="{allowInvalid:true}" ui-percentage-mask="pdecimals">
+		Decimals: <input type="text" name="field26" ng-model="pdecimals" ui-number-mask=0><br>
+		<span ng-bind="percentWithDynamicDecimals"></span> - {{form.field25.$error}}
+		<br>
+		<h4>ui-percentage-value</h4>
+		$viewValue - <input type="text" name="field6" ng-model="percentageValue" ng-model-options="{allowInvalid:true}" ui-percentage-mask="4" ui-percentage-value min="percentageWithDefaultDecimals" max="115"> <br>
+		$modelValue - <span ng-bind="percentageValue"></span>
+	</form>
+</body>
+</html>

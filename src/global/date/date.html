@@ -3,16 +3,15 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Date Spec</title>
-	<script src="/bower_components/angular/angular.min.js"></script>
+	<script src="/node_modules/angular/angular.min.js"></script>
 	<script src="/releases/angular-input-masks-dependencies.js"></script>
 	<script src="/releases/angular-input-masks.js"></script>
 	<script>
-		angular.module('dateTest', ['ui.utils.masks']);
-
-		function ctrl($scope) {
-			$scope.initializedDateMask = new Date();
-			$scope.initializedWithISOStringDateMask = (new Date()).toISOString();
-		}
+		angular.module('dateTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedDateMask = new Date();
+				$scope.initializedWithISOStringDateMask = (new Date()).toISOString();
+			});
 	</script>
 </head>
 <body ng-app="dateTest">
