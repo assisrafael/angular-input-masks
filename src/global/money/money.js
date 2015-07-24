@@ -61,9 +61,6 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					ctrl.$setViewValue(formatedValue);
 					ctrl.$render();
 				}
-				console.log('formatedValue: '+formatedValue);
-				var val = parseInt(formatedValue.replace(/[^\d]+/g,''))/Math.pow(10,decimals);
-				console.log('val: '+val);
 
 				return formatedValue;
 			}
