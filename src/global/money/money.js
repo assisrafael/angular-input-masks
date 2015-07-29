@@ -46,7 +46,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				var formatedValue = moneyMask.apply(actualNumber);
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
-					var isNegative = (value[0] === '-'),
+						var isNegative = (value[0] === '-'),
 						needsToInvertSign = (value.slice(-1) === '-');
 
 					//only apply the minus sign if it is negative or(exclusive)
@@ -62,7 +62,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					ctrl.$render();
 				}
 
-				return formatedValue;
+				return formatedValue ? parseInt(formatedValue.replace(/[^\d\-]+/g,''))/Math.pow(10,decimals) : null;
 			}
 
 			ctrl.$formatters.push(formatter);
