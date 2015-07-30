@@ -93,6 +93,16 @@ describe('ui-money-mask', function() {
 		expect(model.$valid).toBe(false);
 	});
 
+	it('should allow negative value', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-negative-number>', {
+			model: '-3456.78'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('-$ 3,456.78');
+		expect(model.$valid).toBe(true);
+	});
+
 	it('should format money with three decimal places', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask="3">');
 		var model = input.controller('ngModel');

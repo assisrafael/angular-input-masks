@@ -19,6 +19,7 @@
 				$scope.initializedCpfCnpj2 = '23212161000144';
 
 				$scope.defaultMoney = 153.12;
+				$scope.negativeMoney = -153.12;
 				$scope.moneyStartedWith0 = 0;
 				$scope.moneyInitializedWithString = '3.53';
 
@@ -103,6 +104,8 @@
 		<h2>ui-money-mask</h2>
 		<input type="text" name="field14" ng-model="defaultMoney" ui-money-mask> <br>
 		<span ng-bind="defaultMoney"></span> - {{form.field14.$error}}<br>
+		<input type="text" name="negativeMoney" ng-model="negativeMoney" ui-money-mask ui-negative-number> <br>
+		<span ng-bind="negativeMoney"></span> - {{form.negativeMoney.$error}}<br>
 		<input type="text" name="moneyField" ng-model="moneyStartedWith0" ui-money-mask> <br>
 		<span ng-bind="moneyStartedWith0"></span> - {{form.moneyField.$error}}<br>
 		<input type="text" name="moneyField2" ng-model="moneyInitializedWithString" ui-money-mask> <br>
