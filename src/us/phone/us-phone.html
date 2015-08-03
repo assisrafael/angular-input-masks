@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>US Phone Number Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.us.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedPhoneNumber = '3133536767';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-us-phone-number</h2>
+		<input id="us-phone-input" type="text" name="phoneNumberTest" ng-model="phoneNumber" ng-model-options="{allowInvalid:true}" ui-us-phone-number><br>
+		<span id="us-phone-value">{{phoneNumber}}</span> - {{form.phoneNumberTest.$valid}}<br>
+		<br>
+		<input id="init-us-phone-input" type="text" name="initializedPhoneNumberTest" ng-model="initializedPhoneNumber" ng-model-options="{allowInvalid:true}" ui-us-phone-number><br>
+		<span id="init-us-phone-value">{{initializedPhoneNumber}}</span> - {{form.initializedPhoneNumberTest.$valid}}<br>
+	</form>
+</body>
+</html>

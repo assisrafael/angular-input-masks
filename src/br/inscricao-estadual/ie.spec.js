@@ -1,15 +1,25 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.number', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/br/inscricao-estadual/ie.html');
+		expect(browser.getTitle()).toEqual('Inscricão Estadual Spec');
 	});
 
 	describe('ui-br-ie-mask:', function() {
+		it('should apply a IE mask in a model with default value:', function() {
+			var input = element(by.model('initializedIE')),
+				value = element(by.binding('initializedIE'));
+
+			expect(input.getAttribute('value')).toEqual('P-35887477.0/971');
+		});
+
+		it('should validate in a model with default value', function() {
+			var valid = element(by.binding('form.field19.$error'));
+
+			expect(valid.getText()).toEqual('{}');
+		});
+
 		it('should not have validation errors when empty', function() {
 			var inputIE = element(by.model('inscEst')),
 				inputUF = element(by.model('state')),
@@ -18,7 +28,7 @@ describe('ui.utils.masks.number', function() {
 			for (var i = 1; i < 27; i++) {
 				inputIE.clear();
 				inputUF.all(by.tagName('option')).get(i).click();
-				expect(valid.getText()).toEqual('{ "ie": false }');
+				expect(valid.getText()).toEqual('{}');
 				inputIE.sendKeys(1);
 				expect(valid.getText()).toEqual('{ "ie": true }');
 			}
@@ -32,7 +42,7 @@ describe('ui.utils.masks.number', function() {
 			inputUF.all(by.tagName('option')).get(26).click();
 			inputIE.clear();
 			inputIE.sendKeys('P-35887477.0/971');
-			expect(valid.getText()).toEqual('{ "ie": false }');
+			expect(valid.getText()).toEqual('{}');
 		});
 
 		it('should apply a I.E. mask while the user is typping:', function() {
@@ -42,7 +52,7 @@ describe('ui.utils.masks.number', function() {
 				{uf:'AL', option:  2, modelValue: '240000048', viewValue: '240000048'},
 				{uf:'AM', option:  3, modelValue: '198712308', viewValue: '19.871.230-8'},
 				{uf:'AP', option:  4, modelValue: '030123459', viewValue: '030123459'},
-				{uf:'BA', option:  5, modelValue: '090493871', viewValue: '090493-87', viewValue2: '0904938-71',valid: true},
+				{uf:'BA', option:  5, modelValue: '090493871', viewValue: '090493-87', viewValue2: '0904938-71', valid: true},
 				{uf:'CE', option:  6, modelValue: '060000015', viewValue: '06000001-5'},
 				{uf:'DF', option:  7, modelValue: '0730000100109', viewValue: '07300001001-09'},
 				{uf:'ES', option:  8, modelValue: '198712308', viewValue: '19871230-8'},
@@ -88,6 +98,7 @@ describe('ui.utils.masks.number', function() {
 				value = element(by.binding('inscEst'));
 
 			for (var t = 0; t < tests.length; t++) {
+				inputIE.clear();
 				var test = tests[t];
 				var values = test.modelValue.split('');
 				var viewValue = test.viewValue;
@@ -111,18 +122,5 @@ describe('ui.utils.masks.number', function() {
 				}
 			}
 		}, 600000);
-
-		it('should apply a IE mask in a model with default value:', function() {
-			var input = element(by.model('initializedIE')),
-				value = element(by.binding('initializedIE'));
-
-			expect(input.getAttribute('value')).toEqual('P-35887477.0/971');
-		});
-
-		it('should validate in a model with default value', function() {
-			var valid = element(by.binding('form.field19.$error'));
-
-			expect(valid.getText()).toEqual('{ "ie": false }');
-		});
 	});
 });

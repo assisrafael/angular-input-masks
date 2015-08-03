@@ -1,63 +1,19 @@
-'use strict';
+var StringMask = require('string-mask');
+var maskFactory = require('mask-factory');
 
-angular.module('ui.utils.masks.br.nfe', [])
-.directive('uiNfeAccessKeyMask', ['$log', function($log) {
-	var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
-		' 0000 0000 0000 0000 0000 0000');
+var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
+	' 0000 0000 0000 0000 0000 0000');
 
-	function clearValue (value) {
-		if (angular.isUndefined(value) || value.length === 0) {
-			return value;
+module.exports = maskFactory({
+	clearValue: function(rawValue) {
+		return rawValue.replace(/[^0-9]/g, '').slice(0, 44);
+	},
+	format: function(cleanValue) {
+		return (nfeAccessKeyMask.apply(cleanValue) || '').replace(/[^0-9]$/, '');
+	},
+	validations: {
+		nfeAccessKey: function(value) {
+			return value.length === 44;
 		}
-
-		return value.replace(/[^0-9]/g, '').slice(0, 44);
 	}
-
-	return {
-		restrict: 'A',
-		require: 'ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			function formatter (value) {
-				$log.debug('[uiNfeAccessKeyMask] Formatter called: ', value);
-				if(angular.isUndefined(value) || value.length === 0) {
-					return value;
-				}
-
-				var formattedValue = nfeAccessKeyMask.apply(value);
-				return formattedValue.replace(/[^0-9]$/, '');
-			}
-
-			function parser (value) {
-				$log.debug('[uiNfeAccessKeyMask] Parser called: ', value);
-
-				var modelValue = clearValue(value);
-				var viewValue = formatter(modelValue);
-
-				if(ctrl.$viewValue !== viewValue) {
-					ctrl.$setViewValue(viewValue);
-					ctrl.$render();
-				}
-
-				return modelValue;
-			}
-
-			function validator (value) {
-				$log.debug('[uiNfeAccessKeyMask] Validator called: ', value);
-
-				if(angular.isUndefined(value)) {
-					return value;
-				}
-
-				var isValid = value.toString().length === 44;
-
-				ctrl.$setValidity('nfe-access-key', ctrl.$isEmpty(value) || isValid);
-				return value;
-			}
-
-			ctrl.$formatters.push(formatter);
-			ctrl.$formatters.push(validator);
-			ctrl.$parsers.push(parser);
-			ctrl.$parsers.push(validator);
-		}
-	};
-}]);
+});

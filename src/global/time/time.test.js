@@ -1,19 +1,12 @@
+require('../global-masks');
+
 describe('ui-time-mask', function() {
-	beforeEach(module('ui.utils.masks.global.time'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-time-mask>');
 		}).toThrow();
-	});
-
-	it('should throw an error if StringMask is not found', function() {
-		var _StringMask = StringMask;
-		StringMask = undefined;
-		expect(function() {
-			TestUtil.compile('<input ng-model="model" ui-time-mask>');
-		}).toThrow();
-		StringMask = _StringMask;
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -23,8 +16,8 @@ describe('ui-time-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-time-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model values', function() {
@@ -46,7 +39,7 @@ describe('ui-time-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-time-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-time-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [

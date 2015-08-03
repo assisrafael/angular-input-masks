@@ -1,10 +1,12 @@
-describe('ui-br-cep-mask', function() {
-	beforeEach(module('ui.utils.masks.br.cep'));
+require('../br-masks');
 
-	it('should not throw an error if used without ng-model', function() {
+describe('ui-br-cep-mask', function() {
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
+
+	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-br-cep-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -27,8 +29,17 @@ describe('ui-br-cep-mask', function() {
 		expect(model.$viewValue).toBe('30112-010');
 	});
 
+	it('should accept formatted initial model values', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>', {
+			model: '30112-010'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('30112-010');
+	});
+
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-br-cep-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [

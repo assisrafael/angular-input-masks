@@ -1,77 +1,37 @@
-'use strict';
+var StringMask = require('string-mask');
+var maskFactory = require('mask-factory');
 
-angular.module('ui.utils.masks.br.phone', [])
-.factory('PhoneValidators', [function() {
-	return {
-		brPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || value.length === 10 || value.length === 11;
-			ctrl.$setValidity('br-phone-number', valid);
-			return value;
-		}
-	};
-}])
-.directive('uiBrPhoneNumber', ['PhoneValidators', function(PhoneValidators) {
-	/**
-	 * FIXME: all numbers will have 9 digits after 2016.
-	 * see http://portal.embratel.com.br/embratel/9-digito/
-	 */
-	var phoneMask8D = new StringMask('(00) 0000-0000'),
-		phoneMask9D = new StringMask('(00) 00000-0000');
+/**
+ * FIXME: all numbers will have 9 digits after 2016.
+ * see http://portal.embratel.com.br/embratel/9-digito/
+ */
+var phoneMask8D = new StringMask('(00) 0000-0000'),
+	phoneMask9D = new StringMask('(00) 00000-0000');
 
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
-
-		return value.replace(/[^0-9]/g, '');
-	}
-
-	function applyPhoneMask (value) {
-		if(!value) {
-			return value;
-		}
-
+module.exports = maskFactory({
+	clearValue: function(rawValue) {
+		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 11);
+	},
+	format: function(cleanValue) {
 		var formatedValue;
-		if(value.length < 11){
-			formatedValue = phoneMask8D.apply(value);
+
+		if(cleanValue.length < 11){
+			formatedValue = phoneMask8D.apply(cleanValue) || '';
 		}else{
-			formatedValue = phoneMask9D.apply(value);
+			formatedValue = phoneMask9D.apply(cleanValue);
 		}
 
 		return formatedValue.trim().replace(/[^0-9]$/, '');
-	}
+	},
+	getModelValue: function(formattedValue, originalModelType) {
+		var cleanValue = this.clearValue(formattedValue);
 
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
-			ctrl.$formatters.push(function(value) {
-				return applyPhoneMask(PhoneValidators.brPhoneNumber(ctrl, value));
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return value;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = applyPhoneMask(cleanValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return clearValue(formatedValue);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				return PhoneValidators.brPhoneNumber(ctrl, value);
-			});
+		return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
+	},
+	validations: {
+		brPhoneNumber: function(value) {
+			var valueLength = value && value.toString().length;
+			return valueLength === 10 || valueLength === 11;
 		}
-	};
-}]);
+	}
+});

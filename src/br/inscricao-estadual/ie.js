@@ -1,7 +1,7 @@
-'use strict';
+var StringMask = require('string-mask');
+var BrV = require('br-validations');
 
-angular.module('ui.utils.masks.br.ie', [])
-.directive('uiBrIeMask', ['$parse', function($parse) {
+function BrIeMaskDirective($parse) {
 	var ieMasks = {
 		'AC': [{mask: new StringMask('00.000.000/000-00')}],
 		'AL': [{mask: new StringMask('000000000')}],
@@ -37,71 +37,70 @@ angular.module('ui.utils.masks.br.ie', [])
 	};
 
 	function clearValue (value) {
-		if(!value) {
+		if (!value) {
 			return value;
 		}
+
 		return value.replace(/[^0-9]/g, '');
 	}
 
 	function getMask(uf, value) {
-		if(!uf || !ieMasks[uf]) {
+		if (!uf || !ieMasks[uf]) {
 			return undefined;
 		}
-		var _uf = uf.toUpperCase();
-		if (_uf === 'SP' && /^P/i.test(value)) {
+
+		if (uf === 'SP' && /^P/i.test(value)) {
 			return ieMasks.SP[1].mask;
 		}
+
 		var masks = ieMasks[uf];
 		var i = 0;
 		while(masks[i].chars && masks[i].chars < clearValue(value).length && i < masks.length - 1) {
 			i++;
 		}
+
 		return masks[i].mask;
 	}
 
-	function applyIEMask (value, uf, ctrl) {
+	function applyIEMask(value, uf) {
 		var mask = getMask(uf, value);
-		if(!value || !mask) {
-			ctrl.$setValidity('ie', true);
+
+		if(!mask) {
 			return value;
 		}
+
 		var processed = mask.process(clearValue(value));
-		ctrl.$setValidity('ie', BrV.ie(uf).validate(value));
-		var formatedValue = processed.result;
-		if (uf && uf.toUpperCase() === 'SP' && /^p/i.test(value)) {
-			return 'P'+(formatedValue ? formatedValue.trim().replace(/[^0-9]$/, '') : '');
+		var formatedValue = processed.result || '';
+		formatedValue = formatedValue.trim().replace(/[^0-9]$/, '');
+
+		if (uf === 'SP' && /^p/i.test(value)) {
+			return 'P' + formatedValue;
 		}
-		if(!formatedValue) {
-			return formatedValue;
-		}
-		return formatedValue.trim().replace(/[^0-9]$/, '');
+
+		return formatedValue;
 	}
 
 	return {
 		restrict: 'A',
-		require: '?ngModel',
+		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
-			var state = $parse(attrs.uiBrIeMask)(scope);
+			var state = ($parse(attrs.uiBrIeMask)(scope) || '').toUpperCase();
 
-			if (!ctrl) {
-				return;
-			}
-
-			scope.$watch(attrs.uiBrIeMask, function(newState) {
-				state = newState;
-				applyIEMask(ctrl.$viewValue, state, ctrl);
-			});
-
-			ctrl.$formatters.push(function(value) {
-				return applyIEMask(value, state, ctrl);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return applyIEMask(value, state, ctrl);
+			function formatter(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
 				}
 
-				var formatedValue = applyIEMask(value, state, ctrl);
+				return applyIEMask(value, state);
+			}
+
+			function parser(value) {
+				if (ctrl.$isEmpty(value)) {
+					return value;
+				}
+
+				var formatedValue = applyIEMask(value, state);
+				var actualValue = clearValue(formatedValue);
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
@@ -109,10 +108,28 @@ angular.module('ui.utils.masks.br.ie', [])
 				}
 
 				if (state && state.toUpperCase() === 'SP' && /^p/i.test(value)) {
-					return 'P'+clearValue(formatedValue);
+					return 'P' + actualValue;
 				}
-				return clearValue(formatedValue);
+
+				return actualValue;
+			}
+
+			ctrl.$formatters.push(formatter);
+			ctrl.$parsers.push(parser);
+
+			ctrl.$validators.ie = function validator(modelValue) {
+				return ctrl.$isEmpty(modelValue) || BrV.ie(state).validate(modelValue);
+			};
+
+			scope.$watch(attrs.uiBrIeMask, function(newState) {
+				state = (newState || '').toUpperCase();
+
+				parser(ctrl.$viewValue);
+				ctrl.$validate();
 			});
 		}
 	};
-}]);
+}
+BrIeMaskDirective.$inject = ['$parse'];
+
+module.exports = BrIeMaskDirective;

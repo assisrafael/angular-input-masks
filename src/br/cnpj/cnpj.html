@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CNPJ Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedCnpj = '13883875000120';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-br-cnpj-mask</h2>
+		<i>Same as the deprecated <b>ui-cnpj-mask</b></i><br><br>
+		<input type="text" name="field9" ng-model="initializedCnpj" ui-br-cnpj-mask> <br>
+		<span ng-bind="initializedCnpj"></span> - {{form.field9.$error}}<br>
+		<input type="text" name="field10" ng-model="fieldCnpj" ng-model-options="{allowInvalid:true}" ui-br-cnpj-mask> <br>
+		<span ng-bind="fieldCnpj"></span> - {{form.field10.$error}}<br>
+	</form>
+</body>
+</html>

@@ -1,5 +1,7 @@
+require('../br-masks');
+
 describe('ui-nfe-access-key-mask', function() {
-	beforeEach(module('ui.utils.masks.br.nfe'));
+	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
@@ -14,8 +16,8 @@ describe('ui-nfe-access-key-mask', function() {
 		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-nfe-access-key-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
-		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 2);
-		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 2);
+		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
+		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
 	it('should format initial model values', function() {
@@ -28,7 +30,8 @@ describe('ui-nfe-access-key-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-nfe-access-key-mask>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
+			' ui-nfe-access-key-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [

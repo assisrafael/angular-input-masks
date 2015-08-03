@@ -1,7 +1,10 @@
-'use strict';
+var StringMask = require('string-mask');
 
-angular.module('ui.utils.masks.helpers', [])
-.factory('PreFormatters', [function(){
+var m = angular.module('ui.utils.masks.helpers', []);
+
+module.exports = m.name;
+
+m.factory('PreFormatters', [function(){
 	function clearDelimitersAndLeadingZeros(value) {
 		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
 		cleanValue = cleanValue.replace(/[^0-9]/g, '');

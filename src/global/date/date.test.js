@@ -1,19 +1,12 @@
+require('../global-masks');
+
 describe('ui-date-mask', function() {
-	beforeEach(module('ui.utils.masks.global.date'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-date-mask>');
 		}).toThrow();
-	});
-
-	it('should throw an error if moment.js is not found', function() {
-		var _globalMomentJS = globalMomentJS;
-		globalMomentJS = undefined;
-		expect(function() {
-			TestUtil.compile('<input ng-model="model" ui-date-mask>');
-		}).toThrow();
-		globalMomentJS = _globalMomentJS;
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -35,4 +28,40 @@ describe('ui-date-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('1999-12-31');
 	});
+
+	it('should ignore non digits', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{value:'@', viewValue:''},
+			{value:'1-', viewValue:'1'},
+			{value:'1999a', viewValue:'1999'},
+			{value:'1999_12', viewValue:'1999-12'},
+			{value:'1999123!', viewValue:'1999-12-3'},
+			{value:'199912*31', viewValue:'1999-12-31'},
+		];
+
+		tests.forEach(function(test) {
+			input.val(test.value).triggerHandler('input');
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+	});
+
+	it('should handle corner cases', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: null, viewValue: null},
+			{modelValue: undefined, viewValue: undefined},
+		];
+
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+	}));
 });

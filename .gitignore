@@ -1,5 +1,12 @@
 bower_components
+bower-angular-input-masks
 node_modules
+!src/node_modules
 coverage
 npm-debug.log
 releases
+.tern-project
+.DS_Store
+*.swp
+.idea
+*.iml

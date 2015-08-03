@@ -1,26 +1,27 @@
 module.exports = function(config) {
 	var configuration = {
 		basePath: __dirname + '/..',
-		frameworks: ['jasmine'],
+		frameworks: ['browserify', 'jasmine'],
 		files: [
-			'bower_components/angular/angular.js',
-			'bower_components/angular-mocks/angular-mocks.js',
-			'bower_components/moment/moment.js',
-			'bower_components/string-mask/src/string-mask.js',
+			'node_modules/angular/angular.js',
+			'node_modules/angular-mocks/angular-mocks.js',
 			'bower_components/br-validations/releases/br-validations.js',
 			'config/test-utils.js',
-			{ //ignore e2e specs
-				pattern: 'src/**/*.spec.js',
-				included: false,
-				served: false,
-				watched: false
-			},
-			'src/**/*.js',
+			'src/**/*.test.js',
+			'*.test.js'
 		],
 		port: 9876,
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
-			'src/**/*.js': ['coverage']
+			'src/**/*.test.js': [ 'browserify' ],
+			'*.test.js': [ 'browserify' ],
+			'src/**/!(*test).js': ['coverage']
+		},
+		browserify: {
+			debug: true,
+			transform: [require('browserify-istanbul')({
+				ignore: '**/*.test.js'
+			})]
 		},
 		coverageReporter: {
 			dir: 'coverage',
@@ -30,6 +31,10 @@ module.exports = function(config) {
 			}, {
 				type: 'html',
 				subdir: 'report-html'
+			}, {
+				type: 'text',
+			}, {
+				type: 'text-summary',
 			}]
 		},
 		colors: true,

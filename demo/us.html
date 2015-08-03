@@ -3,14 +3,14 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Angular Mask US Demo</title>
-	<script src="../bower_components/angular/angular.min.js"></script>
+	<script src="../node_modules/angular/angular.min.js"></script>
+	<script src="../releases/angular-input-masks-dependencies.js"></script>
 	<script src="../releases/angular-input-masks.us.js"></script>
 	<script>
-		angular.module('demo', ['ui.utils.masks.us']);
-
-		function ctrl($scope) {
-			$scope.initializedPhoneNumber = '3133536767';
-		}
+		angular.module('demo', ['ui.utils.masks.us'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedPhoneNumber = '3133536767';
+			});
 	</script>
 </head>
 <body ng-app="demo">

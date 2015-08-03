@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.percentage', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/global/percentage/percentage.html');
+		expect(browser.getTitle()).toEqual('Percentage Spec');
 	});
 
 	describe('ui-percentage-mask:', function() {
@@ -81,6 +78,7 @@ describe('ui.utils.masks.percentage', function() {
 			var input = element(by.model('percentageWith4Decimals')),
 				value = element(by.binding('percentageWith4Decimals'));
 
+			input.clear();
 			for (var i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CPF-CNPJ Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedCpfCnpj1 = '56338332958';
+				$scope.initializedCpfCnpj2 = '23212161000144';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-br-cpfcnpj-mask</h2>
+		<i>Same as the deprecated <b>ui-cpfcnpj-mask</b></i><br><br>
+		<input type="text" name="field11" ng-model="initializedCpfCnpj1" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="initializedCpfCnpj1"></span> - {{form.field11.$error}}<br>
+		<input type="text" name="field12" ng-model="initializedCpfCnpj2" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="initializedCpfCnpj2"></span> - {{form.field12.$error}}<br>
+		<input type="text" name="field13" ng-model="cpfcnpj" ng-model-options="{allowInvalid:true}" ui-br-cpfcnpj-mask> <br>
+		<span ng-bind="cpfcnpj"></span> - {{form.field13.$error}}<br>
+	</form>
+</body>
+</html>

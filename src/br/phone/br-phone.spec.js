@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.number', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/br/phone/br-phone.html');
+		expect(browser.getTitle()).toEqual('BR Phone Number Spec');
 	});
 
 	describe('ui-br-phone-number:', function() {
@@ -40,7 +37,7 @@ describe('ui.utils.masks.number', function() {
 			];
 
 			var input = element(by.model('phoneNumber')),
-				value = element(by.binding('phoneNumber'));
+				value = element(by.exactBinding('phoneNumber'));
 
 			for (var i = 0; i < tests.length; i++) {
 				input.sendKeys(tests[i].key);
@@ -70,7 +67,7 @@ describe('ui.utils.masks.number', function() {
 			];
 
 			var input = element(by.model('initializedPhoneNumber')),
-				value = element(by.binding('initializedPhoneNumber'));
+				value = element(by.exactBinding('initializedPhoneNumber'));
 
 			expect(input.getAttribute('value')).toEqual('(31) 3353-6767');
 			input.clear();

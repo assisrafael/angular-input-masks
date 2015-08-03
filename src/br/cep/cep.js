@@ -1,55 +1,18 @@
-'use strict';
+var StringMask = require('string-mask');
+var maskFactory = require('mask-factory');
 
-angular.module('ui.utils.masks.br.cep', [])
-.directive('uiBrCepMask', [function() {
-	var cepMask = new StringMask('00000-000');
+var cepMask = new StringMask('00000-000');
 
-	function clearValue (value) {
-		if(!value) {
-			return value;
+module.exports = maskFactory({
+	clearValue: function(rawValue) {
+		return rawValue.replace(/[^0-9]/g, '').slice(0, 8);
+	},
+	format: function(cleanValue) {
+		return (cepMask.apply(cleanValue) || '').replace(/[^0-9]$/, '');
+	},
+	validations: {
+		cep: function(value) {
+			return value.length === 8;
 		}
-
-		return value.replace(/[^0-9]/g, '');
 	}
-
-	function applyCepMask (value, ctrl) {
-		if(!value) {
-			ctrl.$setValidity('cep', true);
-			return value;
-		}
-		var processed = cepMask.process(value);
-		ctrl.$setValidity('cep', processed.valid);
-		var formatedValue = processed.result;
-		return formatedValue.trim().replace(/[^0-9]$/, '');
-	}
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
-			ctrl.$formatters.push(function(value) {
-				return applyCepMask(value, ctrl);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return applyCepMask(value, ctrl);
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = applyCepMask(cleanValue, ctrl);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return clearValue(formatedValue);
-			});
-		}
-	};
-}]);
+});

@@ -1,11 +1,8 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.scientific-notation:', function() {
-	beforeEach(function() {
-		browser.get('/src/global/scientific-notation/scientific-notation.html');
-	});
-
 	it('should load the demo page', function() {
+		browser.get('/src/global/scientific-notation/scientific-notation.html');
 		expect(browser.getTitle()).toEqual('Scientific Notation Spec');
 	});
 
@@ -17,7 +14,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 				formatedSignificand, splittedInputValue;
 
 			var input = element(by.model('scientificNotationMask')),
-				value = element(by.binding('scientificNotationMask'));
+				value = element(by.exactBinding('scientificNotationMask'));
 
 			for (var i = 1; i <= 3; i++) {
 				input.sendKeys(i);
@@ -63,7 +60,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 				formatedSignificand, splittedInputValue;
 
 			var input = element(by.model('initializedScientificNotationMask')),
-				value = element(by.binding('initializedScientificNotationMask'));
+				value = element(by.exactBinding('initializedScientificNotationMask'));
 
 			input.clear();
 			for (var i = 1; i <= 5; i++) {
@@ -103,22 +100,6 @@ describe('ui.utils.masks.scientific-notation:', function() {
 			expect(value.getText()).toEqual('0');
 		});
 
-		it('should format scientific notation for a model initialized', function() {
-			var input = element(by.model('initializedScientificNotationMask')),
-				value = element(by.binding('initializedScientificNotationMask'));
-
-			expect(input.getAttribute('value')).toEqual('1,2346e4');
-			expect(value.getText()).toEqual('12345.67890123456');
-		});
-
-		xit('should format scientific notation for a model initialized with exponential notation', function() {
-			var input = element(by.model('initializedScientificNotationMaskWithE')),
-				value = element(by.binding('initializedScientificNotationMaskWithE'));
-
-			expect(input.getAttribute('value')).toEqual('1,23e127');
-			expect(value.getText()).toEqual('1.23e+127');
-		});
-
 		it('should format number without decimal places (parameter)', function() {
 			var significandViewMask = new StringMask('0',{reverse:true}),
 				significandToFormat = '',
@@ -126,7 +107,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 				formatedSignificand, splittedInputValue;
 
 			var input = element(by.model('scientificNotationMaskWithoutDigits')),
-				value = element(by.binding('scientificNotationMaskWithoutDigits'));
+				value = element(by.exactBinding('scientificNotationMaskWithoutDigits'));
 
 			input.sendKeys(7);
 			significandToFormat = '7';
@@ -158,7 +139,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 
 		it('should accept 0 in all configurations', function() {
 			var input = element(by.model('scientificNotationMask')),
-				value = element(by.binding('scientificNotationMask'));
+				value = element(by.exactBinding('scientificNotationMask'));
 
 			input.clear();
 			input.sendKeys(0);
@@ -166,7 +147,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 			expect(value.getText()).toEqual('0');
 
 			input = element(by.model('initializedScientificNotationMask'));
-			value = element(by.binding('initializedScientificNotationMask'));
+			value = element(by.exactBinding('initializedScientificNotationMask'));
 
 			input.clear();
 			input.sendKeys(0);
@@ -174,7 +155,7 @@ describe('ui.utils.masks.scientific-notation:', function() {
 			expect(value.getText()).toEqual('0');
 
 			input = element(by.model('scientificNotationMaskWithoutDigits'));
-			value = element(by.binding('scientificNotationMaskWithoutDigits'));
+			value = element(by.exactBinding('scientificNotationMaskWithoutDigits'));
 
 			input.clear();
 			input.sendKeys(0);

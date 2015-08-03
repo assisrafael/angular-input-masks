@@ -1,10 +1,14 @@
+require('../global-masks');
+
+var StringMask = require('string-mask');
+
 describe('ui-number-mask', function() {
-	beforeEach(module('ui.utils.masks.global.number'));
+	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-number-mask>');
-		}).not.toThrow();
+		}).toThrow();
 	});
 
 	it('should register a $parser and a $formatter', function() {
@@ -59,7 +63,7 @@ describe('ui-number-mask', function() {
 		expect(model.$valid).toBe(true);
 	});
 
-	it('should validate minimum value', function() {
+	it('should validate maximum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask max="50">', {
 			model: '3456.79'
 		});
@@ -87,5 +91,38 @@ describe('ui-number-mask', function() {
 			expect(model.$viewValue).toBe(formatterView.apply(numberToFormat));
 			expect(model.$modelValue).toBe(parseFloat(formatterModel.apply(numberToFormat)));
 		}
+	});
+
+	it('should handle corner cases', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask>');
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: '0', viewValue: '0.00'},
+			{modelValue: '0.0', viewValue: '0.00'},
+			{modelValue: 0, viewValue: '0.00'},
+		];
+
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
+		});
+	}));
+
+	it('should accept negative numbers if "ui-negative-number" is defined', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask ui-negative-number>');
+		var model = input.controller('ngModel');
+
+		input.val('-1234.56').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1,234.56');
+		expect(model.$modelValue).toBe(-1234.56);
+		input.val('-1,234.56-').triggerHandler('input');
+		expect(model.$viewValue).toBe('1,234.56');
+		expect(model.$modelValue).toBe(1234.56);
+		input.val('1,234.56-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1,234.56');
+		expect(model.$modelValue).toBe(-1234.56);
 	});
 });

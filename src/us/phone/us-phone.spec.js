@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.us.phone', function () {
-	beforeEach(function () {
-		browser.get('/demo/us.html');
-	});
-
 	it('should load the demo page', function () {
-		expect(browser.getTitle()).toEqual('Angular Mask US Demo');
+		browser.get('/src/us/phone/us-phone.html');
+		expect(browser.getTitle()).toEqual('US Phone Number Spec');
 	});
 
 	describe('ui-us-phone-number:', function () {

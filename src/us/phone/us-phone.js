@@ -1,72 +1,27 @@
-'use strict';
+var StringMask = require('string-mask');
+var maskFactory = require('mask-factory');
 
-angular.module('ui.utils.masks.us.phone', [])
-.factory('usPhoneValidators', [function() {
-	return {
-		usPhoneNumber: function (ctrl, value) {
-			var valid = ctrl.$isEmpty(value) || (value.length > 9);
-			ctrl.$setValidity('us-phone-number', valid);
-			return value;
-		}
-	};
-}])
-.directive('uiUsPhoneNumber', ['usPhoneValidators', function(usPhoneValidators) {
-	var phoneMaskUS = new StringMask('(000) 000-0000'),
-		phoneMaskINTL = new StringMask('+00-00-000-000000');
+var phoneMaskUS = new StringMask('(000) 000-0000'),
+	phoneMaskINTL = new StringMask('+00-00-000-000000');
 
-	function clearValue (value) {
-		if(!value) {
-			return value;
-		}
-		return value.replace(/[^0-9]/g, '');
-	}
+module.exports = maskFactory({
+	clearValue: function(rawValue) {
+		return rawValue.toString().replace(/[^0-9]/g, '');
+	},
+	format: function(cleanValue) {
+		var formattedValue;
 
-	function applyPhoneMask (value) {
-		if(!value) {
-			return value;
-		}
-
-		var formatedValue;
-		if(value.length < 11){
-			formatedValue = phoneMaskUS.apply(value);
+		if(cleanValue.length < 11){
+			formattedValue = phoneMaskUS.apply(cleanValue) || '';
 		}else{
-			formatedValue = phoneMaskINTL.apply(value);
+			formattedValue = phoneMaskINTL.apply(cleanValue);
 		}
 
-		return formatedValue.trim().replace(/[^0-9]$/, '');
+		return formattedValue.trim().replace(/[^0-9]$/, '');
+	},
+	validations: {
+		usPhoneNumber: function(value) {
+			return value.length > 9;
+		}
 	}
-
-	return {
-		restrict: 'A',
-		require: '?ngModel',
-		link: function(scope, element, attrs, ctrl) {
-			if (!ctrl) {
-				return;
-			}
-
-			ctrl.$formatters.push(function(value) {
-				return applyPhoneMask(usPhoneValidators.usPhoneNumber(ctrl, value));
-			});
-
-			ctrl.$parsers.push(function(value) {
-				if (!value) {
-					return value;
-				}
-
-				var cleanValue = clearValue(value);
-				var formatedValue = applyPhoneMask(cleanValue);
-
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
-
-				return clearValue(formatedValue);
-			});
-
-			ctrl.$parsers.push(function(value) {
-				return usPhoneValidators.usPhoneNumber(ctrl, value);
-			});
-		}
-	};
-}]);
+});

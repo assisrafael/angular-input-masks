@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>CEP Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedCep = '30112010';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-br-cep-mask</h2>
+		<input type="text" name="field17" ng-model="initializedCep" ui-br-cep-mask><br>
+		<span ng-bind="initializedCep"></span> - {{form.field17.$error}}<br>
+		<br>
+		<input type="text" name="field18" ng-model="cep" ng-model-options="{allowInvalid:true}" ui-br-cep-mask><br>
+		<span ng-bind="cep"></span> - {{form.field18.$error}}<br>
+		<br>
+	</form>
+</body>
+</html>

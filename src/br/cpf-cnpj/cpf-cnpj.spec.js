@@ -1,12 +1,9 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.cpfCnpj', function() {
-	beforeEach(function() {
-		browser.get('/demo');
-	});
-
 	it('should load the demo page', function() {
-		expect(browser.getTitle()).toEqual('Angular Mask Demo');
+		browser.get('/src/br/cpf-cnpj/cpf-cnpj.html');
+		expect(browser.getTitle()).toEqual('CPF-CNPJ Spec');
 	});
 
 	describe('ui-br-cpfcnpj:', function() {

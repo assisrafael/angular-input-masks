@@ -1,11 +1,8 @@
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.time', function() {
-	beforeEach(function() {
-		browser.get('/src/global/time/time.html');
-	});
-
 	it('should load the demo page', function() {
+		browser.get('/src/global/time/time.html');
 		expect(browser.getTitle()).toEqual('Time Spec');
 	});
 
@@ -16,7 +13,7 @@ describe('ui.utils.masks.time', function() {
 					formatedTimeAsString, numberToFormat = '', inputKeysToSend = '235959';
 
 				var input = element(by.model('timeMask')),
-					value = element(by.binding('timeMask'));
+					value = element(by.exactBinding('timeMask'));
 
 				for (var i = 0; i < 6; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -42,7 +39,7 @@ describe('ui.utils.masks.time', function() {
 				var inputKeysToSend = '235959';
 
 				var input = element(by.model('timeMask')),
-					value = element(by.binding('timeMask')),
+					value = element(by.exactBinding('timeMask')),
 					valid = element(by.binding('form.timeMaskInput.$error'));
 
 				for (var i = 0; i < 5; i++) {
@@ -51,7 +48,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(5));
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 5; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -59,17 +56,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "time": false }');
-			});
-
-			it('should format properly an initialized value', function() {
-				var input = element(by.model('initializedTimeMask')),
-					value = element(by.binding('initializedTimeMask')),
-					valid = element(by.binding('form.initializedTimeMask.$error'));
-
-				expect(input.getAttribute('value')).toEqual('14:30:00');
-				expect(value.getText()).toEqual('14:30:00');
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 
@@ -79,7 +66,7 @@ describe('ui.utils.masks.time', function() {
 					formatedTimeAsString, numberToFormat = '', inputKeysToSend = '2359';
 
 				var input = element(by.model('shortTimeMask')),
-					value = element(by.binding('shortTimeMask'));
+					value = element(by.exactBinding('shortTimeMask'));
 
 				for (var i = 0; i < 4; i++) {
 					var key = inputKeysToSend.charAt(i);
@@ -105,7 +92,7 @@ describe('ui.utils.masks.time', function() {
 				var inputKeysToSend = '235959';
 
 				var input = element(by.model('shortTimeMask')),
-					value = element(by.binding('shortTimeMask')),
+					value = element(by.exactBinding('shortTimeMask')),
 					valid = element(by.binding('form.shortTimeMaskInput.$error'));
 
 				for (var i = 0; i < 3; i++) {
@@ -114,7 +101,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(inputKeysToSend.charAt(3));
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 
 				for (var i = 3; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -122,17 +109,7 @@ describe('ui.utils.masks.time', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-				expect(valid.getText()).toEqual('{ "time": false }');
-			});
-
-			it('should format properly an initialized value', function() {
-				var input = element(by.model('initializedShortTimeMask')),
-					value = element(by.binding('initializedShortTimeMask')),
-					valid = element(by.binding('form.initializedShortTimeMask.$error'));
-
-				expect(input.getAttribute('value')).toEqual('14:30');
-				expect(value.getText()).toEqual('14:30');
-				expect(valid.getText()).toEqual('{ "time": false }');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 	});
