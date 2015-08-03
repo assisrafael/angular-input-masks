@@ -20,6 +20,7 @@ describe('ui.utils.masks.fr.phone', function () {
                 {key:'8', viewValue:'12 34 56 78', modelValue:'12345678'},
                 {key:'9', viewValue:'12 34 56 78 9', modelValue:'123456789'},
                 {key:'0', viewValue:'12 34 56 78 90', modelValue:'1234567890'},
+                {key:'1', viewValue:'12 34 56 78 90', modelValue:'1234567890'},
                 {key:BS, viewValue:'12 34 56 78 9', modelValue:'123456789'},
                 {key:BS, viewValue:'12 34 56 78', modelValue:'12345678'},
                 {key:BS, viewValue:'12 34 56 7', modelValue:'1234567'},
@@ -37,7 +38,7 @@ describe('ui.utils.masks.fr.phone', function () {
                 expect(input.getAttribute('value')).toEqual(tests[i].viewValue);
                 expect(value.getText()).toEqual(tests[i].modelValue);
             }
-        }
+        };
 
         it('should apply a phone number mask while the user is typing:', function () {
             var input = element(by.id('fr-phone-input')),
