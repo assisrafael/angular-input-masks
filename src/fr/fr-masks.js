@@ -1,6 +1,6 @@
-'use strict';
+var m = angular.module('ui.utils.masks.fr', [
+    require('../helpers')
+])
+    .directive('uiFrPhoneNumber', require('./phone/fr-phone'));
 
-angular.module('ui.utils.masks.fr', [
-	'ui.utils.masks.helpers',
-	'ui.utils.masks.fr.phone'
-]);
+module.exports = m.name;
