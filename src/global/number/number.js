@@ -55,7 +55,7 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
-				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals) || "0";
+				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals) || '0';
 				return prefix + viewMask.apply(valueToFormat);
 			}
 
