@@ -171,11 +171,20 @@ angular.module('demo', [require('angular-input-masks')]);
 <select ng-init="ufs=['AC','AL','AM','TO']" ng-model="selectedUF" ng-options="uf for uf in ufs"></select>
 <input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
 ```
-
 - Support masks for all the 27 brazillian states.
 
 - Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).
 
+### ui-time-mask ###
+-Example:
+
+```html
+<input type="text" name="field" ng-model="initializeTime" ui-time-mask>
+```
+- Support to the ```short``` attributes.
+```html
+<input type="text" name="field" ng-model="initializeTime" ui-time-mask="short">
+```
 ### More examples ###
 
 _See more usage examples in the [Demo page](http://assisrafael.github.io/angular-input-masks/)_
