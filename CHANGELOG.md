@@ -1,3 +1,12 @@
+<a name"2.1.0"></a>
+## 2.1.0 (2015-08-16)
+
+
+#### Features
+
+* **ui-money-mask:** accept negative values ([50bf751c](http://github.com/assisrafael/angular-input-masks/commit/50bf751c))
+
+
 <a name"2.0.0"></a>
 ### 2.0.0 (2015-06-29)
 
