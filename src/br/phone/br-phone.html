@@ -16,6 +16,9 @@
 <body ng-app="app">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-br-phone-number</h2>
+		<input type="text" name="freeLinePhoneNumber" ng-model="freeLinePhoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number><br>
+		<span ng-bind="freeLinePhoneNumber">-</span> - {{form.freeLinePhoneNumber.$error}}<br>
+		<br>
 		<input type="text" name="phoneNumber" ng-model="phoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number><br>
 		<span ng-bind="phoneNumber">-</span> - {{form.phoneNumber.$error}}<br>
 		<br>
