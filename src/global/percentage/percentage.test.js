@@ -125,4 +125,16 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	}));
 
+	it('should clear to value of 0 % when using zero (0) mask digits', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="0">', {
+			model: 0.75
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('75 %');
+		input.val('75 ').triggerHandler('input');
+		expect(model.$viewValue).toBe('7 %');
+		input.val('7 ').triggerHandler('input');
+		expect(model.$viewValue).toBe('0 %');
+	}));
 });
