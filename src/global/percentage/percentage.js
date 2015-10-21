@@ -13,6 +13,8 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				decimals = parseInt(attrs.uiPercentageMask);
 
+			var bWasEmpty = true;
+
 			var modelValue = {
 				multiplier : 100,
 				decimalMask: 2
@@ -37,7 +39,10 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
+					bWasEmpty = true;
 					return value;
+				} else {
+					bWasEmpty = false;
 				}
 
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
@@ -46,15 +51,19 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 
 			function parse(value) {
 				if (ctrl.$isEmpty(value)) {
+					bWasEmpty = true;
 					return value;
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-				if (value.length > 1 && value.indexOf('%') === -1) {
-					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
+				if (value.length > 0 && value.indexOf('%') === -1 && !bWasEmpty) {
+					valueToFormat = (value.length === 1) ? 0 : valueToFormat.slice(0, valueToFormat.length - 1);
 				}
+
+				bWasEmpty = false;
 				var formatedValue = viewMask.apply(valueToFormat) + ' %';
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+				actualNumber = (isNaN(actualNumber)) ? 0 : actualNumber;
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);
