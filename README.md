@@ -51,6 +51,10 @@ angular.module('app', ['ui.utils.masks']);
 angular.module('demo', [require('angular-input-masks')]);
 ```
 
+## Internationalization
+
+Some masks are internationalized, so you need to include the proper angular-locale in your app(see: https://docs.angularjs.org/guide/i18n).
+
 ## How to use
 
 ### ui-number-mask ###
