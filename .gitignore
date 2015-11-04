@@ -1,9 +1,8 @@
 bower_components
 bower-angular-input-masks
-node_modules
-!src/node_modules
+/node_modules
 coverage
-npm-debug.log
+/*.log
 releases
 .tern-project
 .DS_Store
