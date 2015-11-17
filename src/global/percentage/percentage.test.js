@@ -29,6 +29,20 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	});
 
+	it('should return null if field is empty', function () {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>', {
+			model: 12.3
+		});
+
+		var model = input.controller('ngModel');
+		input.val('').triggerHandler('input');
+
+		expect(model.$viewValue).toBe('');
+		expect(model.$modelValue).toBeNull();
+		expect(model.$valid).toBe(true);
+
+	});
+
 	it('should hide thousands delimiter when ui-hide-group-sep is present', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask ui-hide-group-sep>', {
 			model: '12.345'
