@@ -6,9 +6,12 @@ module.exports = m.name;
 
 m.factory('PreFormatters', [function(){
 	function clearDelimitersAndLeadingZeros(value) {
+		if (value === '0') {
+			return '0';
+		}
+
 		var cleanValue = value.replace(/^-/,'').replace(/^0*/, '');
-		cleanValue = cleanValue.replace(/[^0-9]/g, '');
-		return cleanValue;
+		return cleanValue.replace(/[^0-9]/g, '');
 	}
 
 	function prepareNumberToFormatter (value, decimals) {
