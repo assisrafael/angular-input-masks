@@ -49,6 +49,20 @@ describe('ui-number-mask', function() {
 		expect(model.$viewValue).toBe('3456.79');
 	});
 
+	it('should return null if field is empty', function () {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask>', {
+			model: 1000
+		});
+
+		var model = input.controller('ngModel');
+		input.val('').triggerHandler('input');
+
+		expect(model.$viewValue).toBe('');
+		expect(model.$modelValue).toBeNull();
+		expect(model.$valid).toBe(true);
+
+	});
+
 	it('should validate minimum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask min="50">', {
 			model: '3456.79'
@@ -101,7 +115,7 @@ describe('ui-number-mask', function() {
 			{modelValue: '', viewValue: ''},
 			{modelValue: '0', viewValue: '0.00'},
 			{modelValue: '0.0', viewValue: '0.00'},
-			{modelValue: 0, viewValue: '0.00'},
+			{modelValue: 0, viewValue: '0.00'}
 		];
 
 		tests.forEach(function(test) {
