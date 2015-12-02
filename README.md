@@ -202,6 +202,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 - ui-br-boleto-bancario-mask
 - ui-scientific-notation-mask
 - ui-us-phone-number
+- ui-fr-phone-number
 
 ## Another build options
 
@@ -210,6 +211,7 @@ If you are using bower or npm (without browserify):
 - angular-input-masks-dependencies.js: provides all external dependencies (string-mask, br-validations, momentjs)
 - angular-input-masks-br.js: provides only global and BR directives, and does not include external dependencies (string-mask, br-validations, momentjs)
 - angular-input-masks-us.js: provides only global and US directives, and does not include external dependencies (string-mask, br-validations, momentjs)
+- angular-input-masks-fr.js: provides only global and FR directives, and does not include external dependencies (string-mask, br-validations, momentjs)
 - angular-input-masks.js: provides all directives, and does not include external dependencies (string-mask, br-validations, momentjs)
 
 If you are using npm with browserify:
@@ -217,6 +219,7 @@ If you are using npm with browserify:
 - ```require('angular-input-masks')```: provides all directives
 - ```require('angular-input-masks/br')```: only global and BR directives
 - ```require('angular-input-masks/us')```: only global and US directives
+- ```require('angular-input-masks/fr')```: only global and FR directives
 
 ## Filters
 
