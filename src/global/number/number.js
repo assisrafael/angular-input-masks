@@ -21,33 +21,52 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				modelMask = NumberMasks.modelMask(decimals);
 
 			function parser(value) {
-				if(ctrl.$isEmpty(value)) {
-					return null;
-				}
+                if (ctrl.$isEmpty(value)) {
+                    return null;
+                }
 
-				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-				var formatedValue = viewMask.apply(valueToFormat);
-				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+                var actualNumber;
+                var formattedValue;
 
-				if (angular.isDefined(attrs.uiNegativeNumber)) {
-					var isNegative = (value[0] === '-'),
-						needsToInvertSign = (value.slice(-1) === '-');
+                if (value === '-') {
+                    actualNumber = value;
+                    formattedValue = value;
+                }
+                else {
+                    var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value);
+                    if (valueToFormat) {
+                        actualNumber = parseFloat(modelMask.apply(valueToFormat));
+                        formattedValue = viewMask.apply(valueToFormat);
 
-					//only apply the minus sign if it is negative or(exclusive)
-					//needs to be negative and the number is different from zero
-					if (needsToInvertSign ^ isNegative && !!actualNumber) {
-						actualNumber *= -1;
-						formatedValue = '-' + formatedValue;
-					}
-				}
+                        if (angular.isDefined(attrs.uiNegativeNumber)) {
+                            var minusCount = 0;
+                            for (var i = 0; i < value.length; i++) {
+                                if (value[i] === '-') {
+                                    minusCount++;
+                                }
+                            }
 
-				if (ctrl.$viewValue !== formatedValue) {
-					ctrl.$setViewValue(formatedValue);
-					ctrl.$render();
-				}
+                            //Number will be negative if there is only one or odd count of minus sign. 
+                            //More than 2 minus signs are not possible. 
+                            if (minusCount == 1) {
+                                actualNumber *= -1;
+                                formattedValue = '-' + formattedValue;
+                            }
+                        }
+                    }
+                    else {
+                        formattedValue = '';
+                        actualNumber = '';
+                    }
+                }
 
-				return actualNumber;
-			}
+                if (ctrl.$viewValue !== formattedValue) {
+                    ctrl.$setViewValue(formattedValue);
+                    ctrl.$render();
+                }
+
+                return actualNumber;
+            }
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
