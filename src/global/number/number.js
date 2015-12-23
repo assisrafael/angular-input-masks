@@ -28,7 +28,7 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
                 var actualNumber;
                 var formattedValue;
 
-                if (value === '-') {
+                if (angular.isDefined(attrs.uiNegativeNumber) && value === '-') {
                     actualNumber = value;
                     formattedValue = value;
                 }
