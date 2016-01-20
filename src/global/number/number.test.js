@@ -49,6 +49,20 @@ describe('ui-number-mask', function() {
 		expect(model.$viewValue).toBe('3456.79');
 	});
 
+	it('should return null if field is empty', function () {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask>', {
+			model: 1000
+		});
+
+		var model = input.controller('ngModel');
+		input.val('').triggerHandler('input');
+
+		expect(model.$viewValue).toBe('');
+		expect(model.$modelValue).toBeNull();
+		expect(model.$valid).toBe(true);
+
+	});
+
 	it('should validate minimum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask min="50">', {
 			model: '3456.79'
@@ -101,7 +115,7 @@ describe('ui-number-mask', function() {
 			{modelValue: '', viewValue: ''},
 			{modelValue: '0', viewValue: '0.00'},
 			{modelValue: '0.0', viewValue: '0.00'},
-			{modelValue: 0, viewValue: '0.00'},
+			{modelValue: 0, viewValue: '0.00'}
 		];
 
 		tests.forEach(function(test) {
@@ -109,6 +123,16 @@ describe('ui-number-mask', function() {
 			$rootScope.$digest();
 			expect(model.$viewValue).toBe(test.viewValue);
 		});
+	}));
+
+	it('should show zero when the model value is zero and the precision is set to 0', inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask="0">');
+		var model = input.controller('ngModel');
+
+
+		$rootScope.model = 0;
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('0');
 	}));
 
 	it('should accept negative numbers if "ui-negative-number" is defined', function() {

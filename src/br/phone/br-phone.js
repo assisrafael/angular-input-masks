@@ -6,7 +6,8 @@ var maskFactory = require('mask-factory');
  * see http://portal.embratel.com.br/embratel/9-digito/
  */
 var phoneMask8D = new StringMask('(00) 0000-0000'),
-	phoneMask9D = new StringMask('(00) 00000-0000');
+	phoneMask9D = new StringMask('(00) 00000-0000'),
+	phoneMask0800 = new StringMask('0000-000-0000');
 
 module.exports = maskFactory({
 	clearValue: function(rawValue) {
@@ -14,8 +15,9 @@ module.exports = maskFactory({
 	},
 	format: function(cleanValue) {
 		var formatedValue;
-
-		if(cleanValue.length < 11){
+		if(cleanValue.indexOf('0800') === 0) {
+			formatedValue = phoneMask0800.apply(cleanValue);
+		}else if(cleanValue.length < 11){
 			formatedValue = phoneMask8D.apply(cleanValue) || '';
 		}else{
 			formatedValue = phoneMask9D.apply(cleanValue);

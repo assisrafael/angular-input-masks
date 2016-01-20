@@ -22,7 +22,7 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 
 			function parser(value) {
 				if(ctrl.$isEmpty(value)) {
-					return value;
+					return null;
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
