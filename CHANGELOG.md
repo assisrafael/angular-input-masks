@@ -1,3 +1,13 @@
+<a name"2.1.1"></a>
+### 2.1.1 (2015-11-26)
+
+
+#### Bug Fixes
+
+* return null for empty number and percent fields ([510584e0](http://github.com/assisrafael/angular-input-masks/commit/510584e0))
+* **ui-number-mask:** show "0" if model is 0 ([1bae78c2](http://github.com/assisrafael/angular-input-masks/commit/1bae78c2))
+
+
 <a name"2.1.0"></a>
 ## 2.1.0 (2015-08-16)
 
