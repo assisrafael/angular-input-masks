@@ -8,6 +8,7 @@ var m = angular.module('ui.utils.masks.br', [
 .directive('uiBrCpfcnpjMask', require('./cpf-cnpj/cpf-cnpj'))
 .directive('uiBrIeMask', require('./inscricao-estadual/ie'))
 .directive('uiNfeAccessKeyMask', require('./nfe/nfe'))
+.directive('uiBrCarPlateMask', require('./car-plate/car-plate'))
 .directive('uiBrPhoneNumber', require('./phone/br-phone'));
 
 module.exports = m.name;

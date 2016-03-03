@@ -200,6 +200,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 - ui-time-mask
 - ui-date-mask
 - ui-br-boleto-bancario-mask
+- ui-br-car-plate-mask
 - ui-scientific-notation-mask
 - ui-us-phone-number
 

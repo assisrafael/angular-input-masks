@@ -150,6 +150,11 @@
 		<input type="text" name="field20" ng-model="inscEst" ui-br-ie-mask="state"><br>
 		<span ng-bind="state"></span>: <span ng-bind="inscEst"></span> - <span ng-bind="form.field20.$error | json"></span><br>
 		<br>
+
+		<h2>ui-br-car-plate-mask</h2>
+		<input type="text" name="field25" ng-model="carPlate" ui-br-car-plate-mask><br>
+		<span></span>Plate: <span ng-bind="carPlate"></span> - <span ng-bind="form.field25.$error | json"></span><br>
+		<br>
 	</form>
 </body>
 </html>
