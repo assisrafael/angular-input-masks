@@ -29,7 +29,7 @@ describe('ui.utils.masks.date', function() {
 				for (var i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					numberToFormat = numberToFormat.slice(0, -1);
-					if(numberToFormat) {
+					if (numberToFormat) {
 						formatedDateAsString = dateFormatter.apply(numberToFormat).replace(/-$/,'');
 						expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 					}
@@ -40,20 +40,20 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('initializedDateMask')),
 					value = element(by.exactBinding('initializedDateMask'));
 
-				var dateValue = moment(value.getText(), 'YYYY-MM-DD').toDate(),
-					parsedViewValue = moment(input.getAttribute('value'), 'YYYY-MM-DD').toDate();
-
-				expect(parsedViewValue).toEqual(dateValue);
+				value.getText().then((textValue) => {
+					var dateValue = moment(new Date(textValue)).format('YYYY-MM-DD');
+					expect(input.getAttribute('value')).toEqual(dateValue);
+				});
 			});
 
 			it('should format a model initialized with a ISO string', function() {
 				var input = element(by.model('initializedWithISOStringDateMask')),
 					value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
-				var dateValue = moment(value.getText(), 'YYYY-MM-DD').toDate(),
-					parsedViewValue = moment(input.getAttribute('value'), 'YYYY-MM-DD').toDate();
-
-				expect(parsedViewValue).toEqual(dateValue);
+				value.getText().then((textValue) => {
+					var dateValue = moment(new Date(textValue)).format('YYYY-MM-DD');
+					expect(input.getAttribute('value')).toEqual(dateValue);
+				});
 			});
 
 			it('should be valid if the model is a valid date', function() {
@@ -109,7 +109,7 @@ describe('ui.utils.masks.date', function() {
 				for (var i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					numberToFormat = numberToFormat.slice(0, -1);
-					if(numberToFormat) {
+					if (numberToFormat) {
 						formatedDateAsString = dateFormatter.apply(numberToFormat).replace(/\/$/,'');
 						expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 					}
@@ -120,20 +120,20 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('initializedDateMask')),
 					value = element(by.exactBinding('initializedDateMask'));
 
-				var dateValue = moment(value.getText(), 'DD/MM/YYYY').toDate(),
-					parsedViewValue = moment(input.getAttribute('value'), 'DD/MM/YYYY').toDate();
-
-				expect(parsedViewValue).toEqual(dateValue);
+				value.getText().then((textValue) => {
+					var dateValue = moment(new Date(textValue)).format('DD/MM/YYYY');
+					expect(input.getAttribute('value')).toEqual(dateValue);
+				});
 			});
 
 			it('should format a model initialized with a ISO string', function() {
 				var input = element(by.model('initializedWithISOStringDateMask')),
 					value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
-				var dateValue = moment(value.getText(), 'DD/MM/YYYY').toDate(),
-					parsedViewValue = moment(input.getAttribute('value'), 'DD/MM/YYYY').toDate();
-
-				expect(parsedViewValue).toEqual(dateValue);
+				value.getText().then((textValue) => {
+					var dateValue = moment(new Date(textValue)).format('DD/MM/YYYY');
+					expect(input.getAttribute('value')).toEqual(dateValue);
+				});
 			});
 
 			it('should be valid if the model is a valid date', function() {
@@ -157,7 +157,7 @@ describe('ui.utils.masks.date', function() {
 				}
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
-					expect(valid.getText()).toEqual('{}');
+				expect(valid.getText()).toEqual('{}');
 			});
 		});
 	});
