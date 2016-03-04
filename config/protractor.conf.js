@@ -16,6 +16,9 @@ var config = {
 		var exec = require('child_process').exec;
 
 		exec('gulp serve');
+		return new Promise((resolve) => {
+			setTimeout(resolve, process.env.TRAVIS ? 5000 : 0);
+		});
 	}
 };
 
