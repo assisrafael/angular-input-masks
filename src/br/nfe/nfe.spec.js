@@ -7,7 +7,7 @@ describe('ui.utils.masks.nfe: ', function() {
 	});
 
 	describe('ui-nfe-access-key-mask:', function() {
-		xit('should format a NF-e access key', function() {
+		it('should format a NF-e access key', function() {
 			var nfeAccessKeyFormatter = new StringMask('0000 0000 0000 0000 0000' +
 				' 0000 0000 0000 0000 0000 0000'),
 				inputKeysToSend = '34958723405162304548623240917012593348590495',
@@ -31,7 +31,7 @@ describe('ui.utils.masks.nfe: ', function() {
 
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(numberToFormat) {
+				if (numberToFormat) {
 					formatedNfeAccessKeyAsString = nfeAccessKeyFormatter.apply(numberToFormat).replace(/[^0-9]$/,'');
 					expect(input.getAttribute('value')).toEqual(formatedNfeAccessKeyAsString);
 				}
