@@ -1,3 +1,5 @@
+'use strict';
+
 var m = angular.module('ui.utils.masks.br', [
 	require('../helpers'),
 ])
