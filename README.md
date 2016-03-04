@@ -234,23 +234,23 @@ gulp build
 
 - Unit:
  - Uses [Karma](http://karma-runner.github.io) + [Jasmine](http://jasmine.github.io/)
- - Files: src/**/*.test.js
+ - Files: `src/**/*.test.js`
 
 ```
-gulp test:unit
+npm run test:unit
 ```
 
 - e2e:
  - Uses [Protractor](https://github.com/angular/protractor) + Jasmine
- - Files: src/**/*.spec.js
+ - Files: `src/**/*.spec.js`
 
 
 ```
-gulp test:e2e
+npm run test:e2e
 ```
 
 - To run both tests:
 
 ```
-gulp test
+npm test
 ```

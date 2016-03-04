@@ -1,3 +1,7 @@
+'use strict';
+
+/*eslint no-console: 0*/
+
 var fs = require('fs'),
 	path = require('path');
 
@@ -6,9 +10,11 @@ var gulp = require('gulp'),
 	browserify = require('browserify'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
-	plugins = require('gulp-load-plugins')({
-		config: path.join(__dirname, 'package.json')
-	});
+	loadPlugins = require('gulp-load-plugins');
+
+var plugins = loadPlugins({
+	config: path.join(__dirname, 'package.json')
+});
 
 var pkg = require('./package.json');
 
@@ -46,53 +52,53 @@ gulp.task('build-dependencies', function() {
 
 gulp.task('build', ['build-dependencies'], function() {
 	var files = [{
-			fileName: 'angular-input-masks.js',
-			debug: false,
-			bundleExternal: false
-		}, {
-			fileName: 'angular-input-masks.br.js',
-			debug: false,
-			bundleExternal: false
-		}, {
-			fileName: 'angular-input-masks.us.js',
-			debug: false,
-			bundleExternal: false
-		}, {
-			fileName: 'angular-input-masks.js',
-			outputFileName: 'angular-input-masks-standalone.js',
-			debug: false,
-			bundleExternal: true
-		}, {
-			fileName: 'angular-input-masks.js',
-			outputFileName: 'angular-input-masks-debug.js',
-			debug: true,
-			bundleExternal: true
-		}];
+		fileName: 'angular-input-masks.js',
+		debug: false,
+		bundleExternal: false
+	}, {
+		fileName: 'angular-input-masks.br.js',
+		debug: false,
+		bundleExternal: false
+	}, {
+		fileName: 'angular-input-masks.us.js',
+		debug: false,
+		bundleExternal: false
+	}, {
+		fileName: 'angular-input-masks.js',
+		outputFileName: 'angular-input-masks-standalone.js',
+		debug: false,
+		bundleExternal: true
+	}, {
+		fileName: 'angular-input-masks.js',
+		outputFileName: 'angular-input-masks-debug.js',
+		debug: true,
+		bundleExternal: true
+	}];
 
 	var tasks = files.map(function(entry) {
 		return browserify({
-				entries: entry.fileName,
-				detectGlobals: false,
-				basedir: './src/',
-				debug: entry.debug,
-				bundleExternal: entry.bundleExternal,
-			})
-			.require('mask-factory', {
-				expose: 'mask-factory'
-			})
-			.require('validators', {
-				expose: 'validators'
-			})
-			.bundle()
-			.pipe(source(entry.outputFileName || entry.fileName))
-			.pipe(buffer())
-			.pipe(plugins.header(header, {pkg: pkg}))
-			.pipe(gulp.dest('./releases/'))
-			.pipe(plugins.uglify())
-			.pipe(plugins.rename({
-				extname: '.min.js'
-			}))
-			.pipe(gulp.dest('./releases/'));
+			entries: entry.fileName,
+			detectGlobals: false,
+			basedir: './src/',
+			debug: entry.debug,
+			bundleExternal: entry.bundleExternal,
+		})
+		.require('mask-factory', {
+			expose: 'mask-factory'
+		})
+		.require('validators', {
+			expose: 'validators'
+		})
+		.bundle()
+		.pipe(source(entry.outputFileName || entry.fileName))
+		.pipe(buffer())
+		.pipe(plugins.header(header, {pkg: pkg}))
+		.pipe(gulp.dest('./releases/'))
+		.pipe(plugins.uglify())
+		.pipe(plugins.rename({
+			extname: '.min.js'
+		}))
+		.pipe(gulp.dest('./releases/'));
 	});
 
 	return mergeStream(tasks);
@@ -107,27 +113,12 @@ gulp.task('getVersion', function() {
 });
 
 var bowerConfig = {
-		repository: 'git@github.com:assisrafael/bower-angular-input-masks.git',
-		path: './bower-angular-input-masks'
-	};
-
-var filePaths = {
-	src: {
-		files: ['src/**/*.js'],
-		jshint: ['src/**/*.js', '!src/**/*.spec.js'],
-		e2e: ['src/**/*.spec.js']
-	}
+	repository: 'git@github.com:assisrafael/bower-angular-input-masks.git',
+	path: './bower-angular-input-masks'
 };
 
-gulp.task('jshint', function() {
-	return gulp.src(filePaths.src.jshint)
-		.pipe(plugins.jshint('.jshintrc'))
-		.pipe(plugins.jshint.reporter(require('jshint-stylish')))
-		.pipe(plugins.jshint.reporter('fail'));
-});
-
-gulp.task('default', ['jshint', 'build'], function() {
-	gulp.watch(filePaths.src.files, ['jshint', 'build']);
+gulp.task('default', ['build'], function() {
+	gulp.watch('src/**/*.js', ['build']);
 });
 
 gulp.task('serve', ['build'], function(done) {
@@ -141,46 +132,7 @@ gulp.task('serve', ['build'], function(done) {
 	});
 });
 
-gulp.task('test:unit', function(done) {
-	var karma = require('karma').server;
-
-	var karmaConfig = {
-		singleRun: true,
-		configFile: __dirname + '/config/karma.conf.js'
-	};
-
-	karma.start(karmaConfig, done);
-});
-
-gulp.task('test-watch', function(done) {
-	var karma = require('karma').server;
-
-	var karmaConfig = {
-		singleRun: false,
-		autoWatch: true,
-		configFile: __dirname + '/config/karma.conf.js'
-	};
-
-	karma.start(karmaConfig, done);
-});
-
-gulp.task('webdriver_update', require('gulp-protractor').webdriver_update);
-
-gulp.task('test:e2e', ['webdriver_update', 'serve'], function() {
-	var protractor = require('gulp-protractor').protractor;
-
-	gulp.src(filePaths.src.e2e)
-	.pipe(protractor({
-		configFile: 'config/protractor.conf.js'
-	}))
-	.pipe(plugins.exit());
-});
-
-gulp.task('test', function(done) {
-	require('run-sequence')('jshint', 'test:unit', 'test:e2e', done);
-});
-
-gulp.task('changelog', ['getVersion'], function() {
+gulp.task('changelog', ['getVersion'], function(done) {
 	var changelog = require('conventional-changelog');
 
 	var options = {
@@ -195,7 +147,7 @@ gulp.task('changelog', ['getVersion'], function() {
 			throw err;
 		}
 
-		fs.writeFileSync(filePath, log);
+		fs.writeFile(filePath, log, done);
 	});
 });
 
