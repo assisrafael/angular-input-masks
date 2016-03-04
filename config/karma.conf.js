@@ -1,6 +1,12 @@
+'use strict';
+
+/*eslint no-process-env: 0*/
+
+var path = require('path');
+
 module.exports = function(config) {
 	var configuration = {
-		basePath: __dirname + '/..',
+		basePath: path.join(__dirname, '..'),
 		frameworks: ['browserify', 'jasmine'],
 		files: [
 			'node_modules/angular/angular.js',
@@ -13,15 +19,19 @@ module.exports = function(config) {
 		port: 9876,
 		reporters: ['progress', 'coverage'],
 		preprocessors: {
-			'src/**/*.test.js': [ 'browserify' ],
-			'*.test.js': [ 'browserify' ],
+			'src/**/*.test.js': ['browserify'],
+			'*.test.js': ['browserify'],
 			'src/**/!(*test).js': ['coverage']
 		},
 		browserify: {
 			debug: true,
-			transform: [require('browserify-istanbul')({
-				ignore: '**/*.test.js'
-			})]
+			transform: [
+				[
+					'browserify-istanbul', {
+						ignore: '**/*.test.js'
+					}
+				]
+			]
 		},
 		coverageReporter: {
 			dir: 'coverage',
@@ -42,14 +52,14 @@ module.exports = function(config) {
 		singleRun: false,
 		browsers: ['Chrome'],
 		customLaunchers: {
-			Chrome_travis_ci: {
+			'Chrome_travis_ci': {
 				base: 'Chrome',
 				flags: ['--no-sandbox']
 			}
 		},
 	};
 
-	if(process.env.TRAVIS){
+	if (process.env.TRAVIS) {
 		configuration.browsers = ['Chrome_travis_ci'];
 
 		configuration.reporters.push('coveralls');

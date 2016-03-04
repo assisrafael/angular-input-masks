@@ -1,3 +1,7 @@
+'use strict';
+
+/*global inject*/
+
 var TestUtil = {
 	compile: function(html, initialScope) {
 		var container;
@@ -14,3 +18,7 @@ var TestUtil = {
 		return container;
 	}
 };
+
+if (module) {
+	module.exports = TestUtil;
+}
