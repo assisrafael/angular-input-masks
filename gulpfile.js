@@ -199,7 +199,7 @@ gulp.task('changelog', ['getVersion'], function() {
 	});
 });
 
-function bumpVersion (folder) {
+function bumpVersion(folder) {
 	return gulp.src([
 		'bower.json',
 		'package.json'
@@ -221,7 +221,7 @@ gulp.task('release', ['version-bump', 'changelog']);
 gulp.task('bower-clone', ['build'], function(done) {
 	plugins.git.clone(bowerConfig.repository, {
 		args: '--depth=2'
-	}, function (err) {
+	}, function(err) {
 		if (err) {
 			throw err;
 		}
@@ -236,16 +236,18 @@ gulp.task('bower-commit', ['getVersion', 'bower-clone'], function() {
 			gulp.src('./releases/**/*.*')
 				.pipe(gulp.dest(bowerConfig.path))
 		)
-		.pipe(plugins.git.add({cwd:bowerConfig.path}))
+		.pipe(plugins.git.add({
+			cwd: bowerConfig.path
+		}))
 		.pipe(plugins.git.commit('release: version ' + VERSION, {
-			cwd:bowerConfig.path
+			cwd: bowerConfig.path
 		}));
 });
 
 gulp.task('bower-tag', ['getVersion', 'bower-commit'], function(done) {
 	plugins.git.tag(VERSION, 'v' + VERSION, {
 		cwd: bowerConfig.path
-	}, function (err) {
+	}, function(err) {
 		if (err) {
 			throw err;
 		}
@@ -256,9 +258,9 @@ gulp.task('bower-tag', ['getVersion', 'bower-commit'], function(done) {
 
 gulp.task('bower-push', ['bower-tag'], function(done) {
 	plugins.git.push('origin', 'master', {
-		args:' --follow-tags',
+		args: ' --follow-tags',
 		cwd: bowerConfig.path
-	}, function (err) {
+	}, function(err) {
 		if (err) {
 			throw err;
 		}

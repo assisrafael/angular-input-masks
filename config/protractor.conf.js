@@ -1,17 +1,22 @@
+'use strict';
+
 var config = {
 	directConnect: true,
+	framework: 'jasmine',
 	multiCapabilities: [{
-		'browserName': 'chrome'
+		browserName: 'chrome'
 	}],
 	baseUrl: 'http://localhost:8000/demo'
 };
 
-if(process.env.TRAVIS){
+if (process.env.TRAVIS) {
 	config.allScriptsTimeout = 110000;
 	config.jasmineNodeOpts = {
 		defaultTimeoutInterval: 100000
 	};
-	config.multiCapabilities = [{'browserName':'firefox'}];
+	config.multiCapabilities = [{
+		browserName: 'firefox'
+	}];
 }
 
 exports.config = config;
