@@ -57,7 +57,6 @@
     "merge-stream": "^1.0.0",
     "minimist": "^1.1.1",
     "protractor": "^3.0.0",
-    "run-sequence": "^1.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "webdriver-manager": "^8.0.0"
