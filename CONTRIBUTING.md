@@ -8,7 +8,7 @@ To speed up the pull request review process, please check if your PR follows the
 - if it is a new feature try to implement tests that at least cover the more important parts of your code
 - check if the code coverage is not being reduced
 - squash your commits into a single commit
-- follow the [angular commit convention] (https://github.com/ajoslin/conventional-changelog/blob/master/conventions/angular.md)
+- follow the [angular commit convention] (https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md#-git-commit-guidelines)
 
 # Bug reporting
 
