@@ -20,6 +20,15 @@ describe('ui-br-cep-mask', function() {
 		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
+	it('should convert number inputs to correct format', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>', {
+			model: 30112010
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('30112-010');
+	});
+
 	it('should format initial model values', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>', {
 			model: '30112010'

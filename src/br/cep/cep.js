@@ -5,7 +5,7 @@ var cepMask = new StringMask('00000-000');
 
 module.exports = maskFactory({
 	clearValue: function(rawValue) {
-		return rawValue.replace(/[^0-9]/g, '').slice(0, 8);
+		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 8);
 	},
 	format: function(cleanValue) {
 		return (cepMask.apply(cleanValue) || '').replace(/[^0-9]$/, '');
