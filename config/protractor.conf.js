@@ -17,7 +17,7 @@ var config = {
 
 		exec('gulp serve');
 		return new Promise((resolve) => {
-			setTimeout(resolve, process.env.TRAVIS ? 5000 : 0);
+			setTimeout(resolve, 5000);
 		});
 	}
 };
