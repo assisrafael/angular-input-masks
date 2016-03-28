@@ -1,3 +1,5 @@
+'use strict';
+
 require('../br-masks');
 
 describe('ui-br-cpf-mask', function() {
@@ -29,7 +31,7 @@ describe('ui-br-cpf-mask', function() {
 		expect(model.$viewValue).toBe('352.444.576-40');
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-br-cpf-mask>');
 		var model = input.controller('ngModel');
 

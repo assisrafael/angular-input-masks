@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 var StringMask = require('string-mask');
@@ -49,7 +51,7 @@ describe('ui-money-mask', function() {
 		expect(model.$viewValue).toBe('$ 3456.79');
 	});
 
-	it('should allow changing the number of decimals', inject(function($rootScope) {
+	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask="decimals">', {
 			model: '3456.79',
 			decimals: 2
@@ -119,7 +121,7 @@ describe('ui-money-mask', function() {
 		}
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>');
 		var model = input.controller('ngModel');
 

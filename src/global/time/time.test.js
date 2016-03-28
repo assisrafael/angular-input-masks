@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 describe('ui-time-mask', function() {

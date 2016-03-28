@@ -1,3 +1,5 @@
+'use strict';
+
 require('../us-masks');
 
 describe('ui-us-phone-mask', function() {

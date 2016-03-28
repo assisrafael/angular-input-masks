@@ -1,4 +1,4 @@
-var StringMask = require('string-mask');
+'use strict';
 
 describe('ui.utils.masks.br.car-plate', function() {
 	it('should load the demo page', function() {
@@ -40,8 +40,7 @@ describe('ui.utils.masks.br.car-plate', function() {
 		});
 
 		it('should apply a Car Plate mask in a model with default value:', function() {
-			var input = element(by.model('initializedCarPlate')),
-				value = element(by.binding('initializedCarPlate'));
+			var input = element(by.model('initializedCarPlate'));
 
 			expect(input.getAttribute('value')).toEqual('ABC-2010');
 		});

@@ -1,3 +1,5 @@
+'use strict';
+
 require('../br-masks');
 
 describe('ui-br-boleto-bancario-mask', function() {

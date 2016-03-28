@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.percentage', function() {
@@ -18,7 +20,8 @@ describe('ui.utils.masks.percentage', function() {
 			expect(input.getAttribute('value')).toEqual('76,54'+percent);
 			input.clear();
 
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 
@@ -29,12 +32,12 @@ describe('ui.utils.masks.percentage', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
@@ -63,8 +66,7 @@ describe('ui.utils.masks.percentage', function() {
 		});
 
 		it('should not include the % symbol when the input is empty', function() {
-			var input = element(by.model('percentageWith4Decimals')),
-				value = element(by.binding('percentageWith4Decimals'));
+			var input = element(by.model('percentageWith4Decimals'));
 
 			input.clear();
 			expect(input.getAttribute('value')).toEqual('');
@@ -79,7 +81,8 @@ describe('ui.utils.masks.percentage', function() {
 				value = element(by.binding('percentageWith4Decimals'));
 
 			input.clear();
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 
@@ -90,12 +93,12 @@ describe('ui.utils.masks.percentage', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}

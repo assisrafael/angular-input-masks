@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 var BrV = require('br-validations');
 
@@ -8,7 +10,7 @@ function BrIeMaskDirective($parse) {
 		'AM': [{mask: new StringMask('00.000.000-0')}],
 		'AP': [{mask: new StringMask('000000000')}],
 		'BA': [{chars: 8, mask: new StringMask('000000-00')},
-			   {mask: new StringMask('0000000-00')}],
+			{mask: new StringMask('0000000-00')}],
 		'CE': [{mask: new StringMask('00000000-0')}],
 		'DF': [{mask: new StringMask('00000000000-00')}],
 		'ES': [{mask: new StringMask('00000000-0')}],
@@ -20,23 +22,23 @@ function BrIeMaskDirective($parse) {
 		'PA': [{mask: new StringMask('00-000000-0')}],
 		'PB': [{mask: new StringMask('00000000-0')}],
 		'PE': [{chars: 9, mask: new StringMask('0000000-00')},
-			   {mask: new StringMask('00.0.000.0000000-0')}],
+			{mask: new StringMask('00.0.000.0000000-0')}],
 		'PI': [{mask: new StringMask('000000000')}],
 		'PR': [{mask: new StringMask('000.00000-00')}],
 		'RJ': [{mask: new StringMask('00.000.00-0')}],
 		'RN': [{chars: 9, mask: new StringMask('00.000.000-0')},
-			   {mask: new StringMask('00.0.000.000-0')}],
+			{mask: new StringMask('00.0.000.000-0')}],
 		'RO': [{mask: new StringMask('0000000000000-0')}],
 		'RR': [{mask: new StringMask('00000000-0')}],
 		'RS': [{mask: new StringMask('000/0000000')}],
 		'SC': [{mask: new StringMask('000.000.000')}],
 		'SE': [{mask: new StringMask('00000000-0')}],
 		'SP': [{mask: new StringMask('000.000.000.000')},
-			   {mask: new StringMask('-00000000.0/000')}],
+			{mask: new StringMask('-00000000.0/000')}],
 		'TO': [{mask: new StringMask('00000000000')}]
 	};
 
-	function clearValue (value) {
+	function clearValue(value) {
 		if (!value) {
 			return value;
 		}
@@ -55,7 +57,7 @@ function BrIeMaskDirective($parse) {
 
 		var masks = ieMasks[uf];
 		var i = 0;
-		while(masks[i].chars && masks[i].chars < clearValue(value).length && i < masks.length - 1) {
+		while (masks[i].chars && masks[i].chars < clearValue(value).length && i < masks.length - 1) {
 			i++;
 		}
 
@@ -65,7 +67,7 @@ function BrIeMaskDirective($parse) {
 	function applyIEMask(value, uf) {
 		var mask = getMask(uf, value);
 
-		if(!mask) {
+		if (!mask) {
 			return value;
 		}
 

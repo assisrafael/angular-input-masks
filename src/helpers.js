@@ -1,10 +1,12 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 var m = angular.module('ui.utils.masks.helpers', []);
 
 module.exports = m.name;
 
-m.factory('PreFormatters', [function(){
+m.factory('PreFormatters', [function() {
 	function clearDelimitersAndLeadingZeros(value) {
 		if (value === '0') {
 			return '0';
@@ -14,7 +16,7 @@ m.factory('PreFormatters', [function(){
 		return cleanValue.replace(/[^0-9]/g, '');
 	}
 
-	function prepareNumberToFormatter (value, decimals) {
+	function prepareNumberToFormatter(value, decimals) {
 		return clearDelimitersAndLeadingZeros((parseFloat(value)).toFixed(decimals));
 	}
 
@@ -39,12 +41,12 @@ m.factory('PreFormatters', [function(){
 		}
 	};
 }])
-.factory('NumberMasks', [function(){
+.factory('NumberMasks', [function() {
 	return {
-		viewMask: function (decimals, decimalDelimiter, thousandsDelimiter) {
+		viewMask: function(decimals, decimalDelimiter, thousandsDelimiter) {
 			var mask = '#' + thousandsDelimiter + '##0';
 
-			if(decimals > 0) {
+			if (decimals > 0) {
 				mask += decimalDelimiter;
 				for (var i = 0; i < decimals; i++) {
 					mask += '0';
@@ -55,10 +57,10 @@ m.factory('PreFormatters', [function(){
 				reverse: true
 			});
 		},
-		modelMask: function (decimals) {
+		modelMask: function(decimals) {
 			var mask = '###0';
 
-			if(decimals > 0) {
+			if (decimals > 0) {
 				mask += '.';
 				for (var i = 0; i < decimals; i++) {
 					mask += '0';

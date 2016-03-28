@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 describe('ui-percentage-mask', function() {
@@ -29,7 +31,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	});
 
-	it('should return null if field is empty', function () {
+	it('should return null if field is empty', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>', {
 			model: 12.3
 		});
@@ -52,7 +54,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1234.50 %');
 	});
 
-	it('should allow changing the number of decimals', inject(function($rootScope) {
+	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals">', {
 			model: '12.345',
 			decimals: 2
@@ -68,7 +70,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	}));
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>');
 		var model = input.controller('ngModel');
 
@@ -123,7 +125,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	});
 
-	it('should allow changing the number of decimals', inject(function($rootScope) {
+	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals" ui-percentage-value>', {
 			model: '1234.501',
 			decimals: 2

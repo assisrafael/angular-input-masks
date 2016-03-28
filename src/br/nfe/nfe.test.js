@@ -1,3 +1,5 @@
+'use strict';
+
 require('../br-masks');
 
 describe('ui-nfe-access-key-mask', function() {

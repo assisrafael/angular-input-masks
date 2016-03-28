@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 var maskFactory = require('mask-factory');
 
@@ -11,9 +13,9 @@ module.exports = maskFactory({
 	format: function(cleanValue) {
 		var formattedValue;
 
-		if(cleanValue.length < 11){
+		if (cleanValue.length < 11) {
 			formattedValue = phoneMaskUS.apply(cleanValue) || '';
-		}else{
+		} else {
 			formattedValue = phoneMaskINTL.apply(cleanValue);
 		}
 

@@ -1,3 +1,5 @@
+'use strict';
+
 require('../br-masks');
 
 describe('ui-br-ie-mask', function() {
@@ -28,7 +30,7 @@ describe('ui-br-ie-mask', function() {
 		expect(model.$viewValue).toBe('P-01100424.3/002');
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
 			' ui-br-ie-mask="\'MG\'">');
 		var model = input.controller('ngModel');
@@ -49,8 +51,8 @@ describe('ui-br-ie-mask', function() {
 	it('should not format when state is invalid', function() {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
 			' ui-br-ie-mask="\'XA\'">', {
-			model: '0623079040081'
-		});
+				model: '0623079040081'
+			});
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('0623079040081');
 		input.val('0623079040082').triggerHandler('input');
@@ -58,8 +60,8 @@ describe('ui-br-ie-mask', function() {
 
 		var input2 = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
 			' ui-br-ie-mask>', {
-			model: '0623079040081'
-		});
+				model: '0623079040081'
+			});
 		var model2 = input.controller('ngModel');
 		expect(model2.$viewValue).toBe('0623079040081');
 		input2.val('0623079040082').triggerHandler('input');

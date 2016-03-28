@@ -4,10 +4,12 @@
         "commonjs": true,
         "es6": true,
         "node": true,
-        "jasmine": true
+        "jasmine": true,
+        "protractor": true
     },
     "globals": {
-      "angular": true
+      "angular": true,
+      "TestUtil": true
     },
     "extends": "eslint:recommended",
     "rules": {
@@ -76,7 +78,7 @@
         }],
         "init-declarations": 0,
         "key-spacing": 0,
-        "keyword-spacing": 0,
+        "keyword-spacing": 2,
         "linebreak-style": [
             2,
             "unix"
@@ -154,12 +156,7 @@
         "no-sync": 2,
         "no-ternary": 0,
         "no-throw-literal": 2,
-        "no-trailing-spaces": [
-            2,
-            {
-                "skipBlankLines": true
-            }
-        ],
+        "no-trailing-spaces": 2,
         "no-undef-init": 2,
         "no-undefined": 2,
         "no-underscore-dangle": 2,
@@ -210,7 +207,7 @@
         ],
         "require-jsdoc": 0,
         "require-yield": 2,
-        "semi": 0,
+        "semi": [2, "always"],
         "semi-spacing": [
             2,
             {
@@ -220,7 +217,7 @@
         ],
         "sort-imports": 2,
         "sort-vars": 0,
-        "space-before-blocks": 2,
+        "space-before-blocks": [2, "always"],
         "space-before-function-paren": [2, "never"],
         "space-in-parens": [
             2,

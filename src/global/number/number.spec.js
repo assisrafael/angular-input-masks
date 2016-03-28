@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.number', function() {
@@ -16,7 +18,8 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWithDefaultDecimals')),
 				value = element(by.binding('numberWithDefaultDecimals'));
 
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 				formatedNumberAsString = formatterView.apply(numberToFormat);
@@ -25,12 +28,12 @@ describe('ui.utils.masks.number', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
@@ -51,7 +54,8 @@ describe('ui.utils.masks.number', function() {
 			expect(input.getAttribute('value')).toEqual('-1.234,18');
 			input.clear();
 
-			for (var i = 1; i <= 5; i++) {
+			var i;
+			for (i = 1; i <= 5; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 				formatedNumberAsString = formatterView.apply(numberToFormat);
@@ -60,12 +64,12 @@ describe('ui.utils.masks.number', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 5; i >= 1; i--) {
+			for (i = 5; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
@@ -76,12 +80,7 @@ describe('ui.utils.masks.number', function() {
 		});
 
 		it('should accept negative numbers when the ui-negative attribute is present', function() {
-			var formatterView = new StringMask('#.##0,00', {reverse: true}),
-				formatterModel =  new StringMask('###0.00', {reverse: true}),
-				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
-
-			var input = element(by.model('numberWith2Decimals')),
-				value = element(by.binding('numberWith2Decimals'));
+			var input = element(by.model('numberWith2Decimals'));
 
 			input.sendKeys('123418-');
 			expect(input.getAttribute('value')).toEqual('-1.234,18');
@@ -103,12 +102,7 @@ describe('ui.utils.masks.number', function() {
 		});
 
 		it('should not allow -0 parsing it to 0', function() {
-			var formatterView = new StringMask('#.##0,00', {reverse: true}),
-				formatterModel =  new StringMask('###0.00', {reverse: true}),
-				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
-
-			var input = element(by.model('numberWith2Decimals')),
-				value = element(by.binding('numberWith2Decimals'));
+			var input = element(by.model('numberWith2Decimals'));
 
 			input.clear();
 			input.sendKeys('123418-');
@@ -148,12 +142,7 @@ describe('ui.utils.masks.number', function() {
 		});
 
 		it('should not accept negative numbers when the ui-negative attribute is not present', function() {
-			var formatterView = new StringMask('#.##0,000', {reverse: true}),
-				formatterModel =  new StringMask('###0.000', {reverse: true}),
-				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
-
-			var input = element(by.model('numberWith3Decimals')),
-				value = element(by.binding('numberWith3Decimals'));
+			var input = element(by.model('numberWith3Decimals'));
 
 			input.sendKeys('1234.178');
 			expect(input.getAttribute('value')).toEqual('1.234,178');
@@ -170,7 +159,8 @@ describe('ui.utils.masks.number', function() {
 				value = element(by.binding('numberWith3Decimals'));
 
 			input.clear();
-			for (var i = 1; i <= 5; i++) {
+			var i;
+			for (i = 1; i <= 5; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 				formatedNumberAsString = formatterView.apply(numberToFormat);
@@ -179,12 +169,12 @@ describe('ui.utils.masks.number', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 5; i >= 1; i--) {
+			for (i = 5; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
@@ -202,7 +192,8 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWith0Decimals')),
 				value = element(by.binding('numberWith0Decimals'));
 
-			for (var i = 1; i <= 5; i++) {
+			var i;
+			for (i = 1; i <= 5; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 
@@ -213,14 +204,14 @@ describe('ui.utils.masks.number', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 5; i >= 1; i--) {
+			for (i = 5; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
 
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					formatedNumberAsString = '';
 					formatedNumberAsNumber = '';
-				}else {
+				} else {
 					formatedNumberAsString = formatterView.apply(numberToFormat);
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 				}
@@ -238,7 +229,8 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWithoutGrupoSep')),
 				value = element(by.binding('numberWithoutGrupoSep'));
 
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 				formatedNumberAsString = formatterView.apply(numberToFormat);
@@ -247,12 +239,12 @@ describe('ui.utils.masks.number', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}

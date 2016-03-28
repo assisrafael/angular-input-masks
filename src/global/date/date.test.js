@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 describe('ui-date-mask', function() {
@@ -48,7 +50,7 @@ describe('ui-date-mask', function() {
 		});
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');
 		var model = input.controller('ngModel');
 

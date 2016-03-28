@@ -1,3 +1,5 @@
+'use strict';
+
 require('../br-masks');
 
 describe('ui-br-cpfcnpj-mask', function() {
@@ -29,7 +31,7 @@ describe('ui-br-cpfcnpj-mask', function() {
 		expect(model.$viewValue).toBe('352.444.576-40');
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-br-cpfcnpj-mask>');
 		var model = input.controller('ngModel');
 
@@ -47,7 +49,7 @@ describe('ui-br-cpfcnpj-mask', function() {
 		});
 	}));
 
-		it('should ignore non digits', function() {
+	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
 			' ui-br-cpfcnpj-mask>');
 		var model = input.controller('ngModel');

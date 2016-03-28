@@ -1,13 +1,13 @@
-var StringMask = require('string-mask');
+'use strict';
 
-describe('ui.utils.masks.us.phone', function () {
-	it('should load the demo page', function () {
+describe('ui.utils.masks.us.phone', function() {
+	it('should load the demo page', function() {
 		browser.get('/src/us/phone/us-phone.html');
 		expect(browser.getTitle()).toEqual('US Phone Number Spec');
 	});
 
-	describe('ui-us-phone-number:', function () {
-		var runTests = function (input, value) {
+	describe('ui-us-phone-number:', function() {
+		var runTests = function(input, value) {
 			var BS = protractor.Key.BACK_SPACE;
 			var tests = [
 				{key: '1', viewValue: '(1', modelValue: '1'},
@@ -43,16 +43,16 @@ describe('ui.utils.masks.us.phone', function () {
 				expect(input.getAttribute('value')).toEqual(tests[i].viewValue);
 				expect(value.getText()).toEqual(tests[i].modelValue);
 			}
-		}
+		};
 
-		it('should apply a phone number mask while the user is typing:', function () {
+		it('should apply a phone number mask while the user is typing:', function() {
 			var input = element(by.id('us-phone-input')),
 				value = element(by.id('us-phone-value'));
 
 			runTests(input, value);
 		});
 
-		it('should apply a phone number mask in a model with default value:', function () {
+		it('should apply a phone number mask in a model with default value:', function() {
 			var input = element(by.id('init-us-phone-input')),
 				value = element(by.id('init-us-phone-value'));
 

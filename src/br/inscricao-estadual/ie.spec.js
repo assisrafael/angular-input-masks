@@ -1,4 +1,4 @@
-var StringMask = require('string-mask');
+'use strict';
 
 describe('ui.utils.masks.number', function() {
 	it('should load the demo page', function() {
@@ -8,8 +8,7 @@ describe('ui.utils.masks.number', function() {
 
 	describe('ui-br-ie-mask:', function() {
 		it('should apply a IE mask in a model with default value:', function() {
-			var input = element(by.model('initializedIE')),
-				value = element(by.binding('initializedIE'));
+			var input = element(by.model('initializedIE'));
 
 			expect(input.getAttribute('value')).toEqual('P-35887477.0/971');
 		});
@@ -83,9 +82,9 @@ describe('ui.utils.masks.number', function() {
 				if (i > viewValue.replace(/[^P0-9]/ig,'').length && viewValue2) {
 					values = viewValue2.split('');
 				}
-				var expected = ''
+				var expected = '';
 				var count = 0;
-				while(count < i && values.length > 0) {
+				while (count < i && values.length > 0) {
 					var c = values.splice(0,1);
 					expected += c;
 					count += /[P0-9]/i.test(c);
@@ -105,18 +104,19 @@ describe('ui.utils.masks.number', function() {
 				var viewValue2 = test.viewValue2;
 
 				inputUF.all(by.tagName('option')).get(test.option).click();
-				var i;
+				var i, erroMsg, expected;
 				for (i = 0; i < values.length; i++) {
 					inputIE.sendKeys(values[i]);
-					var erroMsg = 'Estado: '+test.uf+'; i: '+i+'; key: '+values[i];
-					var expected = getExpectedViewValue(viewValue, i+1, viewValue2);
+					erroMsg = 'Estado: '+test.uf+'; i: '+i+'; key: '+values[i];
+					expected = getExpectedViewValue(viewValue, i+1, viewValue2);
 					expect(inputIE.getAttribute('value')).toEqual(expected, erroMsg);
 					expect(value.getText()).toEqual(test.modelValue.substr(0,i+1), erroMsg);
 				}
+
 				for (; i > 0; i--) {
 					inputIE.sendKeys(BS);
-					var erroMsg = 'Estado: '+test.uf+'; i: '+i+'; key: BS';
-					var expected = getExpectedViewValue(viewValue, i-1, viewValue2);
+					erroMsg = 'Estado: '+test.uf+'; i: '+i+'; key: BS';
+					expected = getExpectedViewValue(viewValue, i-1, viewValue2);
 					expect(inputIE.getAttribute('value')).toEqual(expected, erroMsg);
 					expect(value.getText()).toEqual(test.modelValue.substr(0,i-1), erroMsg);
 				}

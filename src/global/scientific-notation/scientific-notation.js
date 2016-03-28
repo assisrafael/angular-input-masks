@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 function ScientificNotationMaskDirective($locale, $parse) {
@@ -31,7 +33,7 @@ function ScientificNotationMaskDirective($locale, $parse) {
 
 			var significandMask = significandMaskBuilder(decimals);
 
-			function splitNumber (value) {
+			function splitNumber(value) {
 				var stringValue = value.toString(),
 					splittedNumber = stringValue.match(/(-?[0-9]*)[\.]?([0-9]*)?[Ee]?([\+-]?[0-9]*)?/);
 
@@ -42,7 +44,7 @@ function ScientificNotationMaskDirective($locale, $parse) {
 				};
 			}
 
-			function formatter (value) {
+			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
@@ -88,8 +90,8 @@ function ScientificNotationMaskDirective($locale, $parse) {
 				return formattedValue;
 			}
 
-			function parser (value) {
-				if(ctrl.$isEmpty(value)) {
+			function parser(value) {
+				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
@@ -107,7 +109,7 @@ function ScientificNotationMaskDirective($locale, $parse) {
 			ctrl.$formatters.push(formatter);
 			ctrl.$parsers.push(parser);
 
-			ctrl.$validators.max = function validator (value) {
+			ctrl.$validators.max = function validator(value) {
 				return ctrl.$isEmpty(value) || value < Number.MAX_VALUE;
 			};
 		}

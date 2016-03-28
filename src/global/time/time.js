@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 module.exports = function TimeMaskDirective() {
@@ -42,7 +44,7 @@ module.exports = function TimeMaskDirective() {
 				return modelValue;
 			});
 
-			ctrl.$validators.time = function (modelValue) {
+			ctrl.$validators.time = function(modelValue) {
 				if (ctrl.$isEmpty(modelValue)) {
 					return true;
 				}

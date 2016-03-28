@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 describe('ui-scientific-notation-mask', function() {
@@ -29,7 +31,7 @@ describe('ui-scientific-notation-mask', function() {
 		expect(model.$viewValue).toBe('1.23e4');
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-scientific-notation-mask>');
 		var model = input.controller('ngModel');
 

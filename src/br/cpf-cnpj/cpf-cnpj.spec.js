@@ -1,4 +1,4 @@
-var StringMask = require('string-mask');
+'use strict';
 
 describe('ui.utils.masks.cpfCnpj', function() {
 	it('should load the demo page', function() {
@@ -54,15 +54,13 @@ describe('ui.utils.masks.cpfCnpj', function() {
 		});
 
 		it('should apply a CPFCNPJ mask in a model with default CPF value:', function() {
-			var input = element(by.model('initializedCpfCnpj1')),
-				value = element(by.binding('initializedCpfCnpj1'));
+			var input = element(by.model('initializedCpfCnpj1'));
 
 			expect(input.getAttribute('value')).toEqual('563.383.329-58');
 		});
 
 		it('should apply a CPFCNPJ mask in a model with default CNPJ value:', function() {
-			var input = element(by.model('initializedCpfCnpj2')),
-				value = element(by.binding('initializedCpfCnpj2'));
+			var input = element(by.model('initializedCpfCnpj2'));
 
 			expect(input.getAttribute('value')).toEqual('23.212.161/0001-44');
 		});

@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 var maskFactory = require('mask-factory');
 

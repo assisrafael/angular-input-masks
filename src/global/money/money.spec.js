@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.money', function() {
@@ -18,7 +20,8 @@ describe('ui.utils.masks.money', function() {
 			expect(input.getAttribute('value')).toEqual(currency + '153,12');
 			input.clear();
 
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 
@@ -29,12 +32,12 @@ describe('ui.utils.masks.money', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}
@@ -68,7 +71,8 @@ describe('ui.utils.masks.money', function() {
 			var input = element(by.model('money3Decimals')),
 				value = element(by.binding('money3Decimals'));
 
-			for (var i = 1; i <= 9; i++) {
+			var i;
+			for (i = 1; i <= 9; i++) {
 				input.sendKeys(i);
 				numberToFormat += i;
 
@@ -79,12 +83,12 @@ describe('ui.utils.masks.money', function() {
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (var i = 9; i >= 1; i--) {
+			for (i = 9; i >= 1; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
 				numberToFormat = numberToFormat.slice(0, -1);
-				if(!numberToFormat) {
+				if (!numberToFormat) {
 					numberToFormat = '0';
-				}else{
+				} else {
 					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 					expect(value.getText()).toEqual(formatedNumberAsNumber);
 				}

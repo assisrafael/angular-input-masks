@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask'),
 	moment = require('moment');
 
@@ -16,7 +18,8 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('dateMask')),
 					value = element(by.exactBinding('dateMask'));
 
-				for (var i = 0; i < 8; i++) {
+				var i;
+				for (i = 0; i < 8; i++) {
 					var key = inputKeysToSend.charAt(i);
 					input.sendKeys(key);
 					numberToFormat += key;
@@ -26,7 +29,7 @@ describe('ui.utils.masks.date', function() {
 
 				expect(value.getText()).toEqual(moment(formatedDateAsString, 'YYYY-MM-DD').toDate().toString());
 
-				for (var i = 7; i >= 0; i--) {
+				for (i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					numberToFormat = numberToFormat.slice(0, -1);
 					if (numberToFormat) {
@@ -60,10 +63,10 @@ describe('ui.utils.masks.date', function() {
 				var inputKeysToSend = '19991231';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.exactBinding('dateMask')),
 					valid = element(by.binding('form.dateMaskInput.$error'));
 
-				for (var i = 0; i < 7; i++) {
+				var i;
+				for (i = 0; i < 7; i++) {
 					input.sendKeys(inputKeysToSend.charAt(i));
 					expect(valid.getText()).toEqual('{ "date": true }');
 				}
@@ -71,7 +74,7 @@ describe('ui.utils.masks.date', function() {
 				input.sendKeys(inputKeysToSend.charAt(7));
 				expect(valid.getText()).toEqual('{}');
 
-				for (var i = 7; i > 0; i--) {
+				for (i = 7; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					expect(valid.getText()).toEqual('{ "date": true }');
 				}
@@ -96,7 +99,8 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('dateMask')),
 					value = element(by.exactBinding('dateMask'));
 
-				for (var i = 0; i < 8; i++) {
+				var i;
+				for (i = 0; i < 8; i++) {
 					var key = inputKeysToSend.charAt(i);
 					input.sendKeys(key);
 					numberToFormat += key;
@@ -106,7 +110,7 @@ describe('ui.utils.masks.date', function() {
 
 				expect(value.getText()).toEqual(moment(formatedDateAsString, 'DD/MM/YYYY').toDate().toString());
 
-				for (var i = 7; i >= 0; i--) {
+				for (i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					numberToFormat = numberToFormat.slice(0, -1);
 					if (numberToFormat) {
@@ -140,10 +144,10 @@ describe('ui.utils.masks.date', function() {
 				var inputKeysToSend = '31121999';
 
 				var input = element(by.model('dateMask')),
-					value = element(by.exactBinding('dateMask')),
 					valid = element(by.binding('form.dateMaskInput.$error'));
 
-				for (var i = 0; i < 7; i++) {
+				var i;
+				for (i = 0; i < 7; i++) {
 					input.sendKeys(inputKeysToSend.charAt(i));
 					expect(valid.getText()).toEqual('{ "date": true }');
 				}
@@ -151,7 +155,7 @@ describe('ui.utils.masks.date', function() {
 				input.sendKeys(inputKeysToSend.charAt(7));
 				expect(valid.getText()).toEqual('{}');
 
-				for (var i = 7; i > 0; i--) {
+				for (i = 7; i > 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					expect(valid.getText()).toEqual('{ "date": true }');
 				}

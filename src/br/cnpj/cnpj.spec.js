@@ -1,4 +1,4 @@
-var StringMask = require('string-mask');
+'use strict';
 
 describe('ui-br-cnpj:', function() {
 	it('should load the demo page', function() {

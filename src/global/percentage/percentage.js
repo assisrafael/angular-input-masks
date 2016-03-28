@@ -1,3 +1,5 @@
+'use strict';
+
 var validators = require('validators');
 
 function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
@@ -8,7 +10,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
-		link: function (scope, element, attrs, ctrl) {
+		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				decimals = parseInt(attrs.uiPercentageMask);
@@ -18,7 +20,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				decimalMask: 2
 			};
 
-			if (angular.isDefined(attrs.uiHideGroupSep)){
+			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
 			}
 
@@ -27,7 +29,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				modelValue.decimalMask = 0;
 			}
 
-			if(isNaN(decimals)) {
+			if (isNaN(decimals)) {
 				decimals = 2;
 			}
 

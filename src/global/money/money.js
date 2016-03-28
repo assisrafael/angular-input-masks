@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 var validators = require('validators');
 
@@ -5,23 +7,23 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
-		link: function (scope, element, attrs, ctrl) {
+		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
 			function maskFactory(decimals) {
-					var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-					var maskPattern = currencySym + ' #' + thousandsDelimiter + '##0' + decimalsPattern;
-					return new StringMask(maskPattern, {reverse: true});
+				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
+				var maskPattern = currencySym + ' #' + thousandsDelimiter + '##0' + decimalsPattern;
+				return new StringMask(maskPattern, {reverse: true});
 			}
 
-			if (angular.isDefined(attrs.uiHideGroupSep)){
+			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
 			}
 
-			if(isNaN(decimals)) {
+			if (isNaN(decimals)) {
 				decimals = 2;
 			}
 
@@ -46,7 +48,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				var formatedValue = moneyMask.apply(actualNumber);
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
-						var isNegative = (value[0] === '-'),
+					var isNegative = (value[0] === '-'),
 						needsToInvertSign = (value.slice(-1) === '-');
 
 					//only apply the minus sign if it is negative or(exclusive)
@@ -92,7 +94,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 
 			if (attrs.max) {
 				var maxVal;
-				
+
 				ctrl.$validators.max = function(modelValue) {
 					return validators.maxNumber(ctrl, modelValue, maxVal);
 				};

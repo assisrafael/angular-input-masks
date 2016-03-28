@@ -8,7 +8,7 @@
   },
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
-    "lint": "eslint *.js src/**/*.js config/*.js --fix",
+    "lint": "eslint *.js src/ config/ --fix",
     "test:unit": "karma start config/karma.conf.js --single-run",
     "test:unit:watch": "karma start config/karma.conf.js --auto-watch",
     "test:e2e:prepare": "webdriver-manager update",

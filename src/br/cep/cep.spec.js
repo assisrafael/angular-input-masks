@@ -1,4 +1,4 @@
-var StringMask = require('string-mask');
+'use strict';
 
 describe('ui.utils.masks.br.cep', function() {
 	it('should load the demo page', function() {
@@ -42,8 +42,7 @@ describe('ui.utils.masks.br.cep', function() {
 		});
 
 		it('should apply a CEP mask in a model with default value:', function() {
-			var input = element(by.model('initializedCep')),
-				value = element(by.binding('initializedCep'));
+			var input = element(by.model('initializedCep'));
 
 			expect(input.getAttribute('value')).toEqual('30112-010');
 		});

@@ -1,19 +1,21 @@
+'use strict';
+
 var validators = require('validators');
 
 function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
-		link: function (scope, element, attrs, ctrl) {
+		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				decimals = $parse(attrs.uiNumberMask)(scope);
 
-			if (angular.isDefined(attrs.uiHideGroupSep)){
+			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
 			}
 
-			if(isNaN(decimals)) {
+			if (isNaN(decimals)) {
 				decimals = 2;
 			}
 
@@ -21,7 +23,7 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				modelMask = NumberMasks.modelMask(decimals);
 
 			function parser(value) {
-				if(ctrl.$isEmpty(value)) {
+				if (ctrl.$isEmpty(value)) {
 					return null;
 				}
 

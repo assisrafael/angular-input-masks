@@ -1,3 +1,5 @@
+'use strict';
+
 var StringMask = require('string-mask');
 
 describe('ui.utils.masks.nfe: ', function() {
@@ -13,10 +15,10 @@ describe('ui.utils.masks.nfe: ', function() {
 				inputKeysToSend = '34958723405162304548623240917012593348590495',
 				formatedNfeAccessKeyAsString, numberToFormat = '';
 
-			var input = element(by.model('accessKeyField')),
-				value = element(by.binding('accessKeyField'));
+			var input = element(by.model('accessKeyField'));
 
-			for (var i = 0; i < 44; i++) {
+			var i;
+			for (i = 0; i < 44; i++) {
 				var key = inputKeysToSend.charAt(i);
 				input.sendKeys(key);
 				numberToFormat += key;
@@ -24,7 +26,7 @@ describe('ui.utils.masks.nfe: ', function() {
 				expect(input.getAttribute('value')).toEqual(formatedNfeAccessKeyAsString);
 			}
 
-			for (var i = 43; i >= 0; i--) {
+			for (i = 43; i >= 0; i--) {
 				if (i % 4 === 0) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 				}
@@ -42,10 +44,10 @@ describe('ui.utils.masks.nfe: ', function() {
 			var inputKeysToSend = '23304920235802085168523045823045892349519349';
 
 			var input = element(by.model('accessKeyField')),
-				value = element(by.binding('accessKeyField')),
 				valid = element(by.binding('form.accessKeyField.$error'));
 
-			for (var i = 0; i < 43; i++) {
+			var i;
+			for (i = 0; i < 43; i++) {
 				input.sendKeys(inputKeysToSend.charAt(i));
 				expect(valid.getText()).toEqual('{ "nfeAccessKey": true }');
 			}
@@ -53,7 +55,7 @@ describe('ui.utils.masks.nfe: ', function() {
 			input.sendKeys(inputKeysToSend.charAt(5));
 			expect(valid.getText()).toEqual('{}');
 
-			for (var i = 43; i > 0; i--) {
+			for (i = 43; i > 0; i--) {
 				if (i % 4 === 0) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 				}

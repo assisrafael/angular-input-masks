@@ -1,3 +1,5 @@
+'use strict';
+
 require('../global-masks');
 
 var StringMask = require('string-mask');
@@ -49,7 +51,7 @@ describe('ui-number-mask', function() {
 		expect(model.$viewValue).toBe('3456.79');
 	});
 
-	it('should return null if field is empty', function () {
+	it('should return null if field is empty', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask>', {
 			model: 1000
 		});
@@ -107,7 +109,7 @@ describe('ui-number-mask', function() {
 		}
 	});
 
-	it('should handle corner cases', inject(function($rootScope) {
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask>');
 		var model = input.controller('ngModel');
 
@@ -125,7 +127,7 @@ describe('ui-number-mask', function() {
 		});
 	}));
 
-	it('should show zero when the model value is zero and the precision is set to 0', inject(function($rootScope) {
+	it('should show zero when the model value is zero and the precision is set to 0', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-number-mask="0">');
 		var model = input.controller('ngModel');
 
