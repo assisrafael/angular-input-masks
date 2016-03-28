@@ -78,7 +78,7 @@ describe('ui-br-phone-number', function() {
 		var model = input.controller('ngModel');
 		expect(model.$error.brPhoneNumber).toBe(true);
 		input.val('12345678901').triggerHandler('input');
-		expect(model.$error.brPhoneNumber).toBe(undefined);
+		expect(model.$error.brPhoneNumber).toBeUndefined();
 	});
 
 	it('should use the type of the model value (if initialized)', function() {

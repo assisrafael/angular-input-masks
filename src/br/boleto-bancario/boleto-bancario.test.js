@@ -43,6 +43,6 @@ describe('ui-br-boleto-bancario-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$error.brBoletoBancario).toBe(true);
 		input.val('10491443385511900000200000000141325230000093423').triggerHandler('input');
-		expect(model.$error.brBoletoBancario).toBe(undefined);
+		expect(model.$error.brBoletoBancario).toBeUndefined();
 	});
 });

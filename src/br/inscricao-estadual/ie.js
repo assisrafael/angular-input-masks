@@ -48,7 +48,7 @@ function BrIeMaskDirective($parse) {
 
 	function getMask(uf, value) {
 		if (!uf || !ieMasks[uf]) {
-			return undefined;
+			return;
 		}
 
 		if (uf === 'SP' && /^P/i.test(value)) {

@@ -57,7 +57,7 @@ describe('ui-date-mask', function() {
 		var tests = [
 			{modelValue: '', viewValue: ''},
 			{modelValue: null, viewValue: null},
-			{modelValue: undefined, viewValue: undefined},
+			{}, //tests undefined values
 		];
 
 		tests.forEach(function(test) {

@@ -130,7 +130,7 @@ describe('ui-money-mask', function() {
 			{modelValue: '0', viewValue: '$ 0.00'},
 			{modelValue: '0.0', viewValue: '$ 0.00'},
 			{modelValue: 0, viewValue: '$ 0.00'},
-			{modelValue: undefined, viewValue: undefined},
+			{},
 			{modelValue: null, viewValue: null},
 		];
 
@@ -141,14 +141,12 @@ describe('ui-money-mask', function() {
 		});
 
 		it('should ignore non digits', function() {
-			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {
-				model: undefined
-			});
+			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
 			var model = input.controller('ngModel');
 
 			var tests = [
 				{value: '@', viewValue: '', modelValue: ''},
-				{value: undefined, viewValue: undefined, modelValue: undefined},
+				{},
 				{value: null, viewValue: null, modelValue: null},
 			];
 

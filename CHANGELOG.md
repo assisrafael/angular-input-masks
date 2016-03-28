@@ -42,9 +42,9 @@ This release migrates all directives to angular 1.3.x.
 Angular 1.2.x is no longer supported by angular-input-masks@^2.0.0, however angular-input-masks@^1.0.0 will continue to receive bug fixes.
 
 * The following deprecated directives were removed:
-  * uiCpfMask: replaced by *uiBrCpfMask*
-	* uiCnpjMask: replaced by *uiBrCnpjMask*
-	* uiCpfcnpjMask:	replaced by *uiBrCpfCnpjMask*
+* uiCpfMask: replaced by *uiBrCpfMask*
+* uiCnpjMask: replaced by *uiBrCnpjMask*
+* uiCpfcnpjMask:	replaced by *uiBrCpfCnpjMask*
 
 
 <a name"1.5.1"></a>

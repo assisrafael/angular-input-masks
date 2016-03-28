@@ -53,7 +53,6 @@
             2,
             "never"
         ],
-        "consistent-return": 2,
         "consistent-this": 2,
         "curly": 2,
         "default-case": 2,
@@ -111,7 +110,6 @@
         "no-floating-decimal": 2,
         "no-implicit-globals": 2,
         "no-implied-eval": 2,
-        "no-inline-comments": 2,
         "no-inner-declarations": [
             2,
             "functions"
