@@ -1,3 +1,18 @@
+<a name"2.2.0"></a>
+## 2.2.0 (2016-03-28)
+
+
+#### Bug Fixes
+
+* **br-cep:** force cep input to string ([65d64b14](http://github.com/assisrafael/angular-input-masks/commit/65d64b14))
+* **ui-date-mask:** fix initialization of ISO date strings ([b220ae0d](http://github.com/assisrafael/angular-input-masks/commit/b220ae0d))
+
+
+#### Features
+
+* **ui-br-car-plate-mask:** input mask for brazilian car plate ([03d971bf](http://github.com/assisrafael/angular-input-masks/commit/03d971bf))
+
+
 <a name"2.1.1"></a>
 ### 2.1.1 (2015-11-26)
 
