@@ -155,6 +155,11 @@
 		<input type="text" name="field25" ng-model="carPlate" ui-br-car-plate-mask><br>
 		<span></span>Plate: <span ng-bind="carPlate"></span> - <span ng-bind="form.field25.$error | json"></span><br>
 		<br>
+
+		<h2>ui-date-mask</h2>
+		<input type="text" name="field26" ng-model="initializedDateMask" ui-date-mask><br>
+		<span></span>Date: <span ng-bind="initializedDateMask"></span> - <span ng-bind="form.field26.$error | json"></span><br>
+		<br>
 	</form>
 </body>
 </html>
