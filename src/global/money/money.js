@@ -7,10 +7,13 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
+    	scope: {
+      		currency: '='
+    	},
 		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+				currencySym = scope.currency || $locale.NUMBER_FORMATS.CURRENCY_SYM,
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
 			function maskFactory(decimals) {
