@@ -67,6 +67,22 @@ describe('ui-money-mask', function() {
 		expect(model.$viewValue).toBe('$ 3,456.79');
 	}));
 
+	it('should allow changing the currency', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency="currentCurrency">', {
+			model: '3456.79',
+			currentCurrency: '$'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 3,456.79');
+		$rootScope.currentCurrency = 'R$';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('R$ 3,456.79');
+		$rootScope.currentCurrency = '$';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('$ 3,456.79');
+	}));
+
 	it('shold allow string as definition of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask="decimals">', {
 			model: '3456.79',
@@ -116,6 +132,10 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('-$ 3,456.78');
 		expect(model.$valid).toBe(true);
+		input.val('$ 3,456.78-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-$ 3,456.78');
+		input.val('-$ 3,456.78-').triggerHandler('input');
+		expect(model.$viewValue).toBe('$ 3,456.78');
 	});
 
 	it('should format money with three decimal places', function() {

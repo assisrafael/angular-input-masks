@@ -84,6 +84,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					actualNumber = actualNumber.substring(0, actualNumber.length - 1);
 					backspacePressed = false;
 				}
+
 				if (angular.isDefined(attrs.uiCurrencyAfter)) {
 					formatedValue = moneyMask.apply(actualNumber) + currencySym;
 				} else {
@@ -119,6 +120,14 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					decimals = parseInt(decimals);
 					moneyMask = maskFactory(decimals);
 
+					parser(ctrl.$viewValue);
+				});
+			}
+
+			if (attrs.currency) {
+				scope.$watch(attrs.currency, function(_currency) {
+					currencySym = _currency;
+					moneyMask = maskFactory(decimals);
 					parser(ctrl.$viewValue);
 				});
 			}
