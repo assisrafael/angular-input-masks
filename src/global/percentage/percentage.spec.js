@@ -107,5 +107,41 @@ describe('ui.utils.masks.percentage', function() {
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 			}
 		});
+
+		it('should format percentage numbers with no decimal places', function() {
+			var formatterView = new StringMask('#.##0', {reverse: true}),
+				formatterModel =  new StringMask('###0', {reverse: true}),
+				numberToFormat = '', percent = ' %', formatedNumberAsString, formatedNumberAsNumber;
+
+			var input = element(by.model('percentageWith0Decimals')),
+				value = element(by.binding('percentageWith0Decimals'));
+
+			input.clear();
+			var i;
+			for (i = 1; i <= 9; i++) {
+				input.sendKeys(i);
+				numberToFormat += i;
+
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
+
+				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+				expect(value.getText()).toEqual(formatedNumberAsNumber);
+			}
+
+			for (i = 9; i >= 1; i--) {
+				input.sendKeys(protractor.Key.BACK_SPACE);
+				numberToFormat = numberToFormat.slice(0, -1);
+				if (!numberToFormat) {
+					numberToFormat = '0';
+				} else {
+					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+					expect(value.getText()).toEqual(formatedNumberAsNumber);
+				}
+
+				formatedNumberAsString = formatterView.apply(numberToFormat);
+				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
+			}
+		});
 	});
 });
