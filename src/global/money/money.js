@@ -82,7 +82,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 			if (attrs.currency) {
 				scope.$watch(attrs.currency, function(_currency) {
 					if(_currency){
-						currencySym = currency;
+						currencySym = _currency;
 					}
 					moneyMask = maskFactory(decimals);
 					parser(ctrl.$viewValue);
