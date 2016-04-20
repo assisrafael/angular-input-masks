@@ -60,7 +60,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				if (value.length > 1 && value.indexOf('%') === -1) {
 					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
 				}
-				if (backspacePressed && value.length == 1 && value != '%') {
+				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
 				var formatedValue = viewMask.apply(valueToFormat) + ' %';
