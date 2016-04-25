@@ -66,7 +66,23 @@ describe('ui-money-mask', function() {
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('$ 3,456.79');
 	}));
+	
+	it('should allow changing the currency', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency="currentCurrency">', {
+			model: '3456.79',
+			currentCurrency: '$'
+		});
 
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 3,456.79');
+		$rootScope.currentCurrency = 'R$';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('R$ 345.679');
+		$rootScope.currentCurrency = '';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('$ 3,456.79');
+	}));
+	
 	it('should validate minimum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask min="50">', {
 			model: '3456.79'
