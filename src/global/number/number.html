@@ -35,10 +35,6 @@
 		Number: <input type="text" name="field23" ng-model="numberWithDynamicDecimals" ng-model-options="{allowInvalid:true}" ui-number-mask="decimals">
 		Decimals: <input type="text" name="field22" ng-model="decimals" ui-number-mask=0><br>
 		<span ng-bind="numberWithDynamicDecimals"></span> - {{form.field23.$error}}
-		<br>
-		Number: <input type="text" name="field25" ng-model="numberWithDynamicDecimals2" ng-model-options="{allowInvalid:true}" ui-number-mask="decimals2">
-		Decimals as text: <input type="text" name="field24" ng-model="decimals2"><br>
-		<span ng-bind="numberWithDynamicDecimals2"></span> - {{form.field25.$error}}
 	</form>
 </body>
 </html>
