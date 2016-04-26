@@ -154,7 +154,6 @@ describe('ui.utils.masks.number', function() {
 			var input = element(by.model('numberWithDynamicDecimals2')),
 				value = element(by.binding('numberWithDynamicDecimals2')),
 				decimalsInput = element(by.model('decimals2'));
-			;
 
 			input.sendKeys('123');
 			expect(input.getAttribute('value')).toEqual('1,23');
