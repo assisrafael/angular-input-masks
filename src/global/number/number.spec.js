@@ -150,6 +150,26 @@ describe('ui.utils.masks.number', function() {
 			expect(input.getAttribute('value')).toEqual('1.234,178');
 		});
 
+		it('should allow string as definition of decimals', function () {
+			var input = element(by.model('numberWithDynamicDecimals2')),
+				value = element(by.binding('numberWithDynamicDecimals2')),
+				decimalsInput = element(by.model('decimals2'));
+			;
+
+			input.sendKeys('123');
+			expect(input.getAttribute('value')).toEqual('1,23');
+			expect(value.getText()).toEqual('1.23');
+
+			decimalsInput.sendKeys('3');
+			expect(input.getAttribute('value')).toEqual('0,123');
+			expect(value.getText()).toEqual('0.123');
+
+			decimalsInput.clear();
+			decimalsInput.sendKeys('0');
+			expect(input.getAttribute('value')).toEqual('123');
+			expect(value.getText()).toEqual('123');
+		});
+
 		it('should format number with three decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000', {reverse: true}),
