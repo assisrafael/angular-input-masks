@@ -67,6 +67,19 @@ describe('ui-money-mask', function() {
 		expect(model.$viewValue).toBe('$ 3,456.79');
 	}));
 
+	it('shold allow string as definition of decimals', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask="decimals">', {
+			model: '3456.79',
+			decimals: "2"
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 3,456.79');
+		$rootScope.decimals = "3";
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('$ 345.679');
+	}));
+
 	it('should validate minimum value', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask min="50">', {
 			model: '3456.79'
