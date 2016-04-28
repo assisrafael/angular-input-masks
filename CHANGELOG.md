@@ -1,3 +1,19 @@
+<a name"2.3.0"></a>
+## 2.3.0 (2016-04-28)
+
+
+#### Bug Fixes
+
+* **uiPercentageMask:** detect and handle backspace keypresses ([23dc640d](http://github.com/assisrafael/angular-input-masks/commit/23dc640d))
+
+
+#### Features
+
+* **ui-date-mask:** include timezone offset in matching regex ([95949c86](http://github.com/assisrafael/angular-input-masks/commit/95949c86))
+* **ui-money-mask:** allow decimals as strings ([34fea60d](http://github.com/assisrafael/angular-input-masks/commit/34fea60d))
+* **uiChPhoneNumber:** add ch (Switzerland) phone mask ([f3723c88](http://github.com/assisrafael/angular-input-masks/commit/f3723c88))
+
+
 <a name"2.2.0"></a>
 ## 2.2.0 (2016-03-28)
 
