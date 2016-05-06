@@ -35,9 +35,9 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 					var isNegative = (value[0] === '-'),
 						needsToInvertSign = (value.slice(-1) === '-');
 
-					//only apply the minus sign if it is negative or(exclusive)
+					//only apply the minus sign if it is negative or(exclusive) or the first character
 					//needs to be negative and the number is different from zero
-					if (needsToInvertSign ^ isNegative && !!actualNumber) {
+					if ((needsToInvertSign ^ isNegative) || value === '-') {
 						actualNumber *= -1;
 						formatedValue = '-' + formatedValue;
 					}
