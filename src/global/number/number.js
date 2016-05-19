@@ -39,7 +39,7 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 					//needs to be negative and the number is different from zero
 					if ((needsToInvertSign ^ isNegative) || value === '-') {
 						actualNumber *= -1;
-						formatedValue = '-' + formatedValue;
+						formatedValue = '-' + ((actualNumber !== 0) ? formatedValue : '');
 					}
 				}
 
@@ -60,6 +60,15 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 				return prefix + viewMask.apply(valueToFormat);
 			}
+
+			function clearViewValueIfMinusSign() {
+				if (ctrl.$viewValue === '-') {
+					ctrl.$setViewValue('');
+					ctrl.$render();
+				}
+			}
+
+			element.on('blur', clearViewValueIfMinusSign);
 
 			ctrl.$formatters.push(formatter);
 			ctrl.$parsers.push(parser);

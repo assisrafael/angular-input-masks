@@ -101,7 +101,7 @@ describe('ui.utils.masks.number', function() {
 			expect(input.getAttribute('value')).toEqual('12.341,89');
 		});
 
-		it('should not allow -0 parsing it to 0', function() {
+		it('should not allow -0 parsing it to - (just the minus sign)', function() {
 			var input = element(by.model('numberWith2Decimals'));
 
 			input.clear();
@@ -118,7 +118,8 @@ describe('ui.utils.masks.number', function() {
 			input.sendKeys(protractor.Key.BACK_SPACE);
 			expect(input.getAttribute('value')).toEqual('-0,01');
 			input.sendKeys(protractor.Key.BACK_SPACE);
-			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(input.getAttribute('value')).toEqual('-');
+			input.sendKeys(protractor.Key.BACK_SPACE);
 			input.sendKeys(1);
 			expect(input.getAttribute('value')).toEqual('0,01');
 			input.sendKeys('-');
@@ -136,7 +137,7 @@ describe('ui.utils.masks.number', function() {
 			input.sendKeys(protractor.Key.BACK_SPACE);
 			input.sendKeys(protractor.Key.BACK_SPACE);
 			input.sendKeys(protractor.Key.BACK_SPACE);
-			expect(input.getAttribute('value')).toEqual('0,00');
+			expect(input.getAttribute('value')).toEqual('-');
 			input.sendKeys('-');
 			expect(input.getAttribute('value')).toEqual('0,00');
 		});
@@ -304,6 +305,39 @@ describe('ui.utils.masks.number', function() {
 			decimalsInput.sendKeys('0');
 			expect(input.getAttribute('value')).toEqual('123');
 			expect(value.getText()).toEqual('123');
+		});
+
+		it('should accept minus sign as first character when the ui-negative attribute is present', function() {
+			var input = element(by.model('numberWith2Decimals'));
+
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-');
+			input.sendKeys('1');
+			expect(input.getAttribute('value')).toEqual('-0,01');
+			input.sendKeys('2');
+			expect(input.getAttribute('value')).toEqual('-0,12');
+			input.sendKeys('3');
+			expect(input.getAttribute('value')).toEqual('-1,23');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-0,12');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-0,01');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('');
+		});
+
+		it('should clear field when it contains only minus sign', function() {
+			var input = element(by.model('numberWith2Decimals'));
+
+			input.sendKeys('-');
+			input.sendKeys(protractor.Key.TAB);
+			expect(input.getAttribute('value')).toEqual('');
+			input.click();
+			input.sendKeys('-123');
+			input.sendKeys(protractor.Key.TAB);
+			expect(input.getAttribute('value')).toEqual('-1,23');
 		});
 	});
 });
