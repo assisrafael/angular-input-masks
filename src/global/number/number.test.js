@@ -151,4 +151,16 @@ describe('ui-number-mask', function() {
 		expect(model.$viewValue).toBe('-1,234.56');
 		expect(model.$modelValue).toBe(-1234.56);
 	});
+
+	it('should clear field on blur if it contains only minus sign', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-number-mask ui-negative-number>');
+		var model = input.controller('ngModel');
+
+		input.val('-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-');
+		expect(model.$modelValue).toBe(0);
+		input.triggerHandler('blur');
+		expect(model.$viewValue).toBe('');
+		expect(model.$modelValue).toBe(null);
+	});
 });
