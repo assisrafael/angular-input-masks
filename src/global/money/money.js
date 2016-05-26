@@ -11,7 +11,6 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
-				hideCurrencySym = false,
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
 			function maskFactory(decimals) {
@@ -24,8 +23,6 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				thousandsDelimiter = '';
 			}
 
-			hideCurrencySym = angular.isDefined(attrs.uiHideCurrencySym);
-			
 			if (isNaN(decimals)) {
 				decimals = 2;
 			}
