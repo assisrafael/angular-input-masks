@@ -62,7 +62,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-				if (value.length > 1 && value.indexOf('%') === -1) {
+				if (percentageSymbol !== '' && value.length > 1 && value.indexOf('%') === -1) {
 					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
 				}
 				if (backspacePressed && value.length === 1 && value !== '%') {
