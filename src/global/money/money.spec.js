@@ -97,5 +97,16 @@ describe('ui.utils.masks.money', function() {
 				expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
 			}
 		});
+
+		it('should convert invalid values to zero', function() {
+			var currency = 'R$ ';
+
+			var input = element(by.model('defaultMoney'));
+
+			input.clear(); //Clear to send invalid content
+			input.sendKeys('a'); //Typing invalid content, bug #146
+
+			expect(input.getAttribute('value')).toEqual(currency + '0,00');
+		});
 	});
 });
