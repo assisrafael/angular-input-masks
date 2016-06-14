@@ -87,7 +87,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					return validators.minNumber(ctrl, modelValue, minVal);
 				};
 
-				scope.$watch(attrs.min, function(value) {
+				attrs.$observe('min', function(value){
 					minVal = value;
 					ctrl.$validate();
 				});
@@ -100,7 +100,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					return validators.maxNumber(ctrl, modelValue, maxVal);
 				};
 
-				scope.$watch(attrs.max, function(value) {
+				attrs.$observe('max', function(value){
 					maxVal = value;
 					ctrl.$validate();
 				});
