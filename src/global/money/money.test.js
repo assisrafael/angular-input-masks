@@ -170,4 +170,14 @@ describe('ui-money-mask', function() {
 			});
 		});
 	}));
+
+	it('should convert invalid values to zero', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+		var model = input.controller('ngModel');
+
+		input.val('').triggerHandler('input');
+		input.val('a').triggerHandler('input');
+		expect(model.$viewValue).toBe('$ 0.00');
+		expect(model.$modelValue).toBe(0);
+	});
 });

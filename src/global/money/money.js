@@ -45,6 +45,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 
 				var actualNumber = value.replace(/[^\d]+/g,'');
 				actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
+				actualNumber = actualNumber || '0';
 				var formatedValue = moneyMask.apply(actualNumber);
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
