@@ -2,8 +2,7 @@
 
 /*eslint no-console: 0*/
 
-var fs = require('fs'),
-	path = require('path');
+var path = require('path');
 
 var gulp = require('gulp'),
 	mergeStream = require('merge-stream'),
@@ -136,25 +135,6 @@ gulp.task('serve', ['build'], function(done) {
 	});
 });
 
-gulp.task('changelog', ['getVersion'], function(done) {
-	var changelog = require('conventional-changelog');
-
-	var options = {
-		repository: pkg.homepage,
-		version: VERSION,
-		file: 'CHANGELOG.md'
-	};
-
-	var filePath = path.join(__dirname, options.file);
-	changelog(options, function(err, log) {
-		if (err) {
-			throw err;
-		}
-
-		fs.writeFile(filePath, log, done);
-	});
-});
-
 function bumpVersion(folder) {
 	return gulp.src([
 		'bower.json',
@@ -167,12 +147,6 @@ function bumpVersion(folder) {
 	}))
 	.pipe(gulp.dest(folder));
 }
-
-gulp.task('version-bump', ['getVersion'], function() {
-	return bumpVersion('./');
-});
-
-gulp.task('release', ['version-bump', 'changelog']);
 
 gulp.task('bower-clone', ['build'], function(done) {
 	plugins.git.clone(bowerConfig.repository, {
