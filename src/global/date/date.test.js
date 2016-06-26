@@ -24,7 +24,7 @@ describe('ui-date-mask', function() {
 
 	it('should format initial model values', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>', {
-			model: new Date('1999-12-31')
+			model: new Date('1999-12-31 00:00:00')
 		});
 
 		var model = input.controller('ngModel');
