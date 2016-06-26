@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.4.0"></a>
+# [2.4.0](https://github.com/assisrafael/angular-input-masks/compare/v2.3.0...v2.4.0) (2016-06-26)
+
+
+### Bug Fixes
+
+* **uiMoneyMask:** invalid values should be converted to zero ([ec007c4](https://github.com/assisrafael/angular-input-masks/commit/ec007c4)), closes [#146](https://github.com/assisrafael/angular-input-masks/issues/146)
+
+
+### Features
+
+* **uiCreditCard:** add credit card mask ([03da0a4](https://github.com/assisrafael/angular-input-masks/commit/03da0a4))
+* **uiNumberMask:** allow minus sign as first character for negative numbers ([ef449d8](https://github.com/assisrafael/angular-input-masks/commit/ef449d8)), closes [#147](https://github.com/assisrafael/angular-input-masks/issues/147)
+
 
 
 <a name="2.3.0"></a>
