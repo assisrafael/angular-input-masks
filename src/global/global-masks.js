@@ -8,6 +8,7 @@ var m = angular.module('ui.utils.masks.global', [
 .directive('uiNumberMask', require('./number/number'))
 .directive('uiPercentageMask', require('./percentage/percentage'))
 .directive('uiScientificNotationMask', require('./scientific-notation/scientific-notation'))
-.directive('uiTimeMask', require('./time/time'));
+.directive('uiTimeMask', require('./time/time'))
+.directive('uiCreditCard', require('./credit-card/credit-card'));
 
 module.exports = m.name;
