@@ -13,6 +13,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+				percentageSymbol = ' %',
 				decimals = parseInt(attrs.uiPercentageMask),
 				backspacePressed = false;
 
@@ -24,6 +25,10 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				multiplier : 100,
 				decimalMask: 2
 			};
+
+			if (angular.isDefined(attrs.uiHidePercentageSign)) {
+				percentageSymbol = '';
+			}
 
 			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
@@ -48,7 +53,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
-				return viewMask.apply(valueToFormat) + ' %';
+				return viewMask.apply(valueToFormat) + percentageSymbol;
 			}
 
 			function parse(value) {
@@ -57,13 +62,13 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-				if (value.length > 1 && value.indexOf('%') === -1) {
+				if (percentageSymbol !== '' && value.length > 1 && value.indexOf('%') === -1) {
 					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
 				}
 				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
-				var formatedValue = viewMask.apply(valueToFormat) + ' %';
+				var formatedValue = viewMask.apply(valueToFormat) + percentageSymbol;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
 				if (ctrl.$viewValue !== formatedValue) {
