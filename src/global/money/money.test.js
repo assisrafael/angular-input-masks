@@ -189,4 +189,22 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('$345.00');
 	});
+
+	it('should change currency symbol if defined', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency-symbol="F$">', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('F$ 345.00');
+	});
+
+	it('should remove space if currency symbol is defined but empty', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency-symbol="">', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('345.00');
+	});
 });

@@ -10,12 +10,14 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
-				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM + ' ',
+				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
+				symbolSeparation = ' ',
 				decimals = $parse(attrs.uiMoneyMask)(scope);
+
 
 			function maskFactory(decimals) {
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-				var maskPattern = '#' + thousandsDelimiter + '##0' + decimalsPattern;
+				var maskPattern = symbolSeparation + '#' + thousandsDelimiter + '##0' + decimalsPattern;
 				return new StringMask(maskPattern, {reverse: true});
 			}
 
@@ -24,7 +26,14 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 			}
 
 			if (angular.isDefined(attrs.uiHideSpace)) {
-				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM;
+				symbolSeparation = '';
+			}
+
+			if (angular.isDefined(attrs.currencySymbol)) {
+				currencySym = attrs.currencySymbol;
+				if (attrs.currencySymbol.length === 0) {
+					symbolSeparation = '';
+				}
 			}
 
 			if (isNaN(decimals)) {
