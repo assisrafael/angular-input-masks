@@ -117,6 +117,8 @@ Some masks are internationalized, so you need to include the proper angular-loca
 
 - The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
 
+- You can add ```ui-hide-space``` attribute to hide space between [NUMBER] and %
+
 ### ui-money-mask ###
 
  - Example:
@@ -134,6 +136,8 @@ Some masks are internationalized, so you need to include the proper angular-loca
 - Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
 - Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.
+
+- You can add ```ui-hide-space``` attribute to hide space between [Currency symbol] and [NUMBER]
 
 ### ui-br-phone-number ###
 ```html

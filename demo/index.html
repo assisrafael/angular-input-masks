@@ -76,6 +76,8 @@
 		<h4>ui-percentage-value</h4>
 		$viewValue - <input type="text" name="field6" ng-model="percentageValue" ui-percentage-mask="4" ui-percentage-value min="percentageWithDefaultDecimals" max="115"> <br>
 		$modelValue - <span ng-bind="percentageValue"></span>
+		<h4>ui-percentage-mask without space before %</h4>
+		$viewValue - <input type="text" name="field29" ng-model="percentageValueNoSpace" ng-model-options="{allowInvalid:true}" ui-percentage-mask="2" ui-percentage-value ui-hide-space min="percentageWithDefaultDecimals" max="115"> <br>
 		<br />
 
 		<h2>ui-br-cpf-mask</h2>
@@ -119,6 +121,8 @@
 		Decimals: <input type="text" name="field28" ng-model="mdecimals" ui-number-mask=0><br>
 		<span ng-bind="moneyWithDynamicDecimals"></span> - {{form.field27.$error}}
 		<br>
+		<h4>ui-money-mask without space after currency symbol</h4>
+		Money: <input type="text" name="field30" ng-model="moneyWithDynamicDecimals" ui-hide-space ui-money-mask="mdecimals">
 
 		<h2>ui-br-phone-number</h2>
 		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>

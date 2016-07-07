@@ -33,6 +33,8 @@
 		<h4>ui-percentage-value</h4>
 		$viewValue - <input type="text" name="field6" ng-model="percentageValue" ng-model-options="{allowInvalid:true}" ui-percentage-mask="4" ui-percentage-value min="percentageWithDefaultDecimals" max="115"> <br>
 		$modelValue - <span ng-bind="percentageValue"></span>
+		<h4>ui-percentage-mask without space before %</h4>
+		$viewValue - <input type="text" name="field29" ng-model="percentageValue" ng-model-options="{allowInvalid:true}" ui-percentage-mask="4" ui-percentage-value ui-hide-space min="percentageWithDefaultDecimals" max="115"> <br>
 	</form>
 </body>
 </html>
