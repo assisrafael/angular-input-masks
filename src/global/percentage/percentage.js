@@ -14,6 +14,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				decimals = parseInt(attrs.uiPercentageMask),
+				hideSpace = false,
 				backspacePressed = false;
 
 			element.bind('keydown keypress', function(event) {
@@ -27,6 +28,10 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 
 			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
+			}
+
+			if (angular.isDefined(attrs.uiHideSpace)) {
+				hideSpace = true;
 			}
 
 			if (angular.isDefined(attrs.uiPercentageValue)) {
@@ -63,7 +68,8 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
-				var formatedValue = viewMask.apply(valueToFormat) + ' %';
+				var percentSign = hideSpace ? '%' : ' %';
+				var formatedValue = viewMask.apply(valueToFormat) + percentSign;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
 				if (ctrl.$viewValue !== formatedValue) {
