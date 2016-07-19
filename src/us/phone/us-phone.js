@@ -23,6 +23,9 @@ module.exports = maskFactory({
 	},
 	validations: {
 		usPhoneNumber: function(value) {
+			if(Number.isInteger(value)){
+				value = value.toString()
+			}
 			return value.length > 9;
 		}
 	}
