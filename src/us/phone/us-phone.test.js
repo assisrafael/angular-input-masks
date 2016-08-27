@@ -52,4 +52,17 @@ describe('ui-us-phone-mask', function() {
 			expect(model.$modelValue).toBe(test.modelValue);
 		});
 	});
+
+	it('should validate a phone number', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number>', {
+			model: 30112
+		});
+		var model = input.controller('ngModel');
+		expect(model.$valid).toBe(false);
+		expect(model.$error.usPhoneNumber).toBe(true);
+		input.val(3011201034).triggerHandler('input');
+		expect(model.$valid).toBe(true);
+		expect(model.$error.usPhoneNumber).toBeUndefined();
+	});
+
 });

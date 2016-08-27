@@ -23,7 +23,7 @@ module.exports = maskFactory({
 	},
 	validations: {
 		usPhoneNumber: function(value) {
-			return value.length > 9;
+			return value && value.toString().length > 9;
 		}
 	}
 });
