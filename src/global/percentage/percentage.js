@@ -73,7 +73,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 				
 				var percentSign = hideSpace ? '%' : ' %';
- 				var formatedValue = viewMask.apply(valueToFormat) + percentSign;				
+ 				var formatedValue = viewMask.apply(valueToFormat) + percentSign;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 				
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
