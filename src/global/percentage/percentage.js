@@ -77,9 +77,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 				
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
-					var isNegative = (value[0] === '-');
-
-					isNegative = (value.slice(-1) === '-') ? !isNegative : isNegative;
+					var isNegative = (value.slice(-1) === '-') ? !(value[0] === '-') : (value[0] === '-');
 					if (isNegative) {
 						actualNumber *= -1;
 						formatedValue = '-' + formatedValue;
