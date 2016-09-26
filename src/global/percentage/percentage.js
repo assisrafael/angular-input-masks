@@ -54,7 +54,9 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
-				return prefix + viewMask.apply(valueToFormat) + ' %';				
+				
+				var percentSign = hideSpace ? '%' : ' %';
+				return prefix + viewMask.apply(valueToFormat) + percentSign;				
 			}
 
 			function parse(value) {
@@ -69,7 +71,9 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
-				var formatedValue = viewMask.apply(valueToFormat) + ' %';
+				
+				var percentSign = hideSpace ? '%' : ' %';
+ 				var formatedValue = viewMask.apply(valueToFormat) + percentSign;				
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 				
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
