@@ -15,7 +15,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
 			if (angular.isDefined(attrs.uiCurrency)) {
-					currencySym = attrs["uiCurrency"];
+					currencySym = element.attr('ui-currency');
 				}
 			
 			function maskFactory(decimals) {
