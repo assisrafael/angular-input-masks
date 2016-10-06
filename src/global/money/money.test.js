@@ -191,7 +191,7 @@ describe('ui-money-mask', function() {
 	});
 
 	it('should change currency symbol if defined', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency-symbol="F$">', {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-currency="Ghc">', {
 			model: 345.00
 		});
 
