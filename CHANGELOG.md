@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.5.0"></a>
+# [2.5.0](https://github.com/assisrafael/angular-input-masks/compare/v2.4.0...v2.5.0) (2016-10-11)
+
+
+### Bug Fixes
+
+* **usPhoneNumber:** fix validation issues on us phone number ([2ea6056](https://github.com/assisrafael/angular-input-masks/commit/2ea6056))
+
+
+### Features
+
+* allow the removal of spaces after currency symbol or before % symbol ([f476dee](https://github.com/assisrafael/angular-input-masks/commit/f476dee))
+* update dependency string-mask@^0.3.0 ([8204c83](https://github.com/assisrafael/angular-input-masks/commit/8204c83))
+* **ui-money-mask:** add currency symbol attribute ([#203](https://github.com/assisrafael/angular-input-masks/issues/203)) ([65c7f2b](https://github.com/assisrafael/angular-input-masks/commit/65c7f2b))
+
+
+
 <a name="2.4.0"></a>
 # [2.4.0](https://github.com/assisrafael/angular-input-masks/compare/v2.3.0...v2.4.0) (2016-06-26)
 
