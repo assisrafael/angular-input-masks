@@ -24,14 +24,15 @@ module.exports = maskFactory({
 	},
 	format: function (cleanValue) {
 		var formattedValue;
+
 		if (cleanValue.indexOf('0800') === 0) {
 			formattedValue = phoneMask0800.simple.apply(cleanValue);
 		} else if (cleanValue.length < 9) {
 			formattedValue = phoneMask8D.simple.apply(cleanValue) || '';
 		} else if (cleanValue.length < 10) {
-			formattedValue = phoneMask9D.simple.apply(cleanValue) || '';
+			formattedValue = phoneMask9D.simple.apply(cleanValue);
 		} else if (cleanValue.length < 11) {
-			formattedValue = phoneMask8D.areaCode.apply(cleanValue) || '';
+			formattedValue = phoneMask8D.areaCode.apply(cleanValue);
 		} else {
 			formattedValue = phoneMask9D.areaCode.apply(cleanValue);
 		}
@@ -50,7 +51,7 @@ module.exports = maskFactory({
 			// 9- 9D without DD
 			// 10- 9D with DD
 			// 11- 8D with DD and 0800
-			return [8, 9, 10, 11].indexOf(valueLength) >= 0;
+			return valueLength >= 8 && valueLength <= 11;
 		}
 	}
 });
