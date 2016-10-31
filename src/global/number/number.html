@@ -17,8 +17,8 @@
 <body ng-app="app">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-number-mask</h2>
-		<input type="text" name="field21" ng-model="numberWithoutGrupoSep" ng-model-options="{allowInvalid:true}" ui-number-mask ui-hide-group-sep> <br>
-		<span ng-bind="numberWithoutGrupoSep"></span> - {{form.field21.$error}}
+		<input type="text" name="field21" ng-model="numberWithoutGroupSep" ng-model-options="{allowInvalid:true}" ui-number-mask ui-hide-group-sep> <br>
+		<span ng-bind="numberWithoutGroupSep"></span> - {{form.field21.$error}}
 		<br>
 		<input type="text" name="field" ng-model="numberWithDefaultDecimals" ng-model-options="{allowInvalid:true}" ui-number-mask> <br>
 		<span ng-bind="numberWithDefaultDecimals"></span>

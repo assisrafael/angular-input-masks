@@ -227,8 +227,8 @@ describe('ui.utils.masks.number', function() {
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
 				numberToFormat = '', formatedNumberAsString, formatedNumberAsNumber;
 
-			var input = element(by.model('numberWithoutGrupoSep')),
-				value = element(by.binding('numberWithoutGrupoSep'));
+			var input = element(by.model('numberWithoutGroupSep')),
+				value = element(by.binding('numberWithoutGroupSep'));
 
 			var i;
 			for (i = 1; i <= 9; i++) {
