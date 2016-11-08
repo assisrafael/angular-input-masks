@@ -1,10 +1,10 @@
 {
-  "name": "angular-input-masks",
-  "version": "2.5.0",
-  "description": "Personalized input masks for AngularJS",
+  "name": "angular-input-masks-extended",
+  "version": "2.5.1",
+  "description": "Personalized input masks for AngularJS (Extended)",
   "repository": {
     "type": "git",
-    "url": "https://github.com/assisrafael/angular-input-masks.git"
+    "url": "https://github.com/pedrolucasp/angular-input-masks.git"
   },
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
