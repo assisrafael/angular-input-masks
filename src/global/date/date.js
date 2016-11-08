@@ -11,6 +11,7 @@ function isISODateString(date) {
 function DateMaskDirective($locale) {
 	var dateFormatMapByLocale = {
 		'pt-br': 'DD/MM/YYYY',
+		'ru': 'DD.MM.YYYY',
 	};
 
 	var dateFormat = dateFormatMapByLocale[$locale.id] || 'YYYY-MM-DD';
