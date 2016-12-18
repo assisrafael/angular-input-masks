@@ -30,6 +30,15 @@ describe('ui-date-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('1999-12-31');
 	});
+    
+    it('should use specified mask', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-date-mask="DD.MM.YYYY">', {
+			model: new Date('1999-12-31 00:00:00')
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('31.12.1999');
+	});
 
 	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');

@@ -19,7 +19,9 @@ function DateMaskDirective($locale) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
-		link: function(scope, element, attrs, ctrl) {
+		link: function (scope, element, attrs, ctrl) {
+			dateFormat = attrs.uiDateMask || dateFormat;
+
 			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
 
 			function formatter(value) {
