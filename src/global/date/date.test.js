@@ -31,7 +31,7 @@ describe('ui-date-mask', function() {
 		expect(model.$viewValue).toBe('1999-12-31');
 	});
     
-    it('should use specified mask', function() {
+	it('should use specified mask', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-date-mask="DD.MM.YYYY">', {
 			model: new Date('1999-12-31 00:00:00')
 		});
@@ -58,6 +58,22 @@ describe('ui-date-mask', function() {
 			expect(model.$viewValue).toBe(test.viewValue);
 		});
 	});
+
+	it('should parse input', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');
+		var model = input.controller('ngModel');
+
+	input.val('1999-12-31').triggerHandler('input');
+		expect($rootScope.model instanceof Date).toBe(true);
+	}));
+
+	it('should not parse input when parse disabled', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-date-mask parse="false">');
+		var model = input.controller('ngModel');
+
+		input.val('1999-12-31').triggerHandler('input');
+		expect(typeof($rootScope.model) === 'string').toBe(true);
+	}));
 
 	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-date-mask>');
