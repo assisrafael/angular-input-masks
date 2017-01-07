@@ -199,7 +199,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 
 ### Masks without documentation (help wanted!)
 
-- ui-nfe-acces-key-mask
+- ui-nfe-access-key-mask
 - ui-time-mask
 - ui-date-mask
 - ui-br-boleto-bancario-mask
