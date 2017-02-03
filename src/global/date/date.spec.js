@@ -27,13 +27,13 @@ describe('ui.utils.masks.date', function() {
 					expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 				}
 
-				expect(value.getText()).toEqual(moment(formatedDateAsString, 'YYYY-MM-DD').toDate().toString());
+				expect(value.evaluate('dateMask.toString()')).toEqual(moment(formatedDateAsString, 'YYYY-MM-DD').toDate().toString());
 
 				for (i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
 					numberToFormat = numberToFormat.slice(0, -1);
 					if (numberToFormat) {
-						formatedDateAsString = dateFormatter.apply(numberToFormat).replace(/-$/,'');
+						formatedDateAsString = dateFormatter.apply(numberToFormat).replace(/-$/, '');
 						expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 					}
 				}
@@ -43,8 +43,8 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('initializedDateMask')),
 					value = element(by.exactBinding('initializedDateMask'));
 
-				value.getText().then((textValue) => {
-					var dateValue = moment(new Date(textValue)).format('YYYY-MM-DD');
+				value.evaluate('initializedDateMask').then((initialValue) => {
+					var dateValue = moment(initialValue).format('YYYY-MM-DD');
 					expect(input.getAttribute('value')).toEqual(dateValue);
 				});
 			});
@@ -108,7 +108,7 @@ describe('ui.utils.masks.date', function() {
 					expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 				}
 
-				expect(value.getText()).toEqual(moment(formatedDateAsString, 'DD/MM/YYYY').toDate().toString());
+				expect(value.evaluate('dateMask.toString()')).toEqual(moment(formatedDateAsString, 'DD/MM/YYYY').toDate().toString());
 
 				for (i = 7; i >= 0; i--) {
 					input.sendKeys(protractor.Key.BACK_SPACE);
@@ -124,8 +124,8 @@ describe('ui.utils.masks.date', function() {
 				var input = element(by.model('initializedDateMask')),
 					value = element(by.exactBinding('initializedDateMask'));
 
-				value.getText().then((textValue) => {
-					var dateValue = moment(new Date(textValue)).format('DD/MM/YYYY');
+				value.evaluate('initializedDateMask').then((initialValue) => {
+					var dateValue = moment(initialValue).format('DD/MM/YYYY');
 					expect(input.getAttribute('value')).toEqual(dateValue);
 				});
 			});
