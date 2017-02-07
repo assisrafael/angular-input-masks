@@ -32,7 +32,7 @@ function DateMaskDirective($locale) {
 				}
 
 				var cleanValue = value;
-				if (typeof value === 'object' || isISODateString(value)) {
+				if (typeof value === 'object' || moment(value).isValid()) {
 					cleanValue = moment(value).format(dateFormat);
 				}
 
