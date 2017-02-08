@@ -29,8 +29,10 @@ function DateMaskDirective($locale) {
 				var cleanValue = value;
 				if (typeof value === 'object' || moment(value, moment.ISO_8601).isValid()) {
 					cleanValue = moment(value).format(dateFormat);
+					console.log('entrou');
 				}
-
+				console.log(cleanValue);
+				
 				cleanValue = cleanValue.replace(/[^0-9]/g, '');
 				var formatedValue = dateMask.apply(cleanValue) || '';
 
