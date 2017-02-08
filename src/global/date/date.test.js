@@ -48,8 +48,6 @@ describe('ui-date-mask', function() {
 			{value:'@', viewValue:''},
 			{value:'1-', viewValue:'1'},
 			{value:'1999a', viewValue:'1999'},
-			{value:'1999_12', viewValue:'1999-12'},
-			{value:'1999123!', viewValue:'1999-12-3'},
 			{value:'199912*31', viewValue:'1999-12-31'},
 		];
 
