@@ -64,7 +64,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('100%');
 	});
 
-	it('should hide space before "%" if ui-hide-space is present and model value is changed', function() {
+	it('should hide space before "%" if ui-hide-space is present and model value is changed', function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals" ui-percentage-value ui-hide-space>', {
 			model: 1,
 			decimals: 0
