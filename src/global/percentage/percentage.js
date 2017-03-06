@@ -53,7 +53,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
-				return viewMask.apply(valueToFormat) + ' %';
+				return viewMask.apply(valueToFormat) + (hideSpace ? '%' : ' %');
 			}
 
 			function parse(value) {
