@@ -222,7 +222,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 - ui-scientific-notation-mask
 - ui-us-phone-number
 
-## Another build options
+## Other build options
 
 If you are using bower or npm (without browserify):
 
