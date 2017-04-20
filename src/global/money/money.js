@@ -14,7 +14,12 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				symbolSeparation = ' ',
 				decimals = $parse(attrs.uiMoneyMask)(scope);
 
-
+			if (angular.isDefined(attrs.uiCurrency)) {
+						if (element.attr('ui-currency')) {
+						currencySym = element.attr('ui-currency');
+					}
+				}
+			
 			function maskFactory(decimals) {
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
 				var maskPattern = symbolSeparation + '#' + thousandsDelimiter + '##0' + decimalsPattern;

@@ -12,7 +12,7 @@ describe('ui.utils.masks.money', function() {
 		it('should format money with two decimal places (default)', function() {
 			var formatterView = new StringMask('#.##0,00', {reverse: true}),
 				formatterModel =  new StringMask('###0.00', {reverse: true}),
-				numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
+				numberToFormat = '', currency = 'Ghc ', formatedNumberAsString, formatedNumberAsNumber;
 
 			var input = element(by.model('defaultMoney')),
 				value = element(by.binding('defaultMoney'));
@@ -48,7 +48,7 @@ describe('ui.utils.masks.money', function() {
 		});
 
 		it('should format a field with 0 as the initial value', function() {
-			var currency = 'R$ ';
+			var currency = 'Ghc ';
 
 			var input = element(by.model('moneyStartedWith0'));
 
@@ -56,7 +56,7 @@ describe('ui.utils.masks.money', function() {
 		});
 
 		it('should format a field with an initial value with string type', function() {
-			var currency = 'R$ ';
+			var currency = 'Ghc ';
 
 			var input = element(by.model('moneyInitializedWithString'));
 
@@ -66,7 +66,7 @@ describe('ui.utils.masks.money', function() {
 		it('should format money with three decimal places (parameter)', function() {
 			var formatterView = new StringMask('#.##0,000', {reverse: true}),
 				formatterModel =  new StringMask('###0.000', {reverse: true}),
-				numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
+				numberToFormat = '', currency = 'Ghc ', formatedNumberAsString, formatedNumberAsNumber;
 
 			var input = element(by.model('money3Decimals')),
 				value = element(by.binding('money3Decimals'));
@@ -99,7 +99,7 @@ describe('ui.utils.masks.money', function() {
 		});
 
 		it('should convert invalid values to zero', function() {
-			var currency = 'R$ ';
+			var currency = 'Ghc ';
 
 			var input = element(by.model('defaultMoney'));
 
