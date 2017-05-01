@@ -21,6 +21,14 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				return new StringMask(maskPattern, {reverse: true});
 			}
 
+			if (angular.isDefined(attrs.uiDecimalDelimiter)) {
+				decimalDelimiter = attrs.uiDecimalDelimiter;
+			}
+
+			if (angular.isDefined(attrs.uiThousandsDelimiter)) {
+				thousandsDelimiter = attrs.uiThousandsDelimiter;
+			}
+
 			if (angular.isDefined(attrs.uiHideGroupSep)) {
 				thousandsDelimiter = '';
 			}
