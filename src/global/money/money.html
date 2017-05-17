@@ -35,6 +35,8 @@
 		<span ng-bind="moneyWithDynamicDecimals"></span> - {{form.field27.$error}}
 		<h4>ui-money-mask without space after currency symbol</h4>
 		Money: <input type="text" name="field30" ng-model="moneyWithoutSpace" ui-hide-space ui-money-mask="mdecimals">
+		<h4>ui-money-mask with currency after value</h4>
+		Money: <input type="text" name="field30" ng-model="currencyAfterValue"  ui-currency-after ui-money-mask="mdecimals">
 	</form>
 </body>
 </html>
