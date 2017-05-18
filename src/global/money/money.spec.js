@@ -117,7 +117,7 @@ describe('ui.utils.masks.money', function() {
 			input.clear(); //Clear to send invalid content
 			input.sendKeys('1');
 
-			expect(input.getAttribute('value')).toEqual('0,01' + currency);
+			expect(input.getAttribute('value')).toEqual('0,01 ' + currency);
 		});
 	});
 });
