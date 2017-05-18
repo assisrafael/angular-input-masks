@@ -193,7 +193,7 @@ Some masks are internationalized, so you need to include the proper angular-loca
 <input type="text" name="field" ng-model="initializeTime" ui-time-mask="short">
 ```
 
-### ui-time-date ###
+### ui-date-mask ###
 -Example:
 
 ```html
@@ -201,11 +201,11 @@ Some masks are internationalized, so you need to include the proper angular-loca
 ```
 - Support to the custom date masks (See moment.js date formats).
 ```html
-<input type="text" name="field" ng-model="birthDate" ui-time-mask="DD-MM-YYYY">
+<input type="text" name="field" ng-model="birthDate" ui-date-mask="DD-MM-YYYY">
 ```
 - Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```. 
 ```html
-<input type="text" name="field" ng-model="birthDate" ui-time-mask parse="false">
+<input type="text" name="field" ng-model="birthDate" ui-date-mask parse="false">
 ```
 ### More examples ###
 
