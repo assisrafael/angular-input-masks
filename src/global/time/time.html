@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Time Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('timeTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedTimeMask = '14:30:00';
+				$scope.initializedShortTimeMask = '14:30';
+			});
+	</script>
+</head>
+<body ng-app="timeTest">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-time-mask</h2>
+		<h3>default mode ("HH:MM:SS")</h3>
+		<input type="text" name="timeMaskInput" ng-model="timeMask" ng-model-options="{allowInvalid:true}" ui-time-mask>
+		<br>
+		ModelValue: <span ng-bind="timeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.timeMaskInput.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedTimeMask" ng-model="initializedTimeMask" ui-time-mask>
+		<br>
+		ModelValue: <span ng-bind="initializedTimeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedTimeMask.$error | json"></span>
+		<br>
+
+		<h3>short mode ("HH:MM")</h3>
+		<input type="text" name="shortTimeMaskInput" ng-model="shortTimeMask" ng-model-options="{allowInvalid:true}" ui-time-mask="short">
+		<br>
+		ModelValue: <span ng-bind="shortTimeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.shortTimeMaskInput.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedShortTimeMask" ng-model="initializedShortTimeMask" ui-time-mask="short">
+		<br>
+		ModelValue: <span ng-bind="initializedShortTimeMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedShortTimeMask.$error | json"></span>
+		<br>
+	</form>
+</body>
+</html>

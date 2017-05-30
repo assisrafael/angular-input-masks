@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Credit Card Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedCC = '4242424242424242';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-br-phone-number</h2>
+		<input type="text" name="freeLinePhoneNumber" ng-model="freeLinePhoneNumber" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<span ng-bind="freeLinePhoneNumber">-</span> - {{form.freeLinePhoneNumber.$error}}<br>
+		<br>
+		<input type="text" name="creditCard" ng-model="creditCard" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<span ng-bind="creditCard">-</span> - {{form.creditCard.$error}}<br>
+		<br>
+		<input type="text" name="initializedCC" ng-model="initializedCC" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<span ng-bind="initializedCC">-</span> - {{form.initializedCC.$error}}<br>
+	</form>
+</body>
+</html>

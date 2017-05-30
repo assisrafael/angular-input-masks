@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Angular Mask US Demo</title>
+	<script src="../node_modules/angular/angular.min.js"></script>
+	<script src="../releases/angular-input-masks-dependencies.js"></script>
+	<script src="../releases/angular-input-masks.us.js"></script>
+	<script>
+		angular.module('demo', ['ui.utils.masks.us'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedPhoneNumber = '3133536767';
+			});
+	</script>
+</head>
+<body ng-app="demo">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-us-phone-number</h2>
+		<input id="us-phone-input" type="text" name="phoneNumberTest" ng-model="phoneNumber" ui-us-phone-number><br>
+		<span id="us-phone-value">{{phoneNumber}}</span> - {{form.phoneNumberTest.$valid}}<br>
+		<br>
+		<input id="init-us-phone-input" type="text" name="initializedPhoneNumberTest" ng-model="initializedPhoneNumber" ui-us-phone-number><br>
+		<span id="init-us-phone-value">{{initializedPhoneNumber}}</span> - {{form.initializedPhoneNumberTest.$valid}}<br>
+		<br>
+	</form>
+</body>
+</html>

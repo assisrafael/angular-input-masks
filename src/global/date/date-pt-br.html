@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+	<meta charset="UTF-8">
+	<title>Date Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('dateTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedDateMask = new Date();
+				$scope.initializedWithISOStringDateMask = (new Date()).toISOString();
+			});
+	</script>
+</head>
+<body ng-app="dateTest">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-date-mask</h2>
+		<input type="text" name="dateMaskInput" ng-model="dateMask" ui-date-mask>
+		<br>
+		ModelValue: <span ng-bind="dateMask"></span>
+		<br>
+		Errors: <span ng-bind="form.dateMaskInput.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedDateMask" ng-model="initializedDateMask" ui-date-mask>
+		<br>
+		ModelValue: <span ng-bind="initializedDateMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedDateMask.$error | json"></span>
+		<br>
+		<input type="text" name="initializedWithISOStringDateMask" ng-model="initializedWithISOStringDateMask" ui-date-mask>
+		<br>
+		ModelValue: <span ng-bind="initializedWithISOStringDateMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedWithISOStringDateMask.$error | json"></span>
+		<br>
+	</form>
+</body>
+</html>

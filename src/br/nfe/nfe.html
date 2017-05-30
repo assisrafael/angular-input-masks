@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>NF-e Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<style>
+		input {
+			width: 100%;
+		}
+	</style>
+	<script>
+		angular.module('nfeTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.accessKeyFieldWithDefaulValue = '14309873167823908265378291821915765103509874';
+			});
+	</script>
+</head>
+<body ng-app="nfeTest">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-nfe-access-key-mask</h2>
+		<input type="text" name="accessKeyField" ng-model="accessKeyField" ng-model-options="{allowInvalid:true}" ui-nfe-access-key-mask>
+		<br>
+		ModelValue: <span ng-bind="accessKeyField"></span>
+		<br>
+		Errors: <span ng-bind="form.accessKeyField.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="accessKeyFieldWithDefaulValue" ng-model="accessKeyFieldWithDefaulValue" ng-model-options="{allowInvalid:true}" ui-nfe-access-key-mask>
+		<br>
+		ModelValue: <span ng-bind="accessKeyFieldWithDefaulValue"></span>
+		<br>
+		Errors: <span ng-bind="form.accessKeyFieldWithDefaulValue.$error | json"></span>
+		<br>
+	</form>
+</body>
+</html>

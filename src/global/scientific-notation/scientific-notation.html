@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Scientific Notation Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/node_modules/angular-i18n/angular-locale_pt-br.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.js"></script>
+	<script>
+		angular.module('scientificNotationTest', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.initializedScientificNotationMask = 12345.67890123456;
+				$scope.initializedScientificNotationMaskWithE = 1.23e+127;
+			});
+	</script>
+</head>
+<body ng-app="scientificNotationTest">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-scientific-notation-mask</h2>
+		<input type="text" name="scientificNotationMask" ng-model="scientificNotationMask" ui-scientific-notation-mask>
+		<br>
+		ModelValue: <span ng-bind="scientificNotationMask"></span>
+		<br>
+		Errors: <span ng-bind="form.scientificNotationMask.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedScientificNotationMask" ng-model="initializedScientificNotationMask" ui-scientific-notation-mask="4">
+		<br>
+		ModelValue: <span ng-bind="initializedScientificNotationMask"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedScientificNotationMask.$error | json"></span>
+		<br>
+		<br>
+		<input type="text" name="initializedScientificNotationMaskWithE" ng-model="initializedScientificNotationMaskWithE" ui-scientific-notation-mask>
+		<br>
+		ModelValue: <span ng-bind="initializedScientificNotationMaskWithE"></span>
+		<br>
+		Errors: <span ng-bind="form.initializedScientificNotationMaskWithE.$error | json"></span>
+		<br>
+		<input type="text" name="scientificNotationMaskWithoutDigits" ng-model="scientificNotationMaskWithoutDigits" ui-scientific-notation-mask="0">
+		<br>
+		ModelValue: <span ng-bind="scientificNotationMaskWithoutDigits"></span>
+		<br>
+		Errors: <span ng-bind="form.scientificNotationMaskWithoutDigits.$error | json"></span>
+		<br>
+		<br>
+	</form>
+</body>
+</html>
