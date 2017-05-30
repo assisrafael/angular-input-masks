@@ -18,12 +18,34 @@ module.exports = function TimeMaskDirective() {
 			var timeMask = new StringMask(timeFormat);
 
 			function formatter(value) {
+				var cleanValue, correctedValue, separatedTimeValues, hours, minutes, seconds;
+
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
 
-				var cleanValue = value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength) || '';
-				return (timeMask.apply(cleanValue) || '').replace(/[^0-9]$/, '');
+				cleanValue = value.replace(/[^0-9]/g, '').slice(0, unformattedValueLength) || '';
+				separatedTimeValues = cleanValue.match(/.{1,2}/g);
+
+				hours = parseInt(separatedTimeValues[0]);
+				minutes = parseInt(separatedTimeValues[1]);
+				seconds = parseInt(separatedTimeValues[2] || 0);
+
+				if (hours > 24) {
+					hours = 24;
+				}
+
+				if (minutes > 60) {
+					minutes = 60;
+				}
+
+				if (seconds > 60) {
+					seconds = 60;
+				}
+
+				correctedValue = '' + hours + minutes + seconds;
+
+				return (timeMask.apply(correctedValue) || '').replace(/[^0-9]$/, '');
 			}
 
 			ctrl.$formatters.push(formatter);
@@ -35,6 +57,9 @@ module.exports = function TimeMaskDirective() {
 
 				var viewValue = formatter(value);
 				var modelValue = viewValue;
+
+				console.info('Wowowowowow');
+				console.debug(modelValue, viewValue, formatter(value), value);
 
 				if (ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);
