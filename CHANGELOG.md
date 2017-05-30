@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="2.6.0"></a>
+# [2.6.0](https://github.com/assisrafael/angular-input-masks/compare/v2.5.0...v2.6.0) (2017-05-30)
+
+
+### Bug Fixes
+
+* **uiNumberMask:** fix numberWithoutGrupoSep spelling ([1a9dacb](https://github.com/assisrafael/angular-input-masks/commit/1a9dacb))
+* **uiPercentageMask:** honor ui-hide-space when view value change to model update from controller ([#260](https://github.com/assisrafael/angular-input-masks/issues/260)) ([3f51cad](https://github.com/assisrafael/angular-input-masks/commit/3f51cad))
+
+
+### Features
+
+* **br-phone-number:** allow numbers without DDD ([8a5c5cd](https://github.com/assisrafael/angular-input-masks/commit/8a5c5cd))
+* **uiDateMask:** add ru locale to date mask ([4b05575](https://github.com/assisrafael/angular-input-masks/commit/4b05575))
+* **uiDateMask:** enable custom date masks and support for non-Date models ([#244](https://github.com/assisrafael/angular-input-masks/issues/244)) ([1996e11](https://github.com/assisrafael/angular-input-masks/commit/1996e11))
+* **uiMoneyMask:** add support for custom decimal and thousands delimiters ([#272](https://github.com/assisrafael/angular-input-masks/issues/272)) ([7fdcd8e](https://github.com/assisrafael/angular-input-masks/commit/7fdcd8e))
+* **uiMoneyMask:** allow currency simble after value ([#275](https://github.com/assisrafael/angular-input-masks/issues/275)) ([4f5c2de](https://github.com/assisrafael/angular-input-masks/commit/4f5c2de))
+
+
+
 <a name="2.5.0"></a>
 # [2.5.0](https://github.com/assisrafael/angular-input-masks/compare/v2.4.0...v2.5.0) (2016-10-11)
 
