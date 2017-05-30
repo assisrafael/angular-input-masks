@@ -108,5 +108,16 @@ describe('ui.utils.masks.money', function() {
 
 			expect(input.getAttribute('value')).toEqual(currency + '0,00');
 		});
+
+		it('should add currency after value', function() {
+			var currency = ' R$';
+
+			var input = element(by.model('currencyAfterValue'));
+
+			input.clear(); //Clear to send invalid content
+			input.sendKeys('1');
+
+			expect(input.getAttribute('value')).toEqual('0,01' + currency);
+		});
 	});
 });
