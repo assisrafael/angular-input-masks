@@ -124,6 +124,10 @@
 		<h4>ui-money-mask without space after currency symbol</h4>
 		Money: <input type="text" name="field30" ng-model="moneyWithDynamicDecimals" ui-hide-space ui-money-mask="mdecimals">
 
+		<br>
+		<h4>ui-money-mask with currency after value</h4>
+		Money: <input type="text" name="field31" ng-model="defaultMoney" ui-currency-after ui-money-mask="mdecimals" currency-symbol="EUR">
+
 		<h2>ui-br-phone-number</h2>
 		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>
 		<span ng-bind="phoneNumber">-</span> - {{form.phoneNumber.$error}}<br>

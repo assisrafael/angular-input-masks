@@ -207,4 +207,13 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('345.00');
 	});
+
+	it('should add currency after value', function() {
+		var input = TestUtil.compile('<input ng-model="model" currency-symbol="EUR"  ui-currency-after ui-money-mask="mdecimals">', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('345.00 EUR');
+	});
 });
