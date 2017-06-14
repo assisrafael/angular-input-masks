@@ -3,6 +3,7 @@
 var m = angular.module('ui.utils.masks.global', [
 	require('../helpers'),
 ])
+.directive('uiMonthYearMask', require('./date/month-year'))
 .directive('uiDateMask', require('./date/date'))
 .directive('uiMoneyMask', require('./money/money'))
 .directive('uiNumberMask', require('./number/number'))
