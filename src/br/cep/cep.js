@@ -14,7 +14,7 @@ module.exports = maskFactory({
 	},
 	validations: {
 		cep: function(value) {
-			return value.length === 8;
+			return value.toString().trim().length === 8;
 		}
 	}
 });
