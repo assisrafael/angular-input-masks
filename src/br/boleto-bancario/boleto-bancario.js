@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../libs/mask-factory');
 
 var boletoBancarioMask = new StringMask('00000.00000 00000.000000 00000.000000 0 00000000000000');
 

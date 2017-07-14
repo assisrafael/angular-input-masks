@@ -1,6 +1,6 @@
 'use strict';
 
-var validators = require('validators');
+var validators = require('../../libs/validators');
 
 function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 	function preparePercentageToFormatter(value, decimals, modelMultiplier) {

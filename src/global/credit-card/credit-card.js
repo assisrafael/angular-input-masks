@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../libs/mask-factory');
 
 var ccSize = 16;
 

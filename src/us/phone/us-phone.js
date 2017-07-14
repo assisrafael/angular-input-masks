@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../libs/mask-factory');
 
 var phoneMaskUS = new StringMask('(000) 000-0000'),
 	phoneMaskINTL = new StringMask('+00-00-000-000000');
