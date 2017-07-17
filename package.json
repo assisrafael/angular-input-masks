@@ -55,11 +55,11 @@
     "karma-jasmine": "^1.0.2",
     "merge-stream": "^1.0.0",
     "minimist": "^1.1.1",
-    "protractor": "^3.0.0",
+    "protractor": "^5.1.2",
     "standard-version": "^2.3.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "webdriver-manager": "^10.0.4"
+    "webdriver-manager": "^12.0.6"
   },
   "files": [
     "src/",

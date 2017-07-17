@@ -2,7 +2,7 @@
 
 var StringMask = require('string-mask');
 var BrV = require('br-validations');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../libs/mask-factory');
 
 var cpfPattern = new StringMask('000.000.000-00');
 

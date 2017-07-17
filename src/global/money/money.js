@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var validators = require('validators');
+var validators = require('../../libs/validators');
 
 function MoneyMaskDirective($locale, $parse, PreFormatters) {
 	return {
