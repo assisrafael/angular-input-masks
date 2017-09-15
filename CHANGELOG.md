@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.0.0"></a>
+# [3.0.0](https://github.com/assisrafael/angular-input-masks/compare/v2.6.0...v3.0.0) (2017-09-15)
+
+
+### Bug Fixes
+
+* **uiBrCepMask:** fix validation when handling numbers ([#282](https://github.com/assisrafael/angular-input-masks/issues/282)) ([3854362](https://github.com/assisrafael/angular-input-masks/commit/3854362))
+
+
+### Chores
+
+* remove bower build ([5f71048](https://github.com/assisrafael/angular-input-masks/commit/5f71048))
+
+
+### BREAKING CHANGES
+
+* bower builds will not be published anymore
+
+
+
 <a name="2.6.0"></a>
 # [2.6.0](https://github.com/assisrafael/angular-input-masks/compare/v2.5.0...v2.6.0) (2017-05-30)
 
