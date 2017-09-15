@@ -18,14 +18,14 @@ var plugins = loadPlugins({
 var pkg = require('./package.json');
 
 var header = ['/**',
-		' * <%= pkg.name %>',
-		' * <%= pkg.description %>',
-		' * @version v<%= pkg.version %>',
-		' * @link <%= pkg.homepage %>',
-		' * @license <%= pkg.license %>',
-		' */',
-		''
-	].join('\n');
+	' * <%= pkg.name %>',
+	' * <%= pkg.description %>',
+	' * @version v<%= pkg.version %>',
+	' * @link <%= pkg.homepage %>',
+	' * @license <%= pkg.license %>',
+	' */',
+	''
+].join('\n');
 
 gulp.task('build-dependencies', function() {
 	return browserify()
@@ -86,22 +86,22 @@ gulp.task('build', ['build-dependencies'], function() {
 			debug: entry.debug,
 			bundleExternal: entry.bundleExternal,
 		})
-		.require('mask-factory', {
-			expose: 'mask-factory'
-		})
-		.require('validators', {
-			expose: 'validators'
-		})
-		.bundle()
-		.pipe(source(entry.outputFileName || entry.fileName))
-		.pipe(buffer())
-		.pipe(plugins.header(header, {pkg: pkg}))
-		.pipe(gulp.dest('./releases/'))
-		.pipe(plugins.uglify())
-		.pipe(plugins.rename({
-			extname: '.min.js'
-		}))
-		.pipe(gulp.dest('./releases/'));
+			.require('mask-factory', {
+				expose: 'mask-factory'
+			})
+			.require('validators', {
+				expose: 'validators'
+			})
+			.bundle()
+			.pipe(source(entry.outputFileName || entry.fileName))
+			.pipe(buffer())
+			.pipe(plugins.header(header, {pkg: pkg}))
+			.pipe(gulp.dest('./releases/'))
+			.pipe(plugins.uglify())
+			.pipe(plugins.rename({
+				extname: '.min.js'
+			}))
+			.pipe(gulp.dest('./releases/'));
 	});
 
 	return mergeStream(tasks);
@@ -142,10 +142,10 @@ function bumpVersion(folder) {
 	], {
 		cwd: folder
 	})
-	.pipe(plugins.bump({
-		version: VERSION
-	}))
-	.pipe(gulp.dest(folder));
+		.pipe(plugins.bump({
+			version: VERSION
+		}))
+		.pipe(gulp.dest(folder));
 }
 
 gulp.task('bower-clone', ['build'], function(done) {
@@ -162,10 +162,10 @@ gulp.task('bower-clone', ['build'], function(done) {
 
 gulp.task('bower-commit', ['getVersion', 'bower-clone'], function() {
 	return mergeStream(
-			bumpVersion(bowerConfig.path),
-			gulp.src('./releases/**/*.*')
-				.pipe(gulp.dest(bowerConfig.path))
-		)
+		bumpVersion(bowerConfig.path),
+		gulp.src('./releases/**/*.*')
+			.pipe(gulp.dest(bowerConfig.path))
+	)
 		.pipe(plugins.git.add({
 			cwd: bowerConfig.path
 		}))
