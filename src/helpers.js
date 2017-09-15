@@ -25,35 +25,35 @@ m.factory('PreFormatters', [function() {
 		prepareNumberToFormatter: prepareNumberToFormatter
 	};
 }])
-.factory('NumberMasks', [function() {
-	return {
-		viewMask: function(decimals, decimalDelimiter, thousandsDelimiter) {
-			var mask = '#' + thousandsDelimiter + '##0';
+	.factory('NumberMasks', [function() {
+		return {
+			viewMask: function(decimals, decimalDelimiter, thousandsDelimiter) {
+				var mask = '#' + thousandsDelimiter + '##0';
 
-			if (decimals > 0) {
-				mask += decimalDelimiter;
-				for (var i = 0; i < decimals; i++) {
-					mask += '0';
+				if (decimals > 0) {
+					mask += decimalDelimiter;
+					for (var i = 0; i < decimals; i++) {
+						mask += '0';
+					}
 				}
-			}
 
-			return new StringMask(mask, {
-				reverse: true
-			});
-		},
-		modelMask: function(decimals) {
-			var mask = '###0';
+				return new StringMask(mask, {
+					reverse: true
+				});
+			},
+			modelMask: function(decimals) {
+				var mask = '###0';
 
-			if (decimals > 0) {
-				mask += '.';
-				for (var i = 0; i < decimals; i++) {
-					mask += '0';
+				if (decimals > 0) {
+					mask += '.';
+					for (var i = 0; i < decimals; i++) {
+						mask += '0';
+					}
 				}
-			}
 
-			return new StringMask(mask, {
-				reverse: true
-			});
-		}
-	};
-}]);
+				return new StringMask(mask, {
+					reverse: true
+				});
+			}
+		};
+	}]);

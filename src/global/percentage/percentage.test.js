@@ -73,7 +73,7 @@ describe('ui-percentage-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('100%');
 
-		$rootScope.model = 50;	// When accessing via rootScope, update model to 50 not 0.5 to represent 50%
+		$rootScope.model = 50;	//When accessing via rootScope, update model to 50 not 0.5 to represent 50%
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('50%');
 	}));

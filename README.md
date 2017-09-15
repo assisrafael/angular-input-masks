@@ -14,21 +14,13 @@ Opinionated angular input masks. Provides ready to use masks with little (br/ins
 
 ## Installation
 
-With Bower:
-
-```
-bower install --save angular-input-masks
-```
-
-With npm:
-
 ```
 npm install --save angular-input-masks
 ```
 
 ## Configuration
 
-### With bower or npm (without browserify):
+### With npm (without browserify):
 
 1. Import the ```angular-input-masks-standalone.min.js``` script in your page. For example:
 
@@ -203,7 +195,7 @@ Some masks are internationalized, so you need to include the proper angular-loca
 ```html
 <input type="text" name="field" ng-model="birthDate" ui-date-mask="DD-MM-YYYY">
 ```
-- Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```. 
+- Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```.
 ```html
 <input type="text" name="field" ng-model="birthDate" ui-date-mask parse="false">
 ```
@@ -224,7 +216,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 
 ## Other build options
 
-If you are using bower or npm (without browserify):
+If you are using npm (without browserify):
 
 - angular-input-masks-dependencies.js: provides all external dependencies (string-mask, br-validations, momentjs)
 - angular-input-masks-br.js: provides only global and BR directives, and does not include external dependencies (string-mask, br-validations, momentjs)
@@ -245,7 +237,7 @@ Looking for related filters? Take a look at [angular-br-filters](https://github.
 
 ```
 npm install
-gulp build
+npm run build
 ```
 
 ### Tests

@@ -10,7 +10,7 @@ describe('ui-br-cep-mask', function() {
 			model: 30112010
 		});
 		var model = input.controller('ngModel');
-		
+
 		expect(model.$valid).toBe(true);
 	});
 

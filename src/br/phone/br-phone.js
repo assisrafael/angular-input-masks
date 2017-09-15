@@ -8,21 +8,21 @@ var maskFactory = require('../../libs/mask-factory');
  * see http://portal.embratel.com.br/embratel/9-digito/
  */
 var phoneMask8D = {
-	areaCode: new StringMask('(00) 0000-0000'), 	// with area code
-	simple: new StringMask('0000-0000') 			// without area code
-}, phoneMask9D = {
-	areaCode: new StringMask('(00) 00000-0000'), 	// with area code
-	simple: new StringMask('00000-0000') 			// without area code
-}, phoneMask0800 = {
-	areaCode: null,									// N/A
-	simple: new StringMask('0000-000-0000') 		// N/A, so it's "simple"
-};
+		areaCode: new StringMask('(00) 0000-0000'), 	//with area code
+		simple: new StringMask('0000-0000') 			//without area code
+	}, phoneMask9D = {
+		areaCode: new StringMask('(00) 00000-0000'), 	//with area code
+		simple: new StringMask('00000-0000') 			//without area code
+	}, phoneMask0800 = {
+		areaCode: null,									//N/A
+		simple: new StringMask('0000-000-0000') 		//N/A, so it's "simple"
+	};
 
 module.exports = maskFactory({
-	clearValue: function (rawValue) {
+	clearValue: function(rawValue) {
 		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 11);
 	},
-	format: function (cleanValue) {
+	format: function(cleanValue) {
 		var formattedValue;
 
 		if (cleanValue.indexOf('0800') === 0) {
@@ -39,18 +39,18 @@ module.exports = maskFactory({
 
 		return formattedValue.trim().replace(/[^0-9]$/, '');
 	},
-	getModelValue: function (formattedValue, originalModelType) {
+	getModelValue: function(formattedValue, originalModelType) {
 		var cleanValue = this.clearValue(formattedValue);
 		return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
 	},
 	validations: {
-		brPhoneNumber: function (value) {
+		brPhoneNumber: function(value) {
 			var valueLength = value && value.toString().length;
 
-			// 8- 8D without DD
-			// 9- 9D without DD
-			// 10- 9D with DD
-			// 11- 8D with DD and 0800
+			//8- 8D without DD
+			//9- 9D without DD
+			//10- 9D with DD
+			//11- 8D with DD and 0800
 			return valueLength >= 8 && valueLength <= 11;
 		}
 	}

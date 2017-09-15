@@ -1,13 +1,13 @@
 'use strict';
 
-describe('ui.utils.masks.number', function () {
-	it('should load the demo page', function () {
+describe('ui.utils.masks.number', function() {
+	it('should load the demo page', function() {
 		browser.get('/src/br/phone/br-phone.html');
 		expect(browser.getTitle()).toEqual('BR Phone Number Spec');
 	});
 
-	describe('ui-br-phone-number:', function () {
-		it('should apply a 0800 phone number mask while the user is typping:', function () {
+	describe('ui-br-phone-number:', function() {
+		it('should apply a 0800 phone number mask while the user is typping:', function() {
 			var BS = protractor.Key.BACK_SPACE;
 
 			var tests = [
@@ -46,7 +46,7 @@ describe('ui.utils.masks.number', function () {
 			}
 		});
 
-		it('should apply a phone number mask while the user is typping:', function () {
+		it('should apply a phone number mask while the user is typping:', function() {
 			var BS = protractor.Key.BACK_SPACE;
 
 			var tests = [
@@ -85,7 +85,7 @@ describe('ui.utils.masks.number', function () {
 			}
 		});
 
-		it('should apply a phone number mask in a model with default value:', function () {
+		it('should apply a phone number mask in a model with default value:', function() {
 			var BS = protractor.Key.BACK_SPACE;
 
 			var tests = [
