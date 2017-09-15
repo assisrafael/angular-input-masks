@@ -11,7 +11,7 @@ var config = {
 	multiCapabilities: [{
 		browserName: 'chrome'
 	}],
-	baseUrl: 'http://localhost:8000/demo',
+	baseUrl: 'http://localhost:9090/demo',
 	beforeLaunch: function() {
 		var exec = require('child_process').exec;
 
