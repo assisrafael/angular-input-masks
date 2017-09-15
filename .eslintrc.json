@@ -165,6 +165,7 @@
         "no-useless-call": 2,
         "no-useless-concat": 2,
         "no-useless-constructor": 2,
+        "no-useless-escape": "off",
         "no-var": 0,
         "no-void": 2,
         "no-warning-comments": [
