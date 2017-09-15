@@ -8,21 +8,21 @@ var maskFactory = require('../../libs/mask-factory');
  * see http://portal.embratel.com.br/embratel/9-digito/
  */
 var phoneMask8D = {
-	countryCode : new StringMask('+00 (00) 0000-0000'),   // with country code
-	areaCode    : new StringMask('(00) 0000-0000'),       // with area code
-	simple      : new StringMask('0000-0000')             // without area code
-}, phoneMask9D = {
-	countryCode : new StringMask('+00 (00) 0-0000-0000'), // with country code
-	areaCode    : new StringMask('(00) 0-0000-0000'),     // with area code
-	simple      : new StringMask('0-0000-0000')           // without area code
-}, phoneMask0800 = {
-	countryCode : null,                                   // N/A
-	areaCode    : null,                                   // N/A
-	simple      : new StringMask('0000-000-0000')         // N/A, so it's "simple"
-};
+		countryCode : new StringMask('+00 (00) 0000-0000'),   //with country code
+		areaCode    : new StringMask('(00) 0000-0000'),       //with area code
+		simple      : new StringMask('0000-0000')             //without area code
+	}, phoneMask9D = {
+		countryCode : new StringMask('+00 (00) 0-0000-0000'), //with country code
+		areaCode    : new StringMask('(00) 0-0000-0000'),     //with area code
+		simple      : new StringMask('0-0000-0000')           //without area code
+	}, phoneMask0800 = {
+		countryCode : null,                                   //N/A
+		areaCode    : null,                                   //N/A
+		simple      : new StringMask('0000-000-0000')         //N/A, so it's "simple"
+	};
 
 module.exports = maskFactory({
-	clearValue: function (rawValue) {
+	clearValue: function(rawValue) {
 		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 13);
 	},
 	format: function(cleanValue) {
@@ -54,12 +54,12 @@ module.exports = maskFactory({
 		brPhoneNumber: function(value) {
 			var valueLength = value && value.toString().length;
 
-			// 8- 8D without AC
-			// 9- 9D without AC
-			// 10- 8D with AC
-			// 11- 9D with AC and 0800
-			// 12- 8D with AC plus CC
-			// 13- 9D with AC plus CC
+			//8- 8D without AC
+			//9- 9D without AC
+			//10- 8D with AC
+			//11- 9D with AC and 0800
+			//12- 8D with AC plus CC
+			//13- 9D with AC plus CC
 			return valueLength >= 8 && valueLength <= 13;
 		}
 	}
