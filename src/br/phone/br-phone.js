@@ -12,9 +12,9 @@ var phoneMask8D = {
 		areaCode    : new StringMask('(00) 0000-0000'),       //with area code
 		simple      : new StringMask('0000-0000')             //without area code
 	}, phoneMask9D = {
-		countryCode : new StringMask('+00 (00) 0-0000-0000'), //with country code
-		areaCode    : new StringMask('(00) 0-0000-0000'),     //with area code
-		simple      : new StringMask('0-0000-0000')           //without area code
+		countryCode : new StringMask('+00 (00) 00000-0000'), //with country code
+		areaCode    : new StringMask('(00) 00000-0000'),     //with area code
+		simple      : new StringMask('00000-0000')           //without area code
 	}, phoneMask0800 = {
 		countryCode : null,                                   //N/A
 		areaCode    : null,                                   //N/A
