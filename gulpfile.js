@@ -86,22 +86,16 @@ gulp.task('build', ['build-dependencies'], function() {
 			debug: entry.debug,
 			bundleExternal: entry.bundleExternal,
 		})
-			.require('mask-factory', {
-				expose: 'mask-factory'
-			})
-			.require('validators', {
-				expose: 'validators'
-			})
-			.bundle()
-			.pipe(source(entry.outputFileName || entry.fileName))
-			.pipe(buffer())
-			.pipe(plugins.header(header, {pkg: pkg}))
-			.pipe(gulp.dest('./releases/'))
-			.pipe(plugins.uglify())
-			.pipe(plugins.rename({
-				extname: '.min.js'
-			}))
-			.pipe(gulp.dest('./releases/'));
+		  .bundle()
+		  .pipe(source(entry.outputFileName || entry.fileName))
+		  .pipe(buffer())
+		  .pipe(plugins.header(header, {pkg: pkg}))
+		  .pipe(gulp.dest('./releases/'))
+		  .pipe(plugins.uglify())
+		  .pipe(plugins.rename({
+		  	extname: '.min.js'
+	  	}))
+  		.pipe(gulp.dest('./releases/'));
 	});
 
 	return mergeStream(tasks);
