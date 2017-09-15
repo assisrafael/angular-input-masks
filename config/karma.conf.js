@@ -49,7 +49,7 @@ module.exports = function(config) {
 		colors: true,
 		autoWatch: false,
 		singleRun: false,
-		browsers: ['Chrome'],
+		browsers: ['ChromeHeadless'],
 		customLaunchers: {
 			'Chrome_travis_ci': {
 				base: 'Chrome',
