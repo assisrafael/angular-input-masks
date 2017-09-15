@@ -16,6 +16,7 @@
     "test:e2e": "protractor config/protractor.conf.js",
     "test:unit": "karma start config/karma.conf.js --single-run",
     "test:unit:watch": "karma start config/karma.conf.js --auto-watch",
+    "prepare": "npm run build",
     "release": "standard-version",
     "webdriver": "webdriver-manager update"
   },
