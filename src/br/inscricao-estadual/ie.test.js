@@ -30,6 +30,14 @@ describe('ui-br-ie-mask', function() {
 		expect(model.$viewValue).toBe('P-01100424.3/002');
 	});
 
+	it('should format with secondary mask', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-ie-mask="\'RN\'">', {
+			model: '2004004012'
+		});
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('20.0.400.401-2');
+	});
+
 	it('should handle corner cases', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-br-ie-mask="\'MG\'">');
 		var model = input.controller('ngModel');
