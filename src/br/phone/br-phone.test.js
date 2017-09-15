@@ -67,6 +67,16 @@ describe('ui-br-phone-number', function() {
 		expect(model.$viewValue).toBe('12345-6789');
 	});
 
+	it('should format model values with country code', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>');
+		var model = input.controller('ngModel');
+
+		input.val('123456789012').triggerHandler('input');
+		expect(model.$viewValue).toBe('+12 (34) 5678-9012');
+		input.val('1234567890123').triggerHandler('input');
+		expect(model.$viewValue).toBe('+12 (34) 56789-0123');
+	});
+
 	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
 			' ui-br-phone-number>');
@@ -105,7 +115,8 @@ describe('ui-br-phone-number', function() {
 		[
 			'12345678', '12345678901',
 			'1234567890', '123456789',
-			'12345678'
+			'12345678', '123456789012',
+			'1234567890123'
 		].forEach(function(number) {
 			input.val(number).triggerHandler('input');
 			expect(model.$error.brPhoneNumber).toBeUndefined();

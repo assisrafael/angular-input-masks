@@ -8,19 +8,22 @@ var maskFactory = require('../../libs/mask-factory');
  * see http://portal.embratel.com.br/embratel/9-digito/
  */
 var phoneMask8D = {
-		areaCode: new StringMask('(00) 0000-0000'), 	//with area code
-		simple: new StringMask('0000-0000') 			//without area code
+		countryCode : new StringMask('+00 (00) 0000-0000'),   //with country code
+		areaCode    : new StringMask('(00) 0000-0000'),       //with area code
+		simple      : new StringMask('0000-0000')             //without area code
 	}, phoneMask9D = {
-		areaCode: new StringMask('(00) 00000-0000'), 	//with area code
-		simple: new StringMask('00000-0000') 			//without area code
+		countryCode : new StringMask('+00 (00) 00000-0000'), //with country code
+		areaCode    : new StringMask('(00) 00000-0000'),     //with area code
+		simple      : new StringMask('00000-0000')           //without area code
 	}, phoneMask0800 = {
-		areaCode: null,									//N/A
-		simple: new StringMask('0000-000-0000') 		//N/A, so it's "simple"
+		countryCode : null,                                   //N/A
+		areaCode    : null,                                   //N/A
+		simple      : new StringMask('0000-000-0000')         //N/A, so it's "simple"
 	};
 
 module.exports = maskFactory({
 	clearValue: function(rawValue) {
-		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 11);
+		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 13);
 	},
 	format: function(cleanValue) {
 		var formattedValue;
@@ -33,8 +36,12 @@ module.exports = maskFactory({
 			formattedValue = phoneMask9D.simple.apply(cleanValue);
 		} else if (cleanValue.length < 11) {
 			formattedValue = phoneMask8D.areaCode.apply(cleanValue);
-		} else {
+		} else if (cleanValue.length < 12) {
 			formattedValue = phoneMask9D.areaCode.apply(cleanValue);
+		} else if (cleanValue.length < 13) {
+			formattedValue = phoneMask8D.countryCode.apply(cleanValue);
+		} else {
+			formattedValue = phoneMask9D.countryCode.apply(cleanValue);
 		}
 
 		return formattedValue.trim().replace(/[^0-9]$/, '');
@@ -47,11 +54,13 @@ module.exports = maskFactory({
 		brPhoneNumber: function(value) {
 			var valueLength = value && value.toString().length;
 
-			//8- 8D without DD
-			//9- 9D without DD
-			//10- 9D with DD
-			//11- 8D with DD and 0800
-			return valueLength >= 8 && valueLength <= 11;
+			//8- 8D without AC
+			//9- 9D without AC
+			//10- 8D with AC
+			//11- 9D with AC and 0800
+			//12- 8D with AC plus CC
+			//13- 9D with AC plus CC
+			return valueLength >= 8 && valueLength <= 13;
 		}
 	}
 });
