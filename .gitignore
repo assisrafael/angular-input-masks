@@ -9,3 +9,4 @@ releases
 *.swp
 .idea
 *.iml
+package-lock.json
