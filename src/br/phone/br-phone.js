@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../libs/mask-factory');
 
 /**
  * FIXME: all numbers will have 9 digits after 2016.
@@ -25,7 +25,7 @@ module.exports = maskFactory({
 	clearValue: function (rawValue) {
 		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 13);
 	},
-	format: function (cleanValue) {
+	format: function(cleanValue) {
 		var formattedValue;
 
 		if (cleanValue.indexOf('0800') === 0) {
@@ -46,12 +46,12 @@ module.exports = maskFactory({
 
 		return formattedValue.trim().replace(/[^0-9]$/, '');
 	},
-	getModelValue: function (formattedValue, originalModelType) {
+	getModelValue: function(formattedValue, originalModelType) {
 		var cleanValue = this.clearValue(formattedValue);
 		return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
 	},
 	validations: {
-		brPhoneNumber: function (value) {
+		brPhoneNumber: function(value) {
 			var valueLength = value && value.toString().length;
 
 			// 8- 8D without AC

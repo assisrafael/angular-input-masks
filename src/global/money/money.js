@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var validators = require('validators');
+var validators = require('../../libs/validators');
 
 function MoneyMaskDirective($locale, $parse, PreFormatters) {
 	return {
@@ -12,13 +12,30 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
 				symbolSeparation = ' ',
-				decimals = $parse(attrs.uiMoneyMask)(scope);
+				decimals = $parse(attrs.uiMoneyMask)(scope),
+				backspacePressed = false;
 
+			element.bind('keydown keypress', function(event) {
+				backspacePressed = event.which === 8;
+			});
 
 			function maskFactory(decimals) {
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-				var maskPattern = symbolSeparation + '#' + thousandsDelimiter + '##0' + decimalsPattern;
+				var maskPattern =  '#' + thousandsDelimiter + '##0' + decimalsPattern;
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					maskPattern += symbolSeparation;
+				} else {
+					maskPattern =  symbolSeparation + maskPattern;
+				}
 				return new StringMask(maskPattern, {reverse: true});
+			}
+
+			if (angular.isDefined(attrs.uiDecimalDelimiter)) {
+				decimalDelimiter = attrs.uiDecimalDelimiter;
+			}
+
+			if (angular.isDefined(attrs.uiThousandsDelimiter)) {
+				thousandsDelimiter = attrs.uiThousandsDelimiter;
 			}
 
 			if (angular.isDefined(attrs.uiHideGroupSep)) {
@@ -48,6 +65,9 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				}
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					return prefix + moneyMask.apply(valueToFormat) + currencySym;
+				}
 				return prefix + currencySym + moneyMask.apply(valueToFormat);
 			}
 
@@ -56,10 +76,19 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					return value;
 				}
 
-				var actualNumber = value.replace(/[^\d]+/g,'');
+				var actualNumber = value.replace(/[^\d]+/g,''), formatedValue;
 				actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
 				actualNumber = actualNumber || '0';
-				var formatedValue = currencySym + moneyMask.apply(actualNumber);
+
+				if (backspacePressed && angular.isDefined(attrs.uiCurrencyAfter) && actualNumber !== 0) {
+					actualNumber = actualNumber.substring(0, actualNumber.length - 1);
+					backspacePressed = false;
+				}
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					formatedValue = moneyMask.apply(actualNumber) + currencySym;
+				} else {
+					formatedValue = currencySym + moneyMask.apply(actualNumber);
+				}
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),

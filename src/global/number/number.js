@@ -1,6 +1,6 @@
 'use strict';
 
-var validators = require('validators');
+var validators = require('../../libs/validators');
 
 function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 	return {

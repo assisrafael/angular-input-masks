@@ -207,4 +207,31 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('345.00');
 	});
+
+	it('should employ a custom thousands delimiter', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-thousands-delimiter="|">', {
+			model: 1234567.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 1|234|567.00');
+	});
+
+	it('should employ a custom decimal delimiter', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-decimal-delimiter="|">', {
+			model: 123.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 123|00');
+	});
+
+	it('should add currency after value', function() {
+		var input = TestUtil.compile('<input ng-model="model" currency-symbol="EUR"  ui-currency-after ui-money-mask="mdecimals">', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('345.00 EUR');
+	});
 });

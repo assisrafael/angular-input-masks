@@ -14,21 +14,13 @@ Opinionated angular input masks. Provides ready to use masks with little (br/ins
 
 ## Installation
 
-With Bower:
-
-```
-bower install --save angular-input-masks
-```
-
-With npm:
-
 ```
 npm install --save angular-input-masks
 ```
 
 ## Configuration
 
-### With bower or npm (without browserify):
+### With npm (without browserify):
 
 1. Import the ```angular-input-masks-standalone.min.js``` script in your page. For example:
 
@@ -193,7 +185,7 @@ Some masks are internationalized, so you need to include the proper angular-loca
 <input type="text" name="field" ng-model="initializeTime" ui-time-mask="short">
 ```
 
-### ui-time-date ###
+### ui-date-mask ###
 -Example:
 
 ```html
@@ -201,11 +193,11 @@ Some masks are internationalized, so you need to include the proper angular-loca
 ```
 - Support to the custom date masks (See moment.js date formats).
 ```html
-<input type="text" name="field" ng-model="birthDate" ui-time-mask="DD-MM-YYYY">
+<input type="text" name="field" ng-model="birthDate" ui-date-mask="DD-MM-YYYY">
 ```
-- Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```. 
+- Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```.
 ```html
-<input type="text" name="field" ng-model="birthDate" ui-time-mask parse="false">
+<input type="text" name="field" ng-model="birthDate" ui-date-mask parse="false">
 ```
 ### More examples ###
 
@@ -214,7 +206,7 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 
 ### Masks without documentation (help wanted!)
 
-- ui-nfe-acces-key-mask
+- ui-nfe-access-key-mask
 - ui-time-mask
 - ui-date-mask
 - ui-br-boleto-bancario-mask
@@ -222,9 +214,9 @@ _See more usage examples in the [Demo page](http://assisrafael.github.io/angular
 - ui-scientific-notation-mask
 - ui-us-phone-number
 
-## Another build options
+## Other build options
 
-If you are using bower or npm (without browserify):
+If you are using npm (without browserify):
 
 - angular-input-masks-dependencies.js: provides all external dependencies (string-mask, br-validations, momentjs)
 - angular-input-masks-br.js: provides only global and BR directives, and does not include external dependencies (string-mask, br-validations, momentjs)
@@ -245,7 +237,7 @@ Looking for related filters? Take a look at [angular-br-filters](https://github.
 
 ```
 npm install
-gulp build
+npm run build
 ```
 
 ### Tests
