@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.2.0"></a>
+# [3.2.0](https://github.com/assisrafael/angular-input-masks/compare/v3.1.0...v3.2.0) (2017-09-22)
+
+
+### Features
+
+* **uiFrPhoneMask:** implement french phone number format ([6c1b450](https://github.com/assisrafael/angular-input-masks/commit/6c1b450))
+* **uiMoneyMask:** add the option to set the currency prefix. ([14b38cc](https://github.com/assisrafael/angular-input-masks/commit/14b38cc)), closes [#175](https://github.com/assisrafael/angular-input-masks/issues/175)
+* **uiPercentageMask:** allow negative numbers with ui-negative-number attribute ([#300](https://github.com/assisrafael/angular-input-masks/issues/300)) ([1762cf1](https://github.com/assisrafael/angular-input-masks/commit/1762cf1))
+* **uiPercentageMask:** hide percentage symbol if "ui-hide-percentage-sign" attribute is present ([9d9cf3d](https://github.com/assisrafael/angular-input-masks/commit/9d9cf3d)), closes [#192](https://github.com/assisrafael/angular-input-masks/issues/192)
+
+
+
 <a name="3.1.0"></a>
 # [3.1.0](https://github.com/assisrafael/angular-input-masks/compare/v3.0.1...v3.1.0) (2017-09-22)
 
