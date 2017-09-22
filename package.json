@@ -18,7 +18,8 @@
     "test:unit:watch": "karma start config/karma.conf.js --auto-watch",
     "prepare": "npm run build",
     "release": "standard-version",
-    "webdriver": "webdriver-manager update"
+    "webdriver": "webdriver-manager update",
+    "postinstall": "npm run webdriver"
   },
   "keywords": [
     "input",
@@ -47,6 +48,7 @@
     "gulp-uglify": "^3.0.0",
     "istanbul": "^0.4.2",
     "jasmine-core": "^2.2.0",
+    "jasmine-spec-reporter": "^4.2.1",
     "karma": "^1.1.0",
     "karma-browserify": "^5.0.2",
     "karma-chrome-launcher": "^2.2.0",
