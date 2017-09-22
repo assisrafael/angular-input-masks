@@ -52,8 +52,11 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 					return value;
 				}
 
+				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
-				return viewMask.apply(valueToFormat) + (hideSpace ? '%' : ' %');
+
+				var percentSign = hideSpace ? '%' : ' %';
+				return prefix + viewMask.apply(valueToFormat) + percentSign;
 			}
 
 			function parse(value) {
@@ -62,15 +65,30 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
+
 				if (value.length > 1 && value.indexOf('%') === -1) {
-					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
+					valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1);
 				}
+
 				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
+
 				var percentSign = hideSpace ? '%' : ' %';
 				var formatedValue = viewMask.apply(valueToFormat) + percentSign;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+
+				if (angular.isDefined(attrs.uiNegativeNumber)) {
+					var isNegative = (value[0] === '-'),
+						needsToInvertSign = (value.slice(-1) === '-');
+
+					//only apply the minus sign if it is negative or(exclusive) or the first character
+					//needs to be negative and the number is different from zero
+					if ((needsToInvertSign ^ isNegative) || value === '-') {
+						actualNumber *= -1;
+						formatedValue = '-' + ((actualNumber !== 0) ? formatedValue : '');
+					}
+				}
 
 				if (ctrl.$viewValue !== formatedValue) {
 					ctrl.$setViewValue(formatedValue);

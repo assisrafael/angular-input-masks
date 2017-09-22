@@ -143,5 +143,28 @@ describe('ui.utils.masks.percentage', function() {
 				expect(input.getAttribute('value')).toEqual(formatedNumberAsString + percent);
 			}
 		});
+
+		it('should accept negative numbers when the ui-negative attribute is present', function() {
+			var input = element(by.model('percentageWithNegativeNumber'));
+			input.clear();
+
+			input.sendKeys('123418-');
+			expect(input.getAttribute('value')).toEqual('-1.234,18 %');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('1.234,18 %');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-1.234,18 %');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('1.234,18 %');
+			input.sendKeys('-');
+			expect(input.getAttribute('value')).toEqual('-1.234,18 %');
+			input.sendKeys(9);
+			expect(input.getAttribute('value')).toEqual('-12.341,89 %');
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			expect(input.getAttribute('value')).toEqual('-1.234,18 %');
+			input.sendKeys('-');
+			input.sendKeys(9);
+			expect(input.getAttribute('value')).toEqual('12.341,89 %');
+		});
 	});
 });
