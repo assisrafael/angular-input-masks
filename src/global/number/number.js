@@ -55,10 +55,15 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
-
-				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
-				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
-				return prefix + viewMask.apply(valueToFormat);
+		    // issue log 10.
+            var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : undefined;
+            var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
+            if (angular.isUndefined(prefix)) {
+              var valueafterMask = viewMask.apply(valueToFormat);
+              // if undefined we can also return null
+              return (!angular.isUndefined(valueafterMask)) ? viewMask.apply(valueToFormat) : 0;
+            }
+            return prefix + viewMask.apply(valueToFormat);
 			}
 
 			function clearViewValueIfMinusSign() {
