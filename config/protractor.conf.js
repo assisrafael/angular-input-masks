@@ -1,6 +1,7 @@
 'use strict';
 
 /*eslint no-process-env: 0*/
+/*eslint no-empty-function: 0*/
 
 const {SpecReporter} = require('jasmine-spec-reporter');
 
