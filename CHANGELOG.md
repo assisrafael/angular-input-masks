@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="3.1.0"></a>
+# [3.1.0](https://github.com/assisrafael/angular-input-masks/compare/v3.0.1...v3.1.0) (2017-09-22)
+
+
+### Features
+
+* **uiBrPhoneNumber:** include support for country code ([#299](https://github.com/assisrafael/angular-input-masks/issues/299)) ([2560af9](https://github.com/assisrafael/angular-input-masks/commit/2560af9))
+
+
+
 <a name="3.0.1"></a>
 ## [3.0.1](https://github.com/assisrafael/angular-input-masks/compare/v3.0.0...v3.0.1) (2017-09-15)
 
