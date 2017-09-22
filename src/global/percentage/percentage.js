@@ -65,9 +65,11 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
+
 				if (value.length > 1 && value.indexOf('%') === -1) {
-					valueToFormat = valueToFormat.slice(0,valueToFormat.length-1);
+					valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1);
 				}
+
 				if (backspacePressed && value.length === 1 && value !== '%') {
 					valueToFormat = '0';
 				}
@@ -77,10 +79,14 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
-					var isNegative = (value.slice(-1) === '-') ? !(value[0] === '-') : (value[0] === '-');
-					if (isNegative) {
+					var isNegative = (value[0] === '-'),
+						needsToInvertSign = (value.slice(-1) === '-');
+
+					//only apply the minus sign if it is negative or(exclusive) or the first character
+					//needs to be negative and the number is different from zero
+					if ((needsToInvertSign ^ isNegative) || value === '-') {
 						actualNumber *= -1;
-						formatedValue = '-' + formatedValue;
+						formatedValue = '-' + ((actualNumber !== 0) ? formatedValue : '');
 					}
 				}
 
