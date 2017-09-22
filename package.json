@@ -9,7 +9,7 @@
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
     "build": "gulp build",
-    "ci": "npm run lint && npm run webdriver && npm run test",
+    "ci": "npm run lint && npm run test",
     "demo": "gulp serve",
     "lint": "eslint *.js src/ config/ --fix",
     "test": "npm run test:unit && npm run test:e2e",
