@@ -13,8 +13,8 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 		link: function(scope, element, attrs, ctrl) {
 			var decimalDelimiter = $locale.NUMBER_FORMATS.DECIMAL_SEP,
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
+				percentageSymbol = ' %',
 				decimals = parseInt(attrs.uiPercentageMask),
-				hideSpace = false,
 				backspacePressed = false;
 
 			element.bind('keydown keypress', function(event) {
@@ -31,7 +31,11 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 			}
 
 			if (angular.isDefined(attrs.uiHideSpace)) {
-				hideSpace = true;
+				percentageSymbol = '%';
+			}
+
+			if (angular.isDefined(attrs.uiHidePercentageSign)) {
+				percentageSymbol = '';
 			}
 
 			if (angular.isDefined(attrs.uiPercentageValue)) {
@@ -55,8 +59,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = preparePercentageToFormatter(value, decimals, modelValue.multiplier);
 
-				var percentSign = hideSpace ? '%' : ' %';
-				return prefix + viewMask.apply(valueToFormat) + percentSign;
+				return prefix + viewMask.apply(valueToFormat) + percentageSymbol;
 			}
 
 			function parse(value) {
@@ -65,8 +68,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 				}
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
-
-				if (value.length > 1 && value.indexOf('%') === -1) {
+				if (percentageSymbol !== '' && value.length > 1 && value.indexOf('%') === -1) {
 					valueToFormat = valueToFormat.slice(0, valueToFormat.length - 1);
 				}
 
@@ -74,8 +76,7 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 					valueToFormat = '0';
 				}
 
-				var percentSign = hideSpace ? '%' : ' %';
-				var formatedValue = viewMask.apply(valueToFormat) + percentSign;
+				var formatedValue = viewMask.apply(valueToFormat) + percentageSymbol;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {

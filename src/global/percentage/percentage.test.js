@@ -78,6 +78,19 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('50%');
 	}));
 
+	it('should hide "%" if ui-hide-percentage-sign is present', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask  ui-hide-percentage-sign>', {
+			model: 0.75
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('75.00');
+
+		input.val('12.34').triggerHandler('input');
+		expect(model.$viewValue).toBe('12.34');
+		expect(model.$modelValue).toBe(0.1234);
+	});
+
 	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals">', {
 			model: '12.345',
