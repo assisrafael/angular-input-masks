@@ -1,23 +1,24 @@
 'use strict';
 
 /*eslint no-console: 0*/
+/*eslint no-process-env: 0*/
 
-var path = require('path');
+const path = require('path');
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
 	mergeStream = require('merge-stream'),
 	browserify = require('browserify'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	loadPlugins = require('gulp-load-plugins');
 
-var plugins = loadPlugins({
+const plugins = loadPlugins({
 	config: path.join(__dirname, 'package.json')
 });
 
-var pkg = require('./package.json');
+const pkg = require('./package.json');
 
-var header = ['/**',
+const header = ['/**',
 	' * <%= pkg.name %>',
 	' * <%= pkg.description %>',
 	' * @version v<%= pkg.version %>',
@@ -110,12 +111,11 @@ gulp.task('default', ['build'], function() {
 });
 
 gulp.task('serve', ['build'], function(done) {
-	var express = require('express');
-	var server = express();
+	var server = require('./server');
 
-	server.use(express.static('./'));
-	server.listen(9090, function() {
-		console.log('Server running in port 9090');
+	const PORT = process.env.PORT || 9090;
+	server.listen(PORT, function() {
+		console.log(`Server running in port ${PORT}`);
 		done();
 	});
 });

@@ -1,9 +1,12 @@
 'use strict';
 
 /*eslint no-process-env: 0*/
+/*eslint no-console: 0*/
 /*eslint no-empty-function: 0*/
 
 const {SpecReporter} = require('jasmine-spec-reporter');
+
+const PORT = process.env.PORT || 9090;
 
 var config = {
 	allScriptsTimeout: 11000,
@@ -20,13 +23,15 @@ var config = {
 	specs: [
 		'../src/**/*.spec.js'
 	],
-	baseUrl: 'http://localhost:9090/demo',
+	baseUrl: `http://localhost:${PORT}/demo`,
 	beforeLaunch() {
-		var exec = require('child_process').exec;
+		var server = require('../server');
 
-		exec('gulp serve');
 		return new Promise((resolve) => {
-			setTimeout(resolve, 5000);
+			server.listen(PORT, function() {
+				console.log(`Server running in port ${PORT}`);
+				resolve();
+			});
 		});
 	},
 	onPrepare() {
