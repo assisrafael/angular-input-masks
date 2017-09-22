@@ -9,10 +9,11 @@
   "homepage": "http://github.com/assisrafael/angular-input-masks",
   "scripts": {
     "build": "gulp build",
-    "ci": "npm run lint && npm run build && npm run test",
+    "ci": "npm run lint && npm run test",
     "demo": "gulp serve",
     "lint": "eslint *.js src/ config/ --fix",
     "test": "npm run test:unit && npm run test:e2e",
+    "pretest:e2e": "npm run build",
     "test:e2e": "protractor config/protractor.conf.js",
     "test:unit": "karma start config/karma.conf.js --single-run",
     "test:unit:watch": "karma start config/karma.conf.js --auto-watch",
