@@ -73,7 +73,7 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 
 			function parser(value) {
 				if (ctrl.$isEmpty(value)) {
-					return value;
+					return null;
 				}
 
 				var actualNumber = value.replace(/[^\d]+/g,''), formatedValue;
