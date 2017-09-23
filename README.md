@@ -8,7 +8,7 @@ Opinionated angular input masks. Provides ready to use masks with little (br/ins
 
 ### Compatibility
 
-- angular-input-masks@~2: angular@^1.3 (however is only tested with 1.3) and [ECMAScript 5 compliant browsers](http://kangax.github.io/compat-table/es5/) (however CI only tests chrome and firefox).
+- angular-input-masks@~2: angular@^1.3 (however is only tested with lastest 1.x version) and [ECMAScript 5 compliant browsers](http://kangax.github.io/compat-table/es5/) (however CI only tests chrome and firefox).
 - angular-input-masks@~1: angular@~1.2
 
 
