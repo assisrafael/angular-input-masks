@@ -29,7 +29,7 @@ function DateMaskDirective($locale) {
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
-					return value;
+					return null;
 				}
 
 				var cleanValue = value;

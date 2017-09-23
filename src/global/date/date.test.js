@@ -86,7 +86,7 @@ describe('ui-date-mask', function() {
 		tests.forEach(function(test) {
 			$rootScope.model = test.modelValue;
 			$rootScope.$digest();
-			expect(model.$viewValue).toBe(test.viewValue);
+			expect(model.$viewValue).toBe(null);
 		});
 	}));
 });
