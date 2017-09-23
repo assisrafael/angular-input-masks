@@ -16,7 +16,6 @@
 <body ng-app="app">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-br-cnpj-mask</h2>
-		<i>Same as the deprecated <b>ui-cnpj-mask</b></i><br><br>
 		<input type="text" name="field9" ng-model="initializedCnpj" ui-br-cnpj-mask> <br>
 		<span ng-bind="initializedCnpj"></span> - {{form.field9.$error}}<br>
 		<input type="text" name="field10" ng-model="fieldCnpj" ng-model-options="{allowInvalid:true}" ui-br-cnpj-mask> <br>
