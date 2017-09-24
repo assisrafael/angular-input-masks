@@ -95,8 +95,16 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					return value;
 				}
 
-				var viewValue = formatter(value),
-					modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));
+				var isExponentNegative = /e-/.test(value);
+				var cleanValue = value.replace(/-/g,'');
+				var viewValue = formatter(cleanValue);
+
+				var needsToInvertSign = (value.slice(-1) === '-');
+				if (needsToInvertSign ^ isExponentNegative) {
+					viewValue = viewValue.replace(/(e[-]?)/, 'e-');
+				}
+
+				var modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));
 
 				if (ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);

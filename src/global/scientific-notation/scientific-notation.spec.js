@@ -165,4 +165,20 @@ describe('uiScientificNotationMask', function() {
 		expect(input.getAttribute('value')).toEqual('0');
 		expect(value.getText()).toEqual('0');
 	});
+
+	it('should format numbers with negative exponent', function() {
+		var input = element(by.model('scientificNotationMask')),
+			value = element(by.exactBinding('scientificNotationMask'));
+
+		input.clear();
+		input.sendKeys('1234');
+		expect(input.getAttribute('value')).toEqual('1,23e4');
+		expect(value.getText()).toEqual('12300');
+		input.sendKeys('-');
+		expect(input.getAttribute('value')).toEqual('1,23e-4');
+		expect(value.getText()).toEqual('0.000123');
+		input.sendKeys('-');
+		expect(input.getAttribute('value')).toEqual('1,23e4');
+		expect(value.getText()).toEqual('12300');
+	});
 });

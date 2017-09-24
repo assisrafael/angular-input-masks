@@ -49,6 +49,15 @@ describe('ui-scientific-notation-mask', function() {
 		expect(model.$viewValue).toBe('1.235e4');
 	});
 
+	it('should format initial model values with negative exponent', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-scientific-notation-mask>', {
+			model: 1.3456e-3
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('1.35e-3');
+	});
+
 	it('should format input', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-scientific-notation-mask>');
 		var model = input.controller('ngModel');
@@ -59,6 +68,9 @@ describe('ui-scientific-notation-mask', function() {
 		input.val('1.2345').triggerHandler('input');
 		expect(model.$viewValue).toBe('1.23e45');
 		expect(model.$modelValue).toBe(1.23e45);
+		input.val('1.2345e-9').triggerHandler('input');
+		expect(model.$viewValue).toBe('1.23e-9');
+		expect(model.$modelValue).toBe(1.23e-9);
 	});
 
 	it('should handle corner cases', angular.mock.inject(function($rootScope) {
