@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiFrPhoneNumber', function() {
+describe('uiFrPhoneNumberMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/fr/phone/fr-phone.html');
 		expect(browser.getTitle()).toEqual('FR Phone Number Spec');
