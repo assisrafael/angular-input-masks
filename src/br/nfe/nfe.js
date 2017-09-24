@@ -1,10 +1,10 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('../../libs/mask-factory');
 
-var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000' +
-	' 0000 0000 0000 0000 0000 0000');
+var maskFactory = require('../../helpers/mask-factory');
+
+var nfeAccessKeyMask = new StringMask('0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000');
 
 module.exports = maskFactory({
 	clearValue: function(rawValue) {

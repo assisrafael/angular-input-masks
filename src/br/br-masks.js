@@ -1,8 +1,6 @@
 'use strict';
 
-var m = angular.module('ui.utils.masks.br', [
-	require('../helpers'),
-])
+var m = angular.module('ui.utils.masks.br', [])
 	.directive('uiBrBoletoBancarioMask', require('./boleto-bancario/boleto-bancario'))
 	.directive('uiBrCarPlateMask', require('./car-plate/car-plate'))
 	.directive('uiBrCepMask', require('./cep/cep'))

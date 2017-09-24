@@ -1,9 +1,10 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var validators = require('../../libs/validators');
+var validators = require('../../helpers/validators');
+var PreFormatters = require('../../helpers/pre-formatters');
 
-function MoneyMaskDirective($locale, $parse, PreFormatters) {
+function MoneyMaskDirective($locale, $parse) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -160,6 +161,6 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 		}
 	};
 }
-MoneyMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters'];
+MoneyMaskDirective.$inject = ['$locale', '$parse'];
 
 module.exports = MoneyMaskDirective;

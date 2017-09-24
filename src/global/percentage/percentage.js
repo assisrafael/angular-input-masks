@@ -1,8 +1,10 @@
 'use strict';
 
-var validators = require('../../libs/validators');
+var validators = require('../../helpers/validators');
+var NumberMasks = require('../../helpers/number-mask-builder');
+var PreFormatters = require('../../helpers/pre-formatters');
 
-function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
+function PercentageMaskDirective($locale) {
 	function preparePercentageToFormatter(value, decimals, modelMultiplier) {
 		return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*modelMultiplier).toFixed(decimals));
 	}
@@ -147,6 +149,6 @@ function PercentageMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 		}
 	};
 }
-PercentageMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks'];
+PercentageMaskDirective.$inject = ['$locale'];
 
 module.exports = PercentageMaskDirective;

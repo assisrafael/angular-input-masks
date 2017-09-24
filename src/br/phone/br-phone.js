@@ -1,7 +1,8 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('../../libs/mask-factory');
+
+var maskFactory = require('../../helpers/mask-factory');
 
 /**
  * FIXME: all numbers will have 9 digits after 2016.

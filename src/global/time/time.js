@@ -2,6 +2,7 @@
 
 var StringMask = require('string-mask');
 
+//TODO: refactor to use the mask factory
 module.exports = function TimeMaskDirective() {
 	return {
 		restrict: 'A',
