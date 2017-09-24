@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiChPhoneNumber', function() {
+describe('uiChPhoneNumberMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/ch/phone/ch-phone.html');
 		expect(browser.getTitle()).toEqual('CH Phone Number Spec');

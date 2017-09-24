@@ -2,12 +2,12 @@
 
 require('../ch-masks');
 
-describe('ui-ch-phone-number', function() {
+describe('uiChPhoneNumberMask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.ch'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
-			TestUtil.compile('<input ui-ch-phone-number>');
+			TestUtil.compile('<input ui-ch-phone-number-mask>');
 		}).toThrow();
 	});
 
@@ -15,7 +15,7 @@ describe('ui-ch-phone-number', function() {
 		var input = TestUtil.compile('<input ng-model="model">');
 		var model = input.controller('ngModel');
 
-		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-ch-phone-number>');
+		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-ch-phone-number-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
@@ -23,7 +23,7 @@ describe('ui-ch-phone-number', function() {
 	});
 
 	it('should format initial model values', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number-mask>', {
 			model: '41790000000'
 		});
 
@@ -32,8 +32,7 @@ describe('ui-ch-phone-number', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
-			' ui-ch-phone-number>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-ch-phone-number-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -53,7 +52,7 @@ describe('ui-ch-phone-number', function() {
 	});
 
 	it('should validate a phone number', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number-mask>', {
 			model: '417900'
 		});
 
@@ -64,7 +63,7 @@ describe('ui-ch-phone-number', function() {
 	});
 
 	it('should use the type of the model value (if initialized)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-ch-phone-number-mask>', {
 			model: '41790000000'
 		});
 
