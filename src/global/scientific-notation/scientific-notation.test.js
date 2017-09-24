@@ -2,7 +2,7 @@
 
 require('../global-masks');
 
-describe('ui-scientific-notation-mask', function() {
+describe('uiScientificNotationMask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
@@ -71,6 +71,36 @@ describe('ui-scientific-notation-mask', function() {
 		input.val('1.2345e-9').triggerHandler('input');
 		expect(model.$viewValue).toBe('1.23e-9');
 		expect(model.$modelValue).toBe(1.23e-9);
+	});
+
+	it('should accept negative numbers if "ui-negative-number" is defined', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-scientific-notation-mask ui-negative-number>', {
+			model: -1.3456e3
+		});
+		var model = input.controller('ngModel');
+
+		expect(model.$viewValue).toBe('-1.35e3');
+		expect(model.$modelValue).toBe(-1345.6);
+
+		input.val('-1.23e45').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1.23e45');
+		expect(model.$modelValue).toBe(-1.23e45);
+
+		input.val('1.23e45-').triggerHandler('input');
+		expect(model.$viewValue).toBe('1.23e-45');
+		expect(model.$modelValue).toBe(1.23e-45);
+
+		input.val('1.23e-45-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1.23e45');
+		expect(model.$modelValue).toBe(-1.23e45);
+
+		input.val('-1.23e45-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-1.23e-45');
+		expect(model.$modelValue).toBe(-1.23e-45);
+
+		input.val('-1.23e-45-').triggerHandler('input');
+		expect(model.$viewValue).toBe('1.23e45');
+		expect(model.$modelValue).toBe(1.23e45);
 	});
 
 	it('should handle corner cases', angular.mock.inject(function($rootScope) {

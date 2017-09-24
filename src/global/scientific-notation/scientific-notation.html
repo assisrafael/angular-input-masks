@@ -45,6 +45,9 @@
 		Errors: <span ng-bind="form.scientificNotationMaskWithoutDigits.$error | json"></span>
 		<br>
 		<br>
+		<input type="text" name="field2" ng-model="scientificNotationMaskWithNegativeNumber" ui-scientific-notation-mask ui-negative-number> <br>
+		<span ng-bind="scientificNotationMaskWithNegativeNumber"></span> - (accepts negative numbers. Press '-' to test)
+		<br>
 	</form>
 </body>
 </html>

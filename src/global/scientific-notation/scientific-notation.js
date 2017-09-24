@@ -87,7 +87,9 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					formattedValue += 'e' + exponent;
 				}
 
-				return formattedValue;
+				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value[0] === '-') ? '-' : '';
+
+				return prefix + formattedValue;
 			}
 
 			function parser(value) {
@@ -96,12 +98,17 @@ function ScientificNotationMaskDirective($locale, $parse) {
 				}
 
 				var isExponentNegative = /e-/.test(value);
-				var cleanValue = value.replace(/-/g,'');
+				var cleanValue = value.replace('e-', 'e');
 				var viewValue = formatter(cleanValue);
 
 				var needsToInvertSign = (value.slice(-1) === '-');
+
 				if (needsToInvertSign ^ isExponentNegative) {
 					viewValue = viewValue.replace(/(e[-]?)/, 'e-');
+				}
+
+				if (needsToInvertSign && isExponentNegative) {
+					viewValue = viewValue[0] !== '-' ? ('-' + viewValue) : viewValue.replace(/^(-)/,'');
 				}
 
 				var modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));

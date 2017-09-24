@@ -177,6 +177,26 @@ describe('uiScientificNotationMask', function() {
 		input.sendKeys('-');
 		expect(input.getAttribute('value')).toEqual('1,23e-4');
 		expect(value.getText()).toEqual('0.000123');
+	});
+
+	it('should accept negative numbers when the ui-negative attribute is present', function() {
+		var input = element(by.model('scientificNotationMaskWithNegativeNumber')),
+			value = element(by.exactBinding('scientificNotationMaskWithNegativeNumber'));
+
+		input.clear();
+
+		input.sendKeys('1234');
+		expect(input.getAttribute('value')).toEqual('1,23e4');
+		expect(value.getText()).toEqual('12300');
+		input.sendKeys('-');
+		expect(input.getAttribute('value')).toEqual('1,23e-4');
+		expect(value.getText()).toEqual('0.000123');
+		input.sendKeys('-');
+		expect(input.getAttribute('value')).toEqual('-1,23e4');
+		expect(value.getText()).toEqual('-12300');
+		input.sendKeys('-');
+		expect(input.getAttribute('value')).toEqual('-1,23e-4');
+		expect(value.getText()).toEqual('-0.000123');
 		input.sendKeys('-');
 		expect(input.getAttribute('value')).toEqual('1,23e4');
 		expect(value.getText()).toEqual('12300');
