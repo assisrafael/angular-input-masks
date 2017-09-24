@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ui-br-cnpj:', function() {
+describe('uiBrCnpjMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/br/cnpj/cnpj.html');
 		expect(browser.getTitle()).toEqual('CNPJ Spec');

@@ -2,122 +2,120 @@
 
 var StringMask = require('string-mask');
 
-describe('ui.utils.masks.money', function() {
+describe('uiMoneyMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/global/money/money.html');
 		expect(browser.getTitle()).toEqual('Money Spec');
 	});
 
-	describe('ui-money-mask:', function() {
-		it('should format money with two decimal places (default)', function() {
-			var formatterView = new StringMask('#.##0,00', {reverse: true}),
-				formatterModel =  new StringMask('###0.00', {reverse: true}),
-				numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
+	it('should format money with two decimal places (default)', function() {
+		var formatterView = new StringMask('#.##0,00', {reverse: true}),
+			formatterModel =  new StringMask('###0.00', {reverse: true}),
+			numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
 
-			var input = element(by.model('defaultMoney')),
-				value = element(by.binding('defaultMoney'));
+		var input = element(by.model('defaultMoney')),
+			value = element(by.binding('defaultMoney'));
 
-			expect(input.getAttribute('value')).toEqual(currency + '153,12');
-			input.clear();
+		expect(input.getAttribute('value')).toEqual(currency + '153,12');
+		input.clear();
 
-			var i;
-			for (i = 1; i <= 9; i++) {
-				input.sendKeys(i);
-				numberToFormat += i;
+		var i;
+		for (i = 1; i <= 9; i++) {
+			input.sendKeys(i);
+			numberToFormat += i;
 
-				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
+			formatedNumberAsString = formatterView.apply(numberToFormat);
+			expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
 
+			formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+			expect(value.getText()).toEqual(formatedNumberAsNumber);
+		}
+
+		for (i = 9; i >= 1; i--) {
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			numberToFormat = numberToFormat.slice(0, -1);
+			if (!numberToFormat) {
+				numberToFormat = '0';
+			} else {
 				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (i = 9; i >= 1; i--) {
-				input.sendKeys(protractor.Key.BACK_SPACE);
-				numberToFormat = numberToFormat.slice(0, -1);
-				if (!numberToFormat) {
-					numberToFormat = '0';
-				} else {
-					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-					expect(value.getText()).toEqual(formatedNumberAsNumber);
-				}
+			formatedNumberAsString = formatterView.apply(numberToFormat);
+			expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
+		}
+	});
 
-				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
-			}
-		});
+	it('should format a field with 0 as the initial value', function() {
+		var currency = 'R$ ';
 
-		it('should format a field with 0 as the initial value', function() {
-			var currency = 'R$ ';
+		var input = element(by.model('moneyStartedWith0'));
 
-			var input = element(by.model('moneyStartedWith0'));
+		expect(input.getAttribute('value')).toEqual(currency+'0,00');
+	});
 
-			expect(input.getAttribute('value')).toEqual(currency+'0,00');
-		});
+	it('should format a field with an initial value with string type', function() {
+		var currency = 'R$ ';
 
-		it('should format a field with an initial value with string type', function() {
-			var currency = 'R$ ';
+		var input = element(by.model('moneyInitializedWithString'));
 
-			var input = element(by.model('moneyInitializedWithString'));
+		expect(input.getAttribute('value')).toEqual(currency+'3,53');
+	});
 
-			expect(input.getAttribute('value')).toEqual(currency+'3,53');
-		});
+	it('should format money with three decimal places (parameter)', function() {
+		var formatterView = new StringMask('#.##0,000', {reverse: true}),
+			formatterModel =  new StringMask('###0.000', {reverse: true}),
+			numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
 
-		it('should format money with three decimal places (parameter)', function() {
-			var formatterView = new StringMask('#.##0,000', {reverse: true}),
-				formatterModel =  new StringMask('###0.000', {reverse: true}),
-				numberToFormat = '', currency = 'R$ ', formatedNumberAsString, formatedNumberAsNumber;
+		var input = element(by.model('money3Decimals')),
+			value = element(by.binding('money3Decimals'));
 
-			var input = element(by.model('money3Decimals')),
-				value = element(by.binding('money3Decimals'));
+		var i;
+		for (i = 1; i <= 9; i++) {
+			input.sendKeys(i);
+			numberToFormat += i;
 
-			var i;
-			for (i = 1; i <= 9; i++) {
-				input.sendKeys(i);
-				numberToFormat += i;
+			formatedNumberAsString = formatterView.apply(numberToFormat);
+			expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
 
-				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
+			formatedNumberAsNumber = formatterModel.apply(numberToFormat);
+			expect(value.getText()).toEqual(formatedNumberAsNumber);
+		}
 
+		for (i = 9; i >= 1; i--) {
+			input.sendKeys(protractor.Key.BACK_SPACE);
+			numberToFormat = numberToFormat.slice(0, -1);
+			if (!numberToFormat) {
+				numberToFormat = '0';
+			} else {
 				formatedNumberAsNumber = formatterModel.apply(numberToFormat);
 				expect(value.getText()).toEqual(formatedNumberAsNumber);
 			}
 
-			for (i = 9; i >= 1; i--) {
-				input.sendKeys(protractor.Key.BACK_SPACE);
-				numberToFormat = numberToFormat.slice(0, -1);
-				if (!numberToFormat) {
-					numberToFormat = '0';
-				} else {
-					formatedNumberAsNumber = formatterModel.apply(numberToFormat);
-					expect(value.getText()).toEqual(formatedNumberAsNumber);
-				}
+			formatedNumberAsString = formatterView.apply(numberToFormat);
+			expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
+		}
+	});
 
-				formatedNumberAsString = formatterView.apply(numberToFormat);
-				expect(input.getAttribute('value')).toEqual(currency + formatedNumberAsString);
-			}
-		});
+	it('should convert invalid values to zero', function() {
+		var currency = 'R$ ';
 
-		it('should convert invalid values to zero', function() {
-			var currency = 'R$ ';
+		var input = element(by.model('defaultMoney'));
 
-			var input = element(by.model('defaultMoney'));
+		input.clear(); //Clear to send invalid content
+		input.sendKeys('a'); //Typing invalid content, bug #146
 
-			input.clear(); //Clear to send invalid content
-			input.sendKeys('a'); //Typing invalid content, bug #146
+		expect(input.getAttribute('value')).toEqual(currency + '0,00');
+	});
 
-			expect(input.getAttribute('value')).toEqual(currency + '0,00');
-		});
+	it('should add currency after value', function() {
+		var currency = ' R$';
 
-		it('should add currency after value', function() {
-			var currency = ' R$';
+		var input = element(by.model('currencyAfterValue'));
 
-			var input = element(by.model('currencyAfterValue'));
+		input.clear(); //Clear to send invalid content
+		input.sendKeys('1');
 
-			input.clear(); //Clear to send invalid content
-			input.sendKeys('1');
-
-			expect(input.getAttribute('value')).toEqual('0,01' + currency);
-		});
+		expect(input.getAttribute('value')).toEqual('0,01' + currency);
 	});
 });

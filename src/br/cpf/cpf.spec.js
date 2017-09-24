@@ -1,6 +1,6 @@
 'use strict';
 
-describe('ui-br-cpf:', function() {
+describe('uiBrCpfMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/br/cpf/cpf.html');
 		expect(browser.getTitle()).toEqual('CPF Spec');
