@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiBrPhoneNumber', function() {
+describe('uiBrPhoneNumberMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/br/phone/br-phone.html');
 		expect(browser.getTitle()).toEqual('BR Phone Number Spec');

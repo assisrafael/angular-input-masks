@@ -2,12 +2,12 @@
 
 require('../br-masks');
 
-describe('ui-br-phone-number', function() {
+describe('uiBrPhoneNumberMask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
-			TestUtil.compile('<input ui-br-phone-number>');
+			TestUtil.compile('<input ui-br-phone-number-mask>');
 		}).toThrow();
 	});
 
@@ -15,7 +15,7 @@ describe('ui-br-phone-number', function() {
 		var input = TestUtil.compile('<input ng-model="model">');
 		var model = input.controller('ngModel');
 
-		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-phone-number>');
+		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-br-phone-number-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
@@ -23,7 +23,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format initial model values (free line)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '08001231234'
 		});
 
@@ -32,7 +32,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format initial model values (2+8D)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: 1234567890
 		});
 
@@ -41,7 +41,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format initial model values (2+9D)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '12345678901'
 		});
 
@@ -50,7 +50,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format initial model values (8D)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '12345678'
 		});
 
@@ -59,7 +59,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format initial model values (9D)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '123456789'
 		});
 
@@ -68,7 +68,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should format model values with country code', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>');
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>');
 		var model = input.controller('ngModel');
 
 		input.val('123456789012').triggerHandler('input');
@@ -79,7 +79,7 @@ describe('ui-br-phone-number', function() {
 
 	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
-			' ui-br-phone-number>');
+			' ui-br-phone-number-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -99,7 +99,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should validate a phone number', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '123456'
 		});
 
@@ -126,7 +126,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should use the type of the model value (if initialized)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: 1234567890
 		});
 
@@ -139,7 +139,7 @@ describe('ui-br-phone-number', function() {
 	});
 
 	it('should use the type of the model value (if initialized)', function() {
-		var numberInput = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var numberInput = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: 1234567890
 		});
 
@@ -155,7 +155,7 @@ describe('ui-br-phone-number', function() {
 		expect(model.$viewValue).toBe('3237-5486');
 		expect(model.$modelValue).toBe(32375486);
 
-		var stringInput = TestUtil.compile('<input ng-model="model" ui-br-phone-number>', {
+		var stringInput = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
 			model: '992561546'
 		});
 
