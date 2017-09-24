@@ -49,10 +49,10 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					return value;
 				}
 
-				if (typeof value === 'string') {
-					value = value.replace(decimalDelimiter, '.');
-				} else if (typeof value === 'number') {
+				if (typeof value === 'number') {
 					value = value.toExponential(decimals);
+				} else {
+					value = value.toString().replace(decimalDelimiter, '.');
 				}
 
 				var formattedValue, exponent;
