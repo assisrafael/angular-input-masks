@@ -1,7 +1,7 @@
 'use strict';
 
 var m = angular.module('ui.utils.masks.global', [])
-	.directive('uiCreditCard', require('./credit-card/credit-card'))
+	.directive('uiCreditCardMask', require('./credit-card/credit-card'))
 	.directive('uiDateMask', require('./date/date'))
 	.directive('uiMoneyMask', require('./money/money'))
 	.directive('uiNumberMask', require('./number/number'))

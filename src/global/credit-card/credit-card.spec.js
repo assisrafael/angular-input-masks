@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiCreditCard', function() {
+describe('uiCreditCardMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/global/credit-card/credit-card.html');
 		expect(browser.getTitle()).toEqual('Credit Card Spec');

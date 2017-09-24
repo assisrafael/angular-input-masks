@@ -2,12 +2,12 @@
 
 require('../global-masks');
 
-describe('ui-credit-card', function() {
+describe('uiCreditCardMask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.global'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
-			TestUtil.compile('<input ui-credit-card>');
+			TestUtil.compile('<input ui-credit-card-mask>');
 		}).toThrow();
 	});
 
@@ -15,7 +15,7 @@ describe('ui-credit-card', function() {
 		var input = TestUtil.compile('<input ng-model="model">');
 		var model = input.controller('ngModel');
 
-		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-credit-card>');
+		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-credit-card-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
@@ -23,7 +23,7 @@ describe('ui-credit-card', function() {
 	});
 
 	it('should format initial model values', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-credit-card>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-credit-card-mask>', {
 			model: '4242424242424242'
 		});
 
@@ -32,8 +32,7 @@ describe('ui-credit-card', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
-			' ui-credit-card>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-credit-card-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -54,7 +53,7 @@ describe('ui-credit-card', function() {
 	});
 
 	it('should validate a credit card number', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-credit-card>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-credit-card-mask>', {
 			model: '417900'
 		});
 
@@ -65,7 +64,7 @@ describe('ui-credit-card', function() {
 	});
 
 	it('should use the type of the model value (if initialized)', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-credit-card>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-credit-card-mask>', {
 			model: '7777333300008888'
 		});
 
