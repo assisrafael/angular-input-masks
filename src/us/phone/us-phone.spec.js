@@ -1,6 +1,6 @@
 'use strict';
 
-describe('uiUsPhoneNumber', function() {
+describe('uiUsPhoneNumberMask', function() {
 	it('should load the demo page', function() {
 		browser.get('/src/us/phone/us-phone.html');
 		expect(browser.getTitle()).toEqual('US Phone Number Spec');

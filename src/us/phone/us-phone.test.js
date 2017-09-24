@@ -2,12 +2,12 @@
 
 require('../us-masks');
 
-describe('ui-us-phone-mask', function() {
+describe('uiUsPhoneNumberMask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.us'));
 
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
-			TestUtil.compile('<input ui-us-phone-number>');
+			TestUtil.compile('<input ui-us-phone-number-mask>');
 		}).toThrow();
 	});
 
@@ -15,7 +15,7 @@ describe('ui-us-phone-mask', function() {
 		var input = TestUtil.compile('<input ng-model="model">');
 		var model = input.controller('ngModel');
 
-		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-us-phone-number>');
+		var maskedInput = TestUtil.compile('<input ng-model="maskedModel" ui-us-phone-number-mask>');
 		var maskedModel = maskedInput.controller('ngModel');
 
 		expect(maskedModel.$parsers.length).toBe(model.$parsers.length + 1);
@@ -23,7 +23,7 @@ describe('ui-us-phone-mask', function() {
 	});
 
 	it('should format initial model values', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number-mask>', {
 			model: '3011201034'
 		});
 
@@ -32,8 +32,7 @@ describe('ui-us-phone-mask', function() {
 	});
 
 	it('should ignore non digits', function() {
-		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"' +
-			' ui-us-phone-number>');
+		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}" ui-us-phone-number-mask>');
 		var model = input.controller('ngModel');
 
 		var tests = [
@@ -54,7 +53,7 @@ describe('ui-us-phone-mask', function() {
 	});
 
 	it('should validate a phone number', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number>', {
+		var input = TestUtil.compile('<input ng-model="model" ui-us-phone-number-mask>', {
 			model: 30112
 		});
 		var model = input.controller('ngModel');
