@@ -14,13 +14,12 @@
     "lint": "eslint *.js src/ config/ --fix",
     "test": "npm run test:unit && npm run test:e2e",
     "pretest:e2e": "npm run build",
-    "test:e2e": "protractor config/protractor.conf.js",
+    "test:e2e": "npm run webdriver && protractor config/protractor.conf.js",
     "test:unit": "karma start config/karma.conf.js --single-run",
     "test:unit:watch": "karma start config/karma.conf.js --auto-watch",
     "prepare": "npm run build",
     "release": "standard-version",
-    "webdriver": "webdriver-manager update",
-    "postinstall": "npm run webdriver"
+    "webdriver": "webdriver-manager update"
   },
   "keywords": [
     "input",
