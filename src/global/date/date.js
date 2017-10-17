@@ -24,7 +24,7 @@ function DateMaskDirective($locale) {
 
 			dateFormat = attrs.uiDateMask || dateFormat;
 
-			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
+			var dateMask = new StringMask(dateFormat.replace(/[YMDHhm]/g,'0'));
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
