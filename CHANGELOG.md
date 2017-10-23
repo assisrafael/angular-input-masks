@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.0.1"></a>
+## [4.0.1](https://github.com/assisrafael/angular-input-masks/compare/v4.0.0...v4.0.1) (2017-10-23)
+
+
+### Bug Fixes
+
+* stop running webdriver update on npm postinstall ([9c36d17](https://github.com/assisrafael/angular-input-masks/commit/9c36d17)), closes [#304](https://github.com/assisrafael/angular-input-masks/issues/304) [#303](https://github.com/assisrafael/angular-input-masks/issues/303)
+
+
+
 <a name="4.0.0"></a>
 # [4.0.0](https://github.com/assisrafael/angular-input-masks/compare/v3.2.0...v4.0.0) (2017-09-24)
 
