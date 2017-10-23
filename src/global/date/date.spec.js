@@ -1,7 +1,8 @@
 'use strict';
 
-var StringMask = require('string-mask'),
-	moment = require('moment');
+var StringMask = require('string-mask');
+var parseDate = require('date-fns/parse');
+var formatDate = require('date-fns/format');
 
 describe('uiDateMask', function() {
 	describe('default ("YYYY-MM-DD") mask', function() {
@@ -26,7 +27,7 @@ describe('uiDateMask', function() {
 				expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 			}
 
-			expect(value.evaluate('dateMask.toString()')).toEqual(moment(formatedDateAsString, 'YYYY-MM-DD').toDate().toString());
+			expect(value.evaluate('dateMask.toString()')).toEqual(parseDate(formatedDateAsString, 'YYYY-MM-DD', new Date()).toString());
 
 			for (i = 7; i >= 0; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
@@ -42,8 +43,8 @@ describe('uiDateMask', function() {
 			var input = element(by.model('initializedDateMask')),
 				value = element(by.exactBinding('initializedDateMask'));
 
-			value.evaluate('initializedDateMask').then((initialValue) => {
-				var dateValue = moment(initialValue).format('YYYY-MM-DD');
+			value.evaluate('initializedDateMask.toString()').then((initialValue) => {
+				var dateValue = formatDate(new Date(initialValue), 'YYYY-MM-DD');
 				expect(input.getAttribute('value')).toEqual(dateValue);
 			});
 		});
@@ -53,7 +54,7 @@ describe('uiDateMask', function() {
 				value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
 			value.getText().then((textValue) => {
-				var dateValue = moment(new Date(textValue)).format('YYYY-MM-DD');
+				var dateValue = formatDate(parseDate(textValue, 'YYYY-MM-DD', new Date()), 'YYYY-MM-DD');
 				expect(input.getAttribute('value')).toEqual(dateValue);
 			});
 		});
@@ -105,7 +106,7 @@ describe('uiDateMask', function() {
 				expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 			}
 
-			expect(value.evaluate('dateMask.toString()')).toEqual(moment(formatedDateAsString, 'DD/MM/YYYY').toDate().toString());
+			expect(value.evaluate('dateMask.toString()')).toEqual(parseDate(formatedDateAsString, 'DD/MM/YYYY', new Date()).toString());
 
 			for (i = 7; i >= 0; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
@@ -121,8 +122,8 @@ describe('uiDateMask', function() {
 			var input = element(by.model('initializedDateMask')),
 				value = element(by.exactBinding('initializedDateMask'));
 
-			value.evaluate('initializedDateMask').then((initialValue) => {
-				var dateValue = moment(initialValue).format('DD/MM/YYYY');
+			value.evaluate('initializedDateMask.toString()').then((initialValue) => {
+				var dateValue = formatDate(new Date(initialValue), 'DD/MM/YYYY');
 				expect(input.getAttribute('value')).toEqual(dateValue);
 			});
 		});
@@ -131,8 +132,8 @@ describe('uiDateMask', function() {
 			var input = element(by.model('initializedWithISOStringDateMask')),
 				value = element(by.exactBinding('initializedWithISOStringDateMask'));
 
-			value.getText().then((textValue) => {
-				var dateValue = moment(new Date(textValue)).format('DD/MM/YYYY');
+			value.evaluate('initializedDateMask.toString()').then((initialValue) => {
+				var dateValue = formatDate(new Date(initialValue), 'DD/MM/YYYY');
 				expect(input.getAttribute('value')).toEqual(dateValue);
 			});
 		});

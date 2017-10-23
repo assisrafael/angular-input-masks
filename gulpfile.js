@@ -33,8 +33,14 @@ gulp.task('build-dependencies', function() {
 		.require('string-mask', {
 			expose: 'string-mask'
 		})
-		.require('moment', {
-			expose: 'moment'
+		.require('date-fns/format', {
+			expose: 'date-fns/format'
+		})
+		.require('date-fns/parse', {
+			expose: 'date-fns/parse'
+		})
+		.require('date-fns/isValid', {
+			expose: 'date-fns/isValid'
 		})
 		.require('br-validations', {
 			expose: 'br-validations'

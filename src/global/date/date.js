@@ -1,6 +1,8 @@
 'use strict';
 
-var moment = require('moment');
+var formatDate = require('date-fns/format');
+var parseDate = require('date-fns/parse');
+var isValidDate = require('date-fns/isValid');
 var StringMask = require('string-mask');
 
 function isISODateString(date) {
@@ -33,7 +35,7 @@ function DateMaskDirective($locale) {
 
 				var cleanValue = value;
 				if (typeof value === 'object' || isISODateString(value)) {
-					cleanValue = moment(value).format(dateFormat);
+					cleanValue = formatDate(value, dateFormat);
 				}
 
 				cleanValue = cleanValue.replace(/[^0-9]/g, '');
@@ -58,7 +60,7 @@ function DateMaskDirective($locale) {
 
 				return attrs.parse === 'false'
 					? formatedValue
-					: moment(formatedValue, dateFormat).toDate();
+					: parseDate(formatedValue, dateFormat, new Date());
 			});
 
 			ctrl.$validators.date =	function validator(modelValue, viewValue) {
@@ -66,7 +68,7 @@ function DateMaskDirective($locale) {
 					return true;
 				}
 
-				return moment(viewValue, dateFormat).isValid() && viewValue.length === dateFormat.length;
+				return isValidDate(parseDate(viewValue, dateFormat, new Date())) && viewValue.length === dateFormat.length;
 			};
 		}
 	};
