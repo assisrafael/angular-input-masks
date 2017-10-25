@@ -64,6 +64,9 @@ function MoneyMaskDirective($locale, $parse) {
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
+				if (angular.isDefined(attrs.uiIntegerModel)) {
+						value = value / Math.pow(10, decimals);
+				}
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
 				if (angular.isDefined(attrs.uiCurrencyAfter)) {
@@ -109,7 +112,15 @@ function MoneyMaskDirective($locale, $parse) {
 					ctrl.$render();
 				}
 
-				return formatedValue ? parseInt(formatedValue.replace(/[^\d\-]+/g,''))/Math.pow(10,decimals) : null;
+				var retValue = parseInt(formatedValue.replace(/[^\d\-]+/g,''));
+				if (!isNaN(retValue)) {
+						if (!angular.isDefined(attrs.uiIntegerModel)) {
+								retValue = retValue / Math.pow(10, decimals);
+						}
+						return retValue;
+				} else {
+						return null;
+				}
 			}
 
 			ctrl.$formatters.push(formatter);

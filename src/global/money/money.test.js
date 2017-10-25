@@ -269,4 +269,22 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('345.00 EUR');
 	});
+
+	it('should format integer models', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-integer-model>', {
+				model: 12345
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 123.45');
+	});
+
+	it('should parse integer models', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-integer-model>', {});
+		var model = input.controller('ngModel');
+
+		input.val('123.45').triggerHandler('input');
+		expect(model.$viewValue).toBe('$ 123.45');
+		expect(model.$modelValue).toBe(12345);
+	});
 });
