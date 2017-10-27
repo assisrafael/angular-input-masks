@@ -61,7 +61,7 @@ describe('ui-percentage-mask', function() {
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('100%');
+		expect(model.$viewValue).toBe('1%');
 	});
 
 	it('should hide space before "%" after a model change if ui-hide-space is present', angular.mock.inject(function($rootScope) {
@@ -71,7 +71,7 @@ describe('ui-percentage-mask', function() {
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('100%');
+		expect(model.$viewValue).toBe('1%');
 
 		$rootScope.model = 50;	//When accessing via rootScope, update model to 50 not 0.5 to represent 50%
 		$rootScope.$digest();
@@ -94,14 +94,14 @@ describe('ui-percentage-mask', function() {
 	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals">', {
 			model: '12.345',
-			decimals: 2
+			decimals: 1
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('1,234.50 %');
+		expect(model.$viewValue).toBe('1,234.5 %');
 		$rootScope.decimals = 3;
 		$rootScope.$digest();
-		expect(model.$viewValue).toBe('123.450 %');
+		expect(model.$viewValue).toBe('1,234.500 %');
 		$rootScope.decimals = 'invalid value';
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('1,234.50 %');
@@ -196,7 +196,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 		$rootScope.decimals = 3;
 		$rootScope.$digest();
-		expect(model.$viewValue).toBe('123.450 %');
+		expect(model.$viewValue).toBe('1,234.501 %');
 		$rootScope.decimals = 'invalid value';
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('1,234.50 %');
