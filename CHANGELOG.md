@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.1.0"></a>
+# [4.1.0](https://github.com/assisrafael/angular-input-masks/compare/v4.0.1...v4.1.0) (2017-10-27)
+
+
+### Bug Fixes
+
+* **uiPercentageMask:** fix value update when using dynamic decimals ([4543e0e](https://github.com/assisrafael/angular-input-masks/commit/4543e0e))
+
+
+### Features
+
+* **uiMoneyMask:** format and parse integer models ([6609f19](https://github.com/assisrafael/angular-input-masks/commit/6609f19))
+
+
+
 <a name="4.0.1"></a>
 ## [4.0.1](https://github.com/assisrafael/angular-input-masks/compare/v4.0.0...v4.0.1) (2017-10-23)
 
