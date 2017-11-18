@@ -1,6 +1,6 @@
-## How to use
+# How to use
 
-### ui-number-mask ###
+## ui-number-mask ##
 
 ```html
 <input type="text" name="field" ng-model="number" ui-number-mask>
@@ -32,7 +32,7 @@
 - Internationalized: Used the decimal separator and the thousands separator defined in the client browser configuration.
 
 
-### ui-percentage-mask ###
+## ui-percentage-mask ##
 
  - Example:
 
@@ -63,7 +63,7 @@
 - You can add ```ui-hide-space``` attribute to hide space between [NUMBER] and %
 
 
-### ui-money-mask ###
+## ui-money-mask ##
 
  - Example:
 
@@ -84,19 +84,19 @@
 - You can add ```ui-hide-space``` attribute to hide space between [Currency symbol] and [NUMBER]
 
 
-### ui-br-phone-number ###
+## ui-br-phone-number ##
 ```html
 <input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number>
 ```
 
 
-### ui-br-cep-mask ###
+## ui-br-cep-mask ##
 ```html
 <input type="text" name="field" ng-model="cep" ui-br-cep-mask>
 ```
 
 
-### ui-br-cpf-mask ###
+## ui-br-cpf-mask ##
 
  - Example:
 
@@ -105,7 +105,7 @@
 ```
 
 
-### ui-br-cnpj-mask ###
+## ui-br-cnpj-mask ##
 
  - Example:
 
@@ -114,7 +114,7 @@
 ```
 
 
-### ui-br-cpfcnpj-mask ###
+## ui-br-cpfcnpj-mask ##
 
  - Example:
 
@@ -123,7 +123,7 @@
 ```
 
 
-### ui-br-ie-mask ###
+## ui-br-ie-mask ##
 ```html
 <select ng-init="ufs=['AC','AL','AM','TO']" ng-model="selectedUF" ng-options="uf for uf in ufs"></select>
 <input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
@@ -133,7 +133,7 @@
 - Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).
 
 
-### ui-time-mask ###
+## ui-time-mask ##
 -Example:
 
 ```html
@@ -145,7 +145,7 @@
 ```
 
 
-### ui-date-mask ###
+## ui-date-mask ##
 -Example:
 
 ```html
@@ -161,7 +161,7 @@
 ```
 
 
-### Masks to be documentated (help wanted!)
+## Masks to be documentated (help wanted!)
 
 - ui-nfe-access-key-mask
 - ui-time-mask
