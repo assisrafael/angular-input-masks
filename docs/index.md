@@ -1,22 +1,173 @@
-### Welcome to GitHub Pages.
-This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:
+## How to use
 
+### ui-number-mask ###
+
+```html
+<input type="text" name="field" ng-model="number" ui-number-mask>
 ```
-$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+
+- Define the number of decimals (default is 2):
+
+```html
+<input type="text" name="field" ng-model="number" ui-number-mask="3">
 ```
 
-If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.
+- Allow negative numbers using the ```ui-negative-number``` attribute:
 
-### Designer Templates
-We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.
+```html
+<input type="text" name="field" ng-model="number" ui-number-mask="4" ui-negative-number>
+```
 
-### Rather Drive Stick?
-If you prefer to not use the automatic generator, push a branch named `gh-pages` to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
 
-### Authors and Contributors
-You can @mention a GitHub username to generate a link to their profile. The resulting `<a>` element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (@defunkt), PJ Hyett (@pjhyett), and Tom Preston-Werner (@mojombo) founded GitHub.
+```html
+<input type="text" name="field" ng-model="number" ui-number-mask min="10.1" max="100.9">
+```
 
-### Support or Contact
-Having trouble with Pages? Check out the documentation at http://help.github.com/pages or contact support@github.com and we’ll help you sort it out.
+```html
+<!-- Use 'ui-hide-group-sep' attribute if you don't want show the thousands separators-->
+<input type="text" name="field" ng-model="number" ui-number-mask ui-hide-group-sep>
+```
+
+- Internationalized: Used the decimal separator and the thousands separator defined in the client browser configuration.
+
+
+### ui-percentage-mask ###
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="percentage" ui-percentage-mask>
+```
+
+- You can set the number of decimals (default is 2):
+
+```html
+<input type="text" name="field" ng-model="percentage" ui-percentage-mask="4">
+```
+
+- The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
+
+- You can use the same value in $modelValue and $viewValue using ```ui-percentage-value```:
+
+```html
+<input type="text" name="field" ng-model="percentage" ui-percentage-mask ui-percentage-value>
+```
+
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
+
+- Internationalized: Used the decimal separator and thousands separator defined in the client browser configuration.
+
+- The $modelValue is the $viewValue / 100, so $viewValue - 100% = $modelValue - 1
+
+- You can add ```ui-hide-space``` attribute to hide space between [NUMBER] and %
+
+
+### ui-money-mask ###
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="money" ui-money-mask>
+```
+
+- Define the number of decimals (default is 2):
+
+```html
+<input type="text" name="field" ng-model="money" ui-money-mask="3">
+```
+
+- Support to the ```min```, ```max``` and ```ui-hide-group-sep``` attributes.
+
+- Internationalized: Used the currency symbol, decimal separator and thousands separator defined in the client browser configuration.
+
+- You can add ```ui-hide-space``` attribute to hide space between [Currency symbol] and [NUMBER]
+
+
+### ui-br-phone-number ###
+```html
+<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number>
+```
+
+
+### ui-br-cep-mask ###
+```html
+<input type="text" name="field" ng-model="cep" ui-br-cep-mask>
+```
+
+
+### ui-br-cpf-mask ###
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="initializedCpf" ui-br-cpf-mask>
+```
+
+
+### ui-br-cnpj-mask ###
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="initializedCnpj" ui-br-cnpj-mask>
+```
+
+
+### ui-br-cpfcnpj-mask ###
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="initializedCpfCnpj1" ui-br-cpfcnpj-mask>
+```
+
+
+### ui-br-ie-mask ###
+```html
+<select ng-init="ufs=['AC','AL','AM','TO']" ng-model="selectedUF" ng-options="uf for uf in ufs"></select>
+<input type="text" name="field19" ng-model="ieField" ui-br-ie-mask='selectedUF'>
+```
+- Support masks for all the 27 brazillian states.
+
+- Validations according to the [Sintegra especification](http://www.sintegra.gov.br/insc_est.html).
+
+
+### ui-time-mask ###
+-Example:
+
+```html
+<input type="text" name="field" ng-model="initializeTime" ui-time-mask>
+```
+- Support to the ```short``` attributes.
+```html
+<input type="text" name="field" ng-model="initializeTime" ui-time-mask="short">
+```
+
+
+### ui-date-mask ###
+-Example:
+
+```html
+<input type="text" name="field" ng-model="birthDate" ui-date-mask>
+```
+- Support to the custom date masks (See moment.js date formats).
+```html
+<input type="text" name="field" ng-model="birthDate" ui-date-mask="DD-MM-YYYY">
+```
+- Support to ```parse``` attribute. When the attribute is set to ```false```, the inputed value will be passed to the model as a string. Default value of the attribute is ```true```.
+```html
+<input type="text" name="field" ng-model="birthDate" ui-date-mask parse="false">
+```
+
+
+### Masks to be documentated (help wanted!)
+
+- ui-nfe-access-key-mask
+- ui-time-mask
+- ui-date-mask
+- ui-br-boleto-bancario-mask
+- ui-br-car-plate-mask
+- ui-scientific-notation-mask
+- ui-us-phone-number
+- ui-fr-phone-number
