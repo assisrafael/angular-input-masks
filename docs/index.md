@@ -89,6 +89,15 @@
 <input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number>
 ```
 
+## ui-us-phone-number ##
+
+* Example:
+
+```html
+  <input type="tel" name="field" ng-model="phoneNumber" ui-us-phone-number-mask>
+```
+
+* Outputs phone number in the following format: (123) 456-7890
 
 ## ui-br-cep-mask ##
 ```html
@@ -169,5 +178,4 @@
 - ui-br-boleto-bancario-mask
 - ui-br-car-plate-mask
 - ui-scientific-notation-mask
-- ui-us-phone-number
 - ui-fr-phone-number
