@@ -5,6 +5,15 @@ require('../br-masks');
 describe('ui-br-cep-mask', function() {
 	beforeEach(angular.mock.module('ui.utils.masks.br'));
 
+	it('cep validation should fail without the fix', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-cep-mask>', {
+			model: 30112010
+		});
+		var model = input.controller('ngModel');
+
+		expect(model.$valid).toBe(true);
+	});
+
 	it('should throw an error if used without ng-model', function() {
 		expect(function() {
 			TestUtil.compile('<input ui-br-cep-mask>');

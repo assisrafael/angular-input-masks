@@ -61,20 +61,47 @@ describe('ui-percentage-mask', function() {
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('100%');
+		expect(model.$viewValue).toBe('1%');
+	});
+
+	it('should hide space before "%" after a model change if ui-hide-space is present', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals" ui-percentage-value ui-hide-space>', {
+			model: 1,
+			decimals: 0
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('1%');
+
+		$rootScope.model = 50;	//When accessing via rootScope, update model to 50 not 0.5 to represent 50%
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('50%');
+	}));
+
+	it('should hide "%" if ui-hide-percentage-sign is present', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask  ui-hide-percentage-sign>', {
+			model: 0.75
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('75.00');
+
+		input.val('12.34').triggerHandler('input');
+		expect(model.$viewValue).toBe('12.34');
+		expect(model.$modelValue).toBe(0.1234);
 	});
 
 	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals">', {
 			model: '12.345',
-			decimals: 2
+			decimals: 1
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe('1,234.50 %');
+		expect(model.$viewValue).toBe('1,234.5 %');
 		$rootScope.decimals = 3;
 		$rootScope.$digest();
-		expect(model.$viewValue).toBe('123.450 %');
+		expect(model.$viewValue).toBe('1,234.500 %');
 		$rootScope.decimals = 'invalid value';
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('1,234.50 %');
@@ -106,9 +133,9 @@ describe('ui-percentage-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('75.00 %');
 		expect(model.$valid).toBe(true);
-		input.val('69920').triggerHandler('input');
+		input.val('69.92 %').triggerHandler('input');
 		expect(model.$valid).toBe(false);
-		input.val('108120').triggerHandler('input');
+		input.val('108.12 %').triggerHandler('input');
 		expect(model.$valid).toBe(true);
 	});
 
@@ -120,10 +147,34 @@ describe('ui-percentage-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('75.00 %');
 		expect(model.$valid).toBe(true);
-		input.val('101000').triggerHandler('input');
+		input.val('101.00 %').triggerHandler('input');
 		expect(model.$valid).toBe(false);
-		input.val('99990').triggerHandler('input');
+		input.val('99.99 %').triggerHandler('input');
 		expect(model.$valid).toBe(true);
+	});
+
+	it('should erase a digit if % is not there', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask>');
+		var model = input.controller('ngModel');
+
+		input.val('12.34').triggerHandler('input');
+		expect(model.$viewValue).toBe('1.23 %');
+		expect(model.$modelValue).toBe(0.0123);
+	});
+
+	it('should accept negative numbers if "ui-negative-number" is defined', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask ui-negative-number>');
+		var model = input.controller('ngModel');
+
+		input.val('-12.34 %').triggerHandler('input');
+		expect(model.$viewValue).toBe('-12.34 %');
+		expect(model.$modelValue).toBe(-0.1234);
+		input.val('-12.34 %-').triggerHandler('input');
+		expect(model.$viewValue).toBe('12.34 %');
+		expect(model.$modelValue).toBe(0.1234);
+		input.val('12.34 %-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-12.34 %');
+		expect(model.$modelValue).toBe(-0.1234);
 	});
 
 	it('should format initial model values with percentage value', function() {
@@ -135,7 +186,7 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 	});
 
-	it('should allow changing the number of decimals', angular.mock.inject(function($rootScope) {
+	it('should allow changing the number of decimals with percentage value', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-percentage-mask="decimals" ui-percentage-value>', {
 			model: '1234.501',
 			decimals: 2
@@ -145,10 +196,9 @@ describe('ui-percentage-mask', function() {
 		expect(model.$viewValue).toBe('1,234.50 %');
 		$rootScope.decimals = 3;
 		$rootScope.$digest();
-		expect(model.$viewValue).toBe('123.450 %');
+		expect(model.$viewValue).toBe('1,234.501 %');
 		$rootScope.decimals = 'invalid value';
 		$rootScope.$digest();
 		expect(model.$viewValue).toBe('1,234.50 %');
 	}));
-
 });

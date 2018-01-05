@@ -49,10 +49,10 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					return value;
 				}
 
-				if (typeof value === 'string') {
-					value = value.replace(decimalDelimiter, '.');
-				} else if (typeof value === 'number') {
+				if (typeof value === 'number') {
 					value = value.toExponential(decimals);
+				} else {
+					value = value.toString().replace(decimalDelimiter, '.');
 				}
 
 				var formattedValue, exponent;
@@ -87,7 +87,9 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					formattedValue += 'e' + exponent;
 				}
 
-				return formattedValue;
+				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value[0] === '-') ? '-' : '';
+
+				return prefix + formattedValue;
 			}
 
 			function parser(value) {
@@ -95,8 +97,21 @@ function ScientificNotationMaskDirective($locale, $parse) {
 					return value;
 				}
 
-				var viewValue = formatter(value),
-					modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));
+				var isExponentNegative = /e-/.test(value);
+				var cleanValue = value.replace('e-', 'e');
+				var viewValue = formatter(cleanValue);
+
+				var needsToInvertSign = (value.slice(-1) === '-');
+
+				if (needsToInvertSign ^ isExponentNegative) {
+					viewValue = viewValue.replace(/(e[-]?)/, 'e-');
+				}
+
+				if (needsToInvertSign && isExponentNegative) {
+					viewValue = viewValue[0] !== '-' ? ('-' + viewValue) : viewValue.replace(/^(-)/,'');
+				}
+
+				var modelValue = parseFloat(viewValue.replace(decimalDelimiter, '.'));
 
 				if (ctrl.$viewValue !== viewValue) {
 					ctrl.$setViewValue(viewValue);

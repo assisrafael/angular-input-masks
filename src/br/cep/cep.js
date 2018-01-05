@@ -1,7 +1,7 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var maskFactory = require('mask-factory');
+var maskFactory = require('../../helpers/mask-factory');
 
 var cepMask = new StringMask('00000-000');
 
@@ -14,7 +14,7 @@ module.exports = maskFactory({
 	},
 	validations: {
 		cep: function(value) {
-			return value.length === 8;
+			return value.toString().trim().length === 8;
 		}
 	}
 });

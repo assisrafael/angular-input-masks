@@ -3,41 +3,37 @@
 var StringMask = require('string-mask');
 var BrV = require('br-validations');
 
-function BrIeMaskDirective($parse) {
-	var ieMasks = {
-		'AC': [{mask: new StringMask('00.000.000/000-00')}],
-		'AL': [{mask: new StringMask('000000000')}],
-		'AM': [{mask: new StringMask('00.000.000-0')}],
-		'AP': [{mask: new StringMask('000000000')}],
-		'BA': [{chars: 8, mask: new StringMask('000000-00')},
-			{mask: new StringMask('0000000-00')}],
-		'CE': [{mask: new StringMask('00000000-0')}],
-		'DF': [{mask: new StringMask('00000000000-00')}],
-		'ES': [{mask: new StringMask('00000000-0')}],
-		'GO': [{mask: new StringMask('00.000.000-0')}],
-		'MA': [{mask: new StringMask('000000000')}],
-		'MG': [{mask: new StringMask('000.000.000/0000')}],
-		'MS': [{mask: new StringMask('000000000')}],
-		'MT': [{mask: new StringMask('0000000000-0')}],
-		'PA': [{mask: new StringMask('00-000000-0')}],
-		'PB': [{mask: new StringMask('00000000-0')}],
-		'PE': [{chars: 9, mask: new StringMask('0000000-00')},
-			{mask: new StringMask('00.0.000.0000000-0')}],
-		'PI': [{mask: new StringMask('000000000')}],
-		'PR': [{mask: new StringMask('000.00000-00')}],
-		'RJ': [{mask: new StringMask('00.000.00-0')}],
-		'RN': [{chars: 9, mask: new StringMask('00.000.000-0')},
-			{mask: new StringMask('00.0.000.000-0')}],
-		'RO': [{mask: new StringMask('0000000000000-0')}],
-		'RR': [{mask: new StringMask('00000000-0')}],
-		'RS': [{mask: new StringMask('000/0000000')}],
-		'SC': [{mask: new StringMask('000.000.000')}],
-		'SE': [{mask: new StringMask('00000000-0')}],
-		'SP': [{mask: new StringMask('000.000.000.000')},
-			{mask: new StringMask('-00000000.0/000')}],
-		'TO': [{mask: new StringMask('00000000000')}]
-	};
+var ieMasks = {
+	'AC': [{mask: new StringMask('00.000.000/000-00')}],
+	'AL': [{mask: new StringMask('000000000')}],
+	'AM': [{mask: new StringMask('00.000.000-0')}],
+	'AP': [{mask: new StringMask('000000000')}],
+	'BA': [{chars: 8, mask: new StringMask('000000-00')}, {mask: new StringMask('0000000-00')}],
+	'CE': [{mask: new StringMask('00000000-0')}],
+	'DF': [{mask: new StringMask('00000000000-00')}],
+	'ES': [{mask: new StringMask('00000000-0')}],
+	'GO': [{mask: new StringMask('00.000.000-0')}],
+	'MA': [{mask: new StringMask('000000000')}],
+	'MG': [{mask: new StringMask('000.000.000/0000')}],
+	'MS': [{mask: new StringMask('000000000')}],
+	'MT': [{mask: new StringMask('0000000000-0')}],
+	'PA': [{mask: new StringMask('00-000000-0')}],
+	'PB': [{mask: new StringMask('00000000-0')}],
+	'PE': [{chars: 9, mask: new StringMask('0000000-00')}, {mask: new StringMask('00.0.000.0000000-0')}],
+	'PI': [{mask: new StringMask('000000000')}],
+	'PR': [{mask: new StringMask('000.00000-00')}],
+	'RJ': [{mask: new StringMask('00.000.00-0')}],
+	'RN': [{chars: 9, mask: new StringMask('00.000.000-0')}, {mask: new StringMask('00.0.000.000-0')}],
+	'RO': [{mask: new StringMask('0000000000000-0')}],
+	'RR': [{mask: new StringMask('00000000-0')}],
+	'RS': [{mask: new StringMask('000/0000000')}],
+	'SC': [{mask: new StringMask('000.000.000')}],
+	'SE': [{mask: new StringMask('00000000-0')}],
+	'SP': [{mask: new StringMask('000.000.000.000')}, {mask: new StringMask('-00000000.0/000')}],
+	'TO': [{mask: new StringMask('00000000000')}]
+};
 
+function BrIeMaskDirective($parse) {
 	function clearValue(value) {
 		if (!value) {
 			return value;

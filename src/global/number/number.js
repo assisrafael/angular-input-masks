@@ -1,8 +1,10 @@
 'use strict';
 
-var validators = require('validators');
+var validators = require('../../helpers/validators');
+var NumberMasks = require('../../helpers/number-mask-builder');
+var PreFormatters = require('../../helpers/pre-formatters');
 
-function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
+function NumberMaskDirective($locale, $parse) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -111,6 +113,6 @@ function NumberMaskDirective($locale, $parse, PreFormatters, NumberMasks) {
 		}
 	};
 }
-NumberMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters', 'NumberMasks'];
+NumberMaskDirective.$inject = ['$locale', '$parse'];
 
 module.exports = NumberMaskDirective;

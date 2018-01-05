@@ -67,6 +67,22 @@ describe('ui-money-mask', function() {
 		expect(model.$viewValue).toBe('$ 3,456.79');
 	}));
 
+	it('should allow changing the currency', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask currency="currentCurrency">', {
+			model: '3456.79',
+			currentCurrency: '$'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 3,456.79');
+		$rootScope.currentCurrency = 'R$';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('R$ 3,456.79');
+		$rootScope.currentCurrency = '$';
+		$rootScope.$digest();
+		expect(model.$viewValue).toBe('$ 3,456.79');
+	}));
+
 	it('shold allow string as definition of decimals', angular.mock.inject(function($rootScope) {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask="decimals">', {
 			model: '3456.79',
@@ -116,6 +132,10 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('-$ 3,456.78');
 		expect(model.$valid).toBe(true);
+		input.val('$ 3,456.78-').triggerHandler('input');
+		expect(model.$viewValue).toBe('-$ 3,456.78');
+		input.val('-$ 3,456.78-').triggerHandler('input');
+		expect(model.$viewValue).toBe('$ 3,456.78');
 	});
 
 	it('should format money with three decimal places', function() {
@@ -139,7 +159,6 @@ describe('ui-money-mask', function() {
 		var model = input.controller('ngModel');
 
 		var tests = [
-			{modelValue: '', viewValue: ''},
 			{modelValue: '0', viewValue: '$ 0.00'},
 			{modelValue: '0.0', viewValue: '$ 0.00'},
 			{modelValue: 0, viewValue: '$ 0.00'},
@@ -151,6 +170,22 @@ describe('ui-money-mask', function() {
 			$rootScope.model = test.modelValue;
 			$rootScope.$digest();
 			expect(model.$viewValue).toBe(test.viewValue);
+		});
+
+		it('should return null if $isEmpty value', function() {
+			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+			var model = input.controller('ngModel');
+			var tests = [
+				{modelValue: '', viewValue: ''},
+				{modelValue: null, viewValue: null},
+				{modelValue: NaN, viewValue: NaN}
+			];
+
+			tests.forEach(function(test) {
+				$rootScope.model = test.modelValue;
+				$rootScope.$digest();
+				expect(model.$viewValue).toBe(null);
+			});
 		});
 
 		it('should ignore non digits', function() {
@@ -206,5 +241,50 @@ describe('ui-money-mask', function() {
 
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('345.00');
+	});
+
+	it('should employ a custom thousands delimiter', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-thousands-delimiter="|">', {
+			model: 1234567.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 1|234|567.00');
+	});
+
+	it('should employ a custom decimal delimiter', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-decimal-delimiter="|">', {
+			model: 123.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 123|00');
+	});
+
+	it('should add currency after value', function() {
+		var input = TestUtil.compile('<input ng-model="model" currency-symbol="EUR"  ui-currency-after ui-money-mask="mdecimals">', {
+			model: 345.00
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('345.00 EUR');
+	});
+
+	it('should format integer models', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-integer-model>', {
+				model: 12345
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('$ 123.45');
+	});
+
+	it('should parse integer models', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-integer-model>', {});
+		var model = input.controller('ngModel');
+
+		input.val('123.45').triggerHandler('input');
+		expect(model.$viewValue).toBe('$ 123.45');
+		expect(model.$modelValue).toBe(12345);
 	});
 });

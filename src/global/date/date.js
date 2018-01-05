@@ -1,6 +1,8 @@
 'use strict';
 
-var moment = require('moment');
+var formatDate = require('date-fns/format');
+var parseDate = require('date-fns/parse');
+var isValidDate = require('date-fns/isValid');
 var StringMask = require('string-mask');
 
 function isISODateString(date) {
@@ -13,11 +15,12 @@ function DateMaskDirective($locale) {
 		'pt-br': 'DD/MM/YYYY',
 		'es-ar': 'DD/MM/YYYY',
 		'es-mx': 'DD/MM/YYYY',
-		'es': 'DD/MM/YYYY',
+		'es'   : 'DD/MM/YYYY',
 		'en-us': 'MM/DD/YYYY',
-		'en': 'MM/DD/YYYY',
+		'en'   : 'MM/DD/YYYY',
 		'fr-fr': 'DD/MM/YYYY',
-		'fr': 'DD/MM/YYYY'
+		'fr'   : 'DD/MM/YYYY',
+		'ru'   : 'DD.MM.YYYY'
 	};
 
 	var dateFormat = dateFormatMapByLocale[$locale.id] || 'YYYY-MM-DD';
@@ -26,16 +29,20 @@ function DateMaskDirective($locale) {
 		restrict: 'A',
 		require: 'ngModel',
 		link: function(scope, element, attrs, ctrl) {
+			attrs.parse = attrs.parse || 'true';
+
+			dateFormat = attrs.uiDateMask || dateFormat;
+
 			var dateMask = new StringMask(dateFormat.replace(/[YMD]/g,'0'));
 
 			function formatter(value) {
 				if (ctrl.$isEmpty(value)) {
-					return value;
+					return null;
 				}
 
 				var cleanValue = value;
 				if (typeof value === 'object' || isISODateString(value)) {
-					cleanValue = moment(value).format(dateFormat);
+					cleanValue = formatDate(value, dateFormat);
 				}
 
 				cleanValue = cleanValue.replace(/[^0-9]/g, '');
@@ -58,7 +65,9 @@ function DateMaskDirective($locale) {
 					ctrl.$render();
 				}
 
-				return moment(formatedValue, dateFormat).toDate();
+				return attrs.parse === 'false'
+					? formatedValue
+					: parseDate(formatedValue, dateFormat, new Date());
 			});
 
 			ctrl.$validators.date =	function validator(modelValue, viewValue) {
@@ -66,7 +75,7 @@ function DateMaskDirective($locale) {
 					return true;
 				}
 
-				return moment(viewValue, dateFormat).isValid() && viewValue.length === dateFormat.length;
+				return isValidDate(parseDate(viewValue, dateFormat, new Date())) && viewValue.length === dateFormat.length;
 			};
 		}
 	};

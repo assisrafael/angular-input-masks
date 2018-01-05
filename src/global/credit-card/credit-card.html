@@ -16,13 +16,13 @@
 <body ng-app="app">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-br-phone-number</h2>
-		<input type="text" name="freeLinePhoneNumber" ng-model="freeLinePhoneNumber" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<input type="text" name="freeLinePhoneNumber" ng-model="freeLinePhoneNumber" ng-model-options="{allowInvalid:true}" ui-credit-card-mask><br>
 		<span ng-bind="freeLinePhoneNumber">-</span> - {{form.freeLinePhoneNumber.$error}}<br>
 		<br>
-		<input type="text" name="creditCard" ng-model="creditCard" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<input type="text" name="creditCard" ng-model="creditCard" ng-model-options="{allowInvalid:true}" ui-credit-card-mask><br>
 		<span ng-bind="creditCard">-</span> - {{form.creditCard.$error}}<br>
 		<br>
-		<input type="text" name="initializedCC" ng-model="initializedCC" ng-model-options="{allowInvalid:true}" ui-credit-card><br>
+		<input type="text" name="initializedCC" ng-model="initializedCC" ng-model-options="{allowInvalid:true}" ui-credit-card-mask><br>
 		<span ng-bind="initializedCC">-</span> - {{form.initializedCC.$error}}<br>
 	</form>
 </body>

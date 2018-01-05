@@ -1,39 +1,46 @@
 'use strict';
 
 /*eslint no-console: 0*/
+/*eslint no-process-env: 0*/
 
-var path = require('path');
+const path = require('path');
 
-var gulp = require('gulp'),
+const gulp = require('gulp'),
 	mergeStream = require('merge-stream'),
 	browserify = require('browserify'),
 	source = require('vinyl-source-stream'),
 	buffer = require('vinyl-buffer'),
 	loadPlugins = require('gulp-load-plugins');
 
-var plugins = loadPlugins({
+const plugins = loadPlugins({
 	config: path.join(__dirname, 'package.json')
 });
 
-var pkg = require('./package.json');
+const pkg = require('./package.json');
 
-var header = ['/**',
-		' * <%= pkg.name %>',
-		' * <%= pkg.description %>',
-		' * @version v<%= pkg.version %>',
-		' * @link <%= pkg.homepage %>',
-		' * @license <%= pkg.license %>',
-		' */',
-		''
-	].join('\n');
+const header = ['/**',
+	' * <%= pkg.name %>',
+	' * <%= pkg.description %>',
+	' * @version v<%= pkg.version %>',
+	' * @link <%= pkg.homepage %>',
+	' * @license <%= pkg.license %>',
+	' */',
+	''
+].join('\n');
 
 gulp.task('build-dependencies', function() {
 	return browserify()
 		.require('string-mask', {
 			expose: 'string-mask'
 		})
-		.require('moment', {
-			expose: 'moment'
+		.require('date-fns/format', {
+			expose: 'date-fns/format'
+		})
+		.require('date-fns/parse', {
+			expose: 'date-fns/parse'
+		})
+		.require('date-fns/isValid', {
+			expose: 'date-fns/isValid'
 		})
 		.require('br-validations', {
 			expose: 'br-validations'
@@ -59,11 +66,15 @@ gulp.task('build', ['build-dependencies'], function() {
 		debug: false,
 		bundleExternal: false
 	}, {
-		fileName: 'angular-input-masks.us.js',
+		fileName: 'angular-input-masks.ch.js',
 		debug: false,
 		bundleExternal: false
 	}, {
-		fileName: 'angular-input-masks.ch.js',
+		fileName: 'angular-input-masks.fr.js',
+		debug: false,
+		bundleExternal: false
+	}, {
+		fileName: 'angular-input-masks.us.js',
 		debug: false,
 		bundleExternal: false
 	}, {
@@ -86,117 +97,31 @@ gulp.task('build', ['build-dependencies'], function() {
 			debug: entry.debug,
 			bundleExternal: entry.bundleExternal,
 		})
-		.require('mask-factory', {
-			expose: 'mask-factory'
-		})
-		.require('validators', {
-			expose: 'validators'
-		})
-		.bundle()
-		.pipe(source(entry.outputFileName || entry.fileName))
-		.pipe(buffer())
-		.pipe(plugins.header(header, {pkg: pkg}))
-		.pipe(gulp.dest('./releases/'))
-		.pipe(plugins.uglify())
-		.pipe(plugins.rename({
-			extname: '.min.js'
-		}))
-		.pipe(gulp.dest('./releases/'));
+			.bundle()
+			.pipe(source(entry.outputFileName || entry.fileName))
+			.pipe(buffer())
+			.pipe(plugins.header(header, {pkg: pkg}))
+			.pipe(gulp.dest('./releases/'))
+			.pipe(plugins.uglify())
+			.pipe(plugins.rename({
+				extname: '.min.js'
+			}))
+			.pipe(gulp.dest('./releases/'));
 	});
 
 	return mergeStream(tasks);
 });
-
-var VERSION;
-
-gulp.task('getVersion', function() {
-	var argv = require('minimist')(process.argv.slice(2));
-
-	VERSION = argv.version || pkg.version;
-});
-
-var bowerConfig = {
-	repository: 'git@github.com:assisrafael/bower-angular-input-masks.git',
-	path: './bower-angular-input-masks'
-};
 
 gulp.task('default', ['build'], function() {
 	gulp.watch('src/**/*.js', ['build']);
 });
 
 gulp.task('serve', ['build'], function(done) {
-	var express = require('express');
-	var server = express();
+	var server = require('./server');
 
-	server.use(express.static('./'));
-	server.listen(8000, function() {
-		console.log('Server running in port 8000');
+	const PORT = process.env.PORT || 9090;
+	server.listen(PORT, function() {
+		console.log(`Server running in port ${PORT}`);
 		done();
 	});
 });
-
-function bumpVersion(folder) {
-	return gulp.src([
-		'bower.json',
-		'package.json'
-	], {
-		cwd: folder
-	})
-	.pipe(plugins.bump({
-		version: VERSION
-	}))
-	.pipe(gulp.dest(folder));
-}
-
-gulp.task('bower-clone', ['build'], function(done) {
-	plugins.git.clone(bowerConfig.repository, {
-		args: '--depth=2'
-	}, function(err) {
-		if (err) {
-			throw err;
-		}
-
-		done();
-	});
-});
-
-gulp.task('bower-commit', ['getVersion', 'bower-clone'], function() {
-	return mergeStream(
-			bumpVersion(bowerConfig.path),
-			gulp.src('./releases/**/*.*')
-				.pipe(gulp.dest(bowerConfig.path))
-		)
-		.pipe(plugins.git.add({
-			cwd: bowerConfig.path
-		}))
-		.pipe(plugins.git.commit('release: version ' + VERSION, {
-			cwd: bowerConfig.path
-		}));
-});
-
-gulp.task('bower-tag', ['getVersion', 'bower-commit'], function(done) {
-	plugins.git.tag(VERSION, 'v' + VERSION, {
-		cwd: bowerConfig.path
-	}, function(err) {
-		if (err) {
-			throw err;
-		}
-
-		done();
-	});
-});
-
-gulp.task('bower-push', ['bower-tag'], function(done) {
-	plugins.git.push('origin', 'master', {
-		args: ' --follow-tags',
-		cwd: bowerConfig.path
-	}, function(err) {
-		if (err) {
-			throw err;
-		}
-
-		done();
-	});
-});
-
-gulp.task('bower-release', ['bower-push']);

@@ -11,7 +11,7 @@ module.exports = function maskFactory(maskDefinition) {
 						return value;
 					}
 
-					var cleanValue = maskDefinition.clearValue(value);
+					var cleanValue = maskDefinition.clearValue(value.toString());
 					return maskDefinition.format(cleanValue);
 				});
 
@@ -20,7 +20,7 @@ module.exports = function maskFactory(maskDefinition) {
 						return value;
 					}
 
-					var cleanValue = maskDefinition.clearValue(value);
+					var cleanValue = maskDefinition.clearValue(value.toString());
 					var formattedValue = maskDefinition.format(cleanValue);
 
 					if (ctrl.$viewValue !== formattedValue) {

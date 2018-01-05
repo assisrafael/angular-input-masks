@@ -1,9 +1,10 @@
 'use strict';
 
 var StringMask = require('string-mask');
-var validators = require('validators');
+var validators = require('../../helpers/validators');
+var PreFormatters = require('../../helpers/pre-formatters');
 
-function MoneyMaskDirective($locale, $parse, PreFormatters) {
+function MoneyMaskDirective($locale, $parse) {
 	return {
 		restrict: 'A',
 		require: 'ngModel',
@@ -12,13 +13,30 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				thousandsDelimiter = $locale.NUMBER_FORMATS.GROUP_SEP,
 				currencySym = $locale.NUMBER_FORMATS.CURRENCY_SYM,
 				symbolSeparation = ' ',
-				decimals = $parse(attrs.uiMoneyMask)(scope);
+				decimals = $parse(attrs.uiMoneyMask)(scope),
+				backspacePressed = false;
 
+			element.bind('keydown keypress', function(event) {
+				backspacePressed = event.which === 8;
+			});
 
 			function maskFactory(decimals) {
 				var decimalsPattern = decimals > 0 ? decimalDelimiter + new Array(decimals + 1).join('0') : '';
-				var maskPattern = symbolSeparation + '#' + thousandsDelimiter + '##0' + decimalsPattern;
+				var maskPattern =  '#' + thousandsDelimiter + '##0' + decimalsPattern;
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					maskPattern += symbolSeparation;
+				} else {
+					maskPattern =  symbolSeparation + maskPattern;
+				}
 				return new StringMask(maskPattern, {reverse: true});
+			}
+
+			if (angular.isDefined(attrs.uiDecimalDelimiter)) {
+				decimalDelimiter = attrs.uiDecimalDelimiter;
+			}
+
+			if (angular.isDefined(attrs.uiThousandsDelimiter)) {
+				thousandsDelimiter = attrs.uiThousandsDelimiter;
 			}
 
 			if (angular.isDefined(attrs.uiHideGroupSep)) {
@@ -46,20 +64,36 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 				if (ctrl.$isEmpty(value)) {
 					return value;
 				}
+				if (angular.isDefined(attrs.uiIntegerModel)) {
+						value = value / Math.pow(10, decimals);
+				}
 				var prefix = (angular.isDefined(attrs.uiNegativeNumber) && value < 0) ? '-' : '';
 				var valueToFormat = PreFormatters.prepareNumberToFormatter(value, decimals);
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					return prefix + moneyMask.apply(valueToFormat) + currencySym;
+				}
 				return prefix + currencySym + moneyMask.apply(valueToFormat);
 			}
 
 			function parser(value) {
 				if (ctrl.$isEmpty(value)) {
-					return value;
+					return null;
 				}
 
-				var actualNumber = value.replace(/[^\d]+/g,'');
+				var actualNumber = value.replace(/[^\d]+/g,''), formatedValue;
 				actualNumber = actualNumber.replace(/^[0]+([1-9])/,'$1');
 				actualNumber = actualNumber || '0';
-				var formatedValue = currencySym + moneyMask.apply(actualNumber);
+
+				if (backspacePressed && angular.isDefined(attrs.uiCurrencyAfter) && actualNumber !== 0) {
+					actualNumber = actualNumber.substring(0, actualNumber.length - 1);
+					backspacePressed = false;
+				}
+
+				if (angular.isDefined(attrs.uiCurrencyAfter)) {
+					formatedValue = moneyMask.apply(actualNumber) + currencySym;
+				} else {
+					formatedValue = currencySym + moneyMask.apply(actualNumber);
+				}
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),
@@ -78,7 +112,15 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					ctrl.$render();
 				}
 
-				return formatedValue ? parseInt(formatedValue.replace(/[^\d\-]+/g,''))/Math.pow(10,decimals) : null;
+				var retValue = parseInt(formatedValue.replace(/[^\d\-]+/g,''));
+				if (!isNaN(retValue)) {
+						if (!angular.isDefined(attrs.uiIntegerModel)) {
+								retValue = retValue / Math.pow(10, decimals);
+						}
+						return retValue;
+				} else {
+						return null;
+				}
 			}
 
 			ctrl.$formatters.push(formatter);
@@ -90,6 +132,14 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 					decimals = parseInt(decimals);
 					moneyMask = maskFactory(decimals);
 
+					parser(ctrl.$viewValue);
+				});
+			}
+
+			if (attrs.currency) {
+				scope.$watch(attrs.currency, function(_currency) {
+					currencySym = _currency;
+					moneyMask = maskFactory(decimals);
 					parser(ctrl.$viewValue);
 				});
 			}
@@ -122,6 +172,6 @@ function MoneyMaskDirective($locale, $parse, PreFormatters) {
 		}
 	};
 }
-MoneyMaskDirective.$inject = ['$locale', '$parse', 'PreFormatters'];
+MoneyMaskDirective.$inject = ['$locale', '$parse'];
 
 module.exports = MoneyMaskDirective;
