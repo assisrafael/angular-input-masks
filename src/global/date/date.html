@@ -17,20 +17,20 @@
 <body ng-app="dateTest">
 	<form name="form" ng-controller="ctrl">
 		<h2>ui-date-mask</h2>
-		<input type="text" name="dateMaskInput" ng-model="dateMask" ui-date-mask>
+		<input type="text" name="dateMaskInput" ng-model="dateMask" ui-date-mask="YYYY-MM-DD">
 		<br>
 		ModelValue: <span ng-bind="dateMask"></span>
 		<br>
 		Errors: <span ng-bind="form.dateMaskInput.$error | json"></span>
 		<br>
 		<br>
-		<input type="text" name="initializedDateMask" ng-model="initializedDateMask" ui-date-mask>
+		<input type="text" name="initializedDateMask" ng-model="initializedDateMask" ui-date-mask="YYYY-MM-DD">
 		<br>
 		ModelValue: <span ng-bind="initializedDateMask"></span>
 		<br>
 		Errors: <span ng-bind="form.initializedDateMask.$error | json"></span>
 		<br>
-		<input type="text" name="initializedWithISOStringDateMask" ng-model="initializedWithISOStringDateMask" ui-date-mask>
+		<input type="text" name="initializedWithISOStringDateMask" ng-model="initializedWithISOStringDateMask" ui-date-mask="YYYY-MM-DD">
 		<br>
 		ModelValue: <span ng-bind="initializedWithISOStringDateMask"></span>
 		<br>
