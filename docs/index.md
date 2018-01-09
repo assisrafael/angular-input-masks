@@ -86,7 +86,7 @@
 
 ## ui-br-phone-number ##
 ```html
-<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number>
+<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number-mask>
 ```
 
 ## ui-us-phone-number ##
