@@ -9,7 +9,7 @@ module.exports = function maskFactory(maskDefinition) {
 				if (element[0].setSelectionRange) {
 					element[0].focus();
 					window.setTimeout(function() {
-						if(currentPos!=element[0].selectionStart){
+						if(currentPos!==element[0].selectionStart){
 							currentPos=element[0].selectionStart;
 						}
 						pos=currentPos+pos;
