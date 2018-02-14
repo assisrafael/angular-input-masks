@@ -204,7 +204,7 @@ describe('ui-money-mask', function() {
 			expect(model.$viewValue).toBe(test.viewValue);
 			expect(model.$modelValue).toBe(test.modelValue);
 		});
-	}));
+	});
 	
 
 	it('should convert invalid values to zero', function() {
