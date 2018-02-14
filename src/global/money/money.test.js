@@ -154,23 +154,8 @@ describe('ui-money-mask', function() {
 		}
 	});
 
-	it('should handle corner cases', angular.mock.inject(function($rootScope) {
-		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>');
-		var model = input.controller('ngModel');
-
-		var tests = [
-			{modelValue: '0', viewValue: '$ 0.00'},
-			{modelValue: '0.0', viewValue: '$ 0.00'},
-			{modelValue: 0, viewValue: '$ 0.00'},
-			{},
-			{modelValue: null, viewValue: null},
-		];
-
-		tests.forEach(function(test) {
-			$rootScope.model = test.modelValue;
-			$rootScope.$digest();
-			expect(model.$viewValue).toBe(test.viewValue);
-		});
+	describe('should handle corner cases', angular.mock.inject(function($rootScope) {
+		
 
 		it('should return null if $isEmpty value', function() {
 			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
