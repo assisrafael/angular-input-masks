@@ -189,7 +189,7 @@ describe('ui-money-mask', function() {
 		});
 	}));
 
-	it('should ignore non digits', angular.mock.inject(function($rootScope) {
+	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
 		var model = input.controller('ngModel');
 
