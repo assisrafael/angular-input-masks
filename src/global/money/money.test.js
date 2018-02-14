@@ -154,42 +154,58 @@ describe('ui-money-mask', function() {
 		}
 	});
 
-	describe('should handle corner cases', angular.mock.inject(function($rootScope) {
-		
+	it('should handle corner cases', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>');
+		var model = input.controller('ngModel');
 
-		it('should return null if $isEmpty value', function() {
-			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
-			var model = input.controller('ngModel');
-			var tests = [
-				{modelValue: '', viewValue: ''},
-				{modelValue: null, viewValue: null},
-				{modelValue: NaN, viewValue: NaN}
-			];
+		var tests = [
+			{modelValue: '0', viewValue: '$ 0.00'},
+			{modelValue: '0.0', viewValue: '$ 0.00'},
+			{modelValue: 0, viewValue: '$ 0.00'},
+			{},
+			{modelValue: null, viewValue: null},
+		];
 
-			tests.forEach(function(test) {
-				$rootScope.model = test.modelValue;
-				$rootScope.$digest();
-				expect(model.$viewValue).toBe(null);
-			});
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(test.viewValue);
 		});
+	}));	
 
-		it('should ignore non digits', function() {
-			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
-			var model = input.controller('ngModel');
+	it('should return null if $isEmpty value', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+		var model = input.controller('ngModel');
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: null, viewValue: null},
+			{modelValue: NaN, viewValue: NaN}
+		];
 
-			var tests = [
-				{value: '@', viewValue: '', modelValue: ''},
-				{},
-				{value: null, viewValue: null, modelValue: null},
-			];
-
-			tests.forEach(function(test) {
-				input.val(test.value).triggerHandler('input');
-				expect(model.$viewValue).toBe(test.viewValue);
-				expect(model.$modelValue).toBe(test.modelValue);
-			});
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe(null);
 		});
 	}));
+
+	it('should ignore non digits', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{value: '@', viewValue: '', modelValue: ''},
+			{},
+			{value: null, viewValue: null, modelValue: null},
+		];
+
+		tests.forEach(function(test) {
+			input.val(test.value).triggerHandler('input');
+			expect(model.$viewValue).toBe(test.viewValue);
+			expect(model.$modelValue).toBe(test.modelValue);
+		});
+	}));
+	
 
 	it('should convert invalid values to zero', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
