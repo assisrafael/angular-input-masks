@@ -29,6 +29,7 @@
   "author": "igor.rafael@gmail.com",
   "license": "MIT",
   "dependencies": {
+    "bignumber.js": "^6.0.0",
     "br-validations": "^0.3.1",
     "date-fns": "^2.0.0-alpha.7",
     "moment": "^2.8.4",

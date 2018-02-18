@@ -3,6 +3,7 @@
 var validators = require('../../helpers/validators');
 var NumberMasks = require('../../helpers/number-mask-builder');
 var PreFormatters = require('../../helpers/pre-formatters');
+var BigNumber = require('bignumber.js');
 
 function preparePercentageToFormatter(value, decimals, modelMultiplier) {
 	return PreFormatters.clearDelimitersAndLeadingZeros((parseFloat(value)*modelMultiplier).toFixed(decimals));
@@ -76,7 +77,7 @@ function PercentageMaskDirective($locale) {
 				}
 
 				var formatedValue = viewMask.apply(valueToFormat) + percentageSymbol;
-				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+				var actualNumber = new BigNumber(modelMask.apply(valueToFormat));
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),

@@ -3,6 +3,7 @@
 var validators = require('../../helpers/validators');
 var NumberMasks = require('../../helpers/number-mask-builder');
 var PreFormatters = require('../../helpers/pre-formatters');
+var BigNumber = require('bignumber.js');
 
 function NumberMaskDirective($locale, $parse) {
 	return {
@@ -31,7 +32,7 @@ function NumberMaskDirective($locale, $parse) {
 
 				var valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0';
 				var formatedValue = viewMask.apply(valueToFormat);
-				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
+				var actualNumber = new BigNumber(modelMask.apply(valueToFormat));
 
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),
