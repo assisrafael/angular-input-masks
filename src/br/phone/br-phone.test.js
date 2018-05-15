@@ -67,13 +67,21 @@ describe('uiBrPhoneNumberMask', function() {
 		expect(model.$viewValue).toBe('12345-6789');
 	});
 
-	it('should format model values with country code', function() {
-		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>');
-		var model = input.controller('ngModel');
+	it('should format initial model values (2+2+8D)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
+			model: '123456789012'
+		});
 
-		input.val('123456789012').triggerHandler('input');
+		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('+12 (34) 5678-9012');
-		input.val('1234567890123').triggerHandler('input');
+	});
+
+	it('should format initial model values (2+2+9D)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask>', {
+			model: '1234567890123'
+		});
+
+		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('+12 (34) 56789-0123');
 	});
 
@@ -117,6 +125,120 @@ describe('uiBrPhoneNumberMask', function() {
 			'1234567890', '123456789',
 			'12345678', '123456789012',
 			'1234567890123'
+		].forEach(function(number) {
+			input.val(number).triggerHandler('input');
+			expect(model.$error.brPhoneNumber).toBeUndefined();
+		});
+
+		expect(model.$error.brPhoneNumber).toBeUndefined();
+	});
+
+	it('should validate a phone number (all)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask="all">', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('1234567').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val(1234567).triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		[
+			'12345678', '12345678901',
+			'1234567890', '123456789',
+			'12345678', '123456789012',
+			'1234567890123'
+		].forEach(function(number) {
+			input.val(number).triggerHandler('input');
+			expect(model.$error.brPhoneNumber).toBeUndefined();
+		});
+
+		expect(model.$error.brPhoneNumber).toBeUndefined();
+	});
+
+	it('should only validate a (8D and 9D) phone number (simple)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask="simple">', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('1234567').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val(1234567).triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		[
+			'12345678', '123456789',
+			'1234567890', '12345678901',
+			'123456789012', '1234567890123'
+		].forEach(function(number) {
+			input.val(number).triggerHandler('input');
+			expect(model.$error.brPhoneNumber).toBeUndefined();
+		});
+
+		expect(model.$error.brPhoneNumber).toBeUndefined();
+	});
+
+	it('should only validate a (2+8D and 2+9D) phone number (areaCode)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask="areaCode">', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('1234567').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('12345678').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('123456789').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		[
+			'1234567890', '12345678901',
+			'123456789012', '1234567890123'
+		].forEach(function(number) {
+			input.val(number).triggerHandler('input');
+			expect(model.$error.brPhoneNumber).toBeUndefined();
+		});
+
+		expect(model.$error.brPhoneNumber).toBeUndefined();
+	});
+
+	it('should only validate a (2+2+8D and 2+2+9D) phone number (countryCode)', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-phone-number-mask="countryCode">', {
+			model: '123456'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('1234567').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('12345678').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('123456789').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('1234567890').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		input.val('12345678901').triggerHandler('input');
+		expect(model.$error.brPhoneNumber).toBe(true);
+
+		[
+			'123456789012', '1234567890123'
 		].forEach(function(number) {
 			input.val(number).triggerHandler('input');
 			expect(model.$error.brPhoneNumber).toBeUndefined();

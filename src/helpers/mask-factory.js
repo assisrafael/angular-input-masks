@@ -11,7 +11,7 @@ module.exports = function maskFactory(maskDefinition) {
 						return value;
 					}
 
-					var cleanValue = maskDefinition.clearValue(value.toString());
+					var cleanValue = maskDefinition.clearValue(value.toString(), attrs);
 					return maskDefinition.format(cleanValue);
 				});
 
@@ -20,7 +20,7 @@ module.exports = function maskFactory(maskDefinition) {
 						return value;
 					}
 
-					var cleanValue = maskDefinition.clearValue(value.toString());
+					var cleanValue = maskDefinition.clearValue(value.toString(), attrs);
 					var formattedValue = maskDefinition.format(cleanValue);
 
 					if (ctrl.$viewValue !== formattedValue) {
@@ -38,7 +38,7 @@ module.exports = function maskFactory(maskDefinition) {
 
 				angular.forEach(maskDefinition.validations, function(validatorFn, validationErrorKey) {
 					ctrl.$validators[validationErrorKey] = function validator(modelValue, viewValue) {
-						return ctrl.$isEmpty(modelValue) || validatorFn(modelValue, viewValue);
+						return ctrl.$isEmpty(modelValue) || validatorFn(modelValue, viewValue, attrs);
 					};
 				});
 			}

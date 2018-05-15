@@ -4,10 +4,6 @@ var StringMask = require('string-mask');
 
 var maskFactory = require('../../helpers/mask-factory');
 
-/**
- * FIXME: all numbers will have 9 digits after 2016.
- * see http://portal.embratel.com.br/embratel/9-digito/
- */
 var phoneMask8D = {
 		countryCode : new StringMask('+00 (00) 0000-0000'),   //with country code
 		areaCode    : new StringMask('(00) 0000-0000'),       //with area code
@@ -22,9 +18,33 @@ var phoneMask8D = {
 		simple      : new StringMask('0000-000-0000')         //N/A, so it's "simple"
 	};
 
+var brPhoneMaskOptions = {
+	'countryCode': {sliceSize: 13, min: 12, max: 13},
+	'areaCode': {sliceSize: 11, min: 10, max: 11},
+	'simple': {sliceSize: 9, min: 8, max: 9},
+	'all': {sliceSize: 13, min: 8, max: 13}
+};
+
+function findOption(attrs) {
+	var brPhoneMaskOption = brPhoneMaskOptions.all;
+
+	if (attrs && attrs.uiBrPhoneNumberMask) {
+		var maskOption = attrs.uiBrPhoneNumberMask;
+		angular.forEach(brPhoneMaskOptions, function(value, key) {
+			if (key === maskOption) {
+				brPhoneMaskOption = value;
+				return;
+			}
+		});
+	}
+
+	return brPhoneMaskOption;
+}
+
 module.exports = maskFactory({
-	clearValue: function(rawValue) {
-		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, 13);
+	clearValue: function(rawValue, attrs) {
+		var brPhoneMaskOption = findOption(attrs);
+		return rawValue.toString().replace(/[^0-9]/g, '').slice(0, brPhoneMaskOption.sliceSize);
 	},
 	format: function(cleanValue) {
 		var formattedValue;
@@ -52,7 +72,8 @@ module.exports = maskFactory({
 		return originalModelType === 'number' ? parseInt(cleanValue) : cleanValue;
 	},
 	validations: {
-		brPhoneNumber: function(value) {
+		brPhoneNumber: function(value, view, attrs) {
+			var brPhoneMaskOption = findOption(attrs);
 			var valueLength = value && value.toString().length;
 
 			//8- 8D without AC
@@ -61,7 +82,7 @@ module.exports = maskFactory({
 			//11- 9D with AC and 0800
 			//12- 8D with AC plus CC
 			//13- 9D with AC plus CC
-			return valueLength >= 8 && valueLength <= 13;
+			return valueLength >= brPhoneMaskOption.min && valueLength <= brPhoneMaskOption.max;
 		}
 	}
 });

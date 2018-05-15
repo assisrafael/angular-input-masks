@@ -24,6 +24,15 @@
 		<br>
 		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number-mask><br>
 		<span ng-bind="initializedPhoneNumber">-</span> - {{form.initializedPhoneNumber.$error}}<br>
+		<br>
+		<input type="text" name="simplePhoneNumber" ng-model="simplePhoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number-mask="simple"><br>
+		<span ng-bind="simplePhoneNumber">-</span> - {{form.simplePhoneNumber.$error}}<br>
+		<br>
+		<input type="text" name="areaCodePhoneNumber" ng-model="areaCodePhoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number-mask="areaCode"><br>
+		<span ng-bind="areaCodePhoneNumber">-</span> - {{form.areaCodePhoneNumber.$error}}<br>
+		<br>
+		<input type="text" name="countryCodePhoneNumber" ng-model="countryCodePhoneNumber" ng-model-options="{allowInvalid:true}" ui-br-phone-number-mask="countryCode"><br>
+		<span ng-bind="countryCodePhoneNumber">-</span> - {{form.countryCodePhoneNumber.$error}}<br>
 	</form>
 </body>
 </html>
