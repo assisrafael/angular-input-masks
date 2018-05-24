@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.2.0"></a>
+# [4.2.0](https://github.com/assisrafael/angular-input-masks/compare/v4.1.0...v4.2.0) (2018-05-24)
+
+
+### Features
+
+* support more locales for date mask ([#323](https://github.com/assisrafael/angular-input-masks/issues/323)) ([8951f3b](https://github.com/assisrafael/angular-input-masks/commit/8951f3b))
+
+
+
 <a name="4.1.0"></a>
 # [4.1.0](https://github.com/assisrafael/angular-input-masks/compare/v4.0.1...v4.1.0) (2017-10-27)
 
