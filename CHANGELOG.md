@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.2.1"></a>
+## [4.2.1](https://github.com/assisrafael/angular-input-masks/compare/v4.2.0...v4.2.1) (2018-06-18)
+
+
+### Bug Fixes
+
+* **uiDateMask:** lock date-fns version (2.0.0-alpha.7) and fix date mask tests ([a785dc9](https://github.com/assisrafael/angular-input-masks/commit/a785dc9))
+* **uiMoneyMask:** fix money masking result when field is empty ([dbfe5ff](https://github.com/assisrafael/angular-input-masks/commit/dbfe5ff))
+
+
+
 <a name="4.2.0"></a>
 # [4.2.0](https://github.com/assisrafael/angular-input-masks/compare/v4.1.0...v4.2.0) (2018-05-24)
 
