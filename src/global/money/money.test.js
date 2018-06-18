@@ -162,8 +162,7 @@ describe('ui-money-mask', function() {
 			{modelValue: '0', viewValue: '$ 0.00'},
 			{modelValue: '0.0', viewValue: '$ 0.00'},
 			{modelValue: 0, viewValue: '$ 0.00'},
-			{},
-			{modelValue: null, viewValue: null},
+			{modelValue: null, viewValue: ''},
 		];
 
 		tests.forEach(function(test) {
@@ -171,40 +170,39 @@ describe('ui-money-mask', function() {
 			$rootScope.$digest();
 			expect(model.$viewValue).toBe(test.viewValue);
 		});
+	}));
 
-		it('should return null if $isEmpty value', function() {
-			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
-			var model = input.controller('ngModel');
-			var tests = [
-				{modelValue: '', viewValue: ''},
-				{modelValue: null, viewValue: null},
-				{modelValue: NaN, viewValue: NaN}
-			];
+	it('should return empty if $isEmpty value', angular.mock.inject(function($rootScope) {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+		var model = input.controller('ngModel');
+		var tests = [
+			{modelValue: '', viewValue: ''},
+			{modelValue: null, viewValue: null},
+			{modelValue: NaN, viewValue: NaN}
+		];
 
-			tests.forEach(function(test) {
-				$rootScope.model = test.modelValue;
-				$rootScope.$digest();
-				expect(model.$viewValue).toBe(null);
-			});
-		});
-
-		it('should ignore non digits', function() {
-			var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
-			var model = input.controller('ngModel');
-
-			var tests = [
-				{value: '@', viewValue: '', modelValue: ''},
-				{},
-				{value: null, viewValue: null, modelValue: null},
-			];
-
-			tests.forEach(function(test) {
-				input.val(test.value).triggerHandler('input');
-				expect(model.$viewValue).toBe(test.viewValue);
-				expect(model.$modelValue).toBe(test.modelValue);
-			});
+		tests.forEach(function(test) {
+			$rootScope.model = test.modelValue;
+			$rootScope.$digest();
+			expect(model.$viewValue).toBe('');
 		});
 	}));
+
+	it('should ignore non digits', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
+		var model = input.controller('ngModel');
+
+		var tests = [
+			{value: '@', viewValue: '$ 0.00', modelValue: 0},
+			{value: '1*', viewValue: '$ 0.01', modelValue: 0.01},
+		];
+
+		tests.forEach(function(test) {
+			input.val(test.value).triggerHandler('input');
+			expect(model.$viewValue).toBe(test.viewValue);
+			expect(model.$modelValue).toBe(test.modelValue);
+		});
+	});
 
 	it('should convert invalid values to zero', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask>', {});
@@ -272,7 +270,7 @@ describe('ui-money-mask', function() {
 
 	it('should format integer models', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-money-mask ui-integer-model>', {
-				model: 12345
+			model: 12345
 		});
 
 		var model = input.controller('ngModel');
