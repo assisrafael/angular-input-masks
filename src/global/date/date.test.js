@@ -29,7 +29,7 @@ describe('ui-date-mask', function() {
 		});
 
 		var model = input.controller('ngModel');
-		expect(model.$viewValue).toBe(date.toLocaleDateString());
+		expect(model.$viewValue).toBe('12/31/1999');
 	});
 
 	it('should use specified mask', function() {

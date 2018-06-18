@@ -27,7 +27,7 @@ describe('uiDateMask', function() {
 				expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 			}
 
-			expect(value.evaluate('dateMask.toString()')).toEqual(parseDate(formatedDateAsString, 'YYYY-MM-DD', new Date()).toString());
+			expect(value.evaluate('dateMask.toISOString()')).toEqual(parseDate(formatedDateAsString, 'YYYY-MM-DD', new Date()).toISOString());
 
 			for (i = 7; i >= 0; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
@@ -60,7 +60,7 @@ describe('uiDateMask', function() {
 		});
 
 		it('should be valid if the model is a valid date', function() {
-			var inputKeysToSend = '19991231';
+			var inputKeysToSend = '12311999';
 
 			var input = element(by.model('dateMask')),
 				valid = element(by.binding('form.dateMaskInput.$error'));
@@ -106,7 +106,7 @@ describe('uiDateMask', function() {
 				expect(input.getAttribute('value')).toEqual(formatedDateAsString);
 			}
 
-			expect(value.evaluate('dateMask.toString()')).toEqual(parseDate(formatedDateAsString, 'DD/MM/YYYY', new Date()).toString());
+			expect(value.evaluate('dateMask.toISOString()')).toEqual(parseDate(formatedDateAsString, 'DD/MM/YYYY', new Date()).toISOString());
 
 			for (i = 7; i >= 0; i--) {
 				input.sendKeys(protractor.Key.BACK_SPACE);
