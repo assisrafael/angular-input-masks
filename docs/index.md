@@ -181,6 +181,15 @@
 <input type="text" name="field" ng-model="birthDate" ui-date-mask parse="false">
 ```
 
+## time-mask ##
+-Example:
+
+```html
+<input type="text" name="time" ng-model="time" ui-time-mask>
+```
+```html
+<input type="text" name="initializedShortTimeMask" ng-model="initializedShortTimeMask" ui-time-mask="short">
+```
 
 ## Masks to be documentated (help wanted!)
 
