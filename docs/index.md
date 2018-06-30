@@ -88,6 +88,18 @@
 ```html
 <input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number-mask>
 ```
+* Suports only *simple* phone number format: `1234-5678` || `12345-6789`
+```html
+<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number-mask="simple">
+```
+* Suports only *area code* phone number format: `(12) 3456-7890` || `(12) 34567-8901`
+```html
+<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number-mask="areaCode">
+```
+* Suports only *country code* phone number format: `+12 (34) 5678-9012` || `+12 (34) 56789-0123`
+```html
+<input type="text" name="field" ng-model="phoneNumber" ui-br-phone-number-mask="countryCode">
+```
 
 ## ui-us-phone-number ##
 
