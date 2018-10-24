@@ -17,17 +17,17 @@ module.exports = function maskFactory(maskDefinition) {
 				return caretPosition;
 			},
 			set: function setCaretPosition(element, position) {
-				if (/[^\w]/gi.test(element.value.charAt(position - 1))
-					&& element.value.charAt(position + 1) === null && !isBackspace) {
+				if (/[^\w]/gi.test(element.value.charAt(position - 1)) &&
+					element.value.charAt(position + 1) === null && !isBackspace) {
 					position += /\s/.test(element.value.charAt(position)) ? 3 : 2;
-				} else if (/[^\w]/gi.test(element.value.charAt(position - 1))
-					&& element.value.charAt(position + 1) !== null && !isBackspace) {
+				} else if (/[^\w]/gi.test(element.value.charAt(position - 1)) &&
+					element.value.charAt(position + 1) !== null && !isBackspace) {
 					position += /\s/.test(element.value.charAt(position)) ? 2 : 1;
 				}
-				
-				if(element.setSelectionRange) {
+
+				if (element.setSelectionRange) {
 					element.focus();
-					setTimeout(function () {
+					setTimeout(function() {
 						element.setSelectionRange(position, position);
 					}, 0);
 				} else if (element.createTextRange) {
@@ -38,16 +38,16 @@ module.exports = function maskFactory(maskDefinition) {
 					range.select();
 				}
 			}
-		}
+		};
 		return {
 			restrict: 'A',
 			require: 'ngModel',
 			link: function(scope, element, attrs, ctrl) {
 
-				element.on('keydown', function (event) {
+				element.on('keydown', function(event) {
 					isBackspace = event.keyCode === '8' || event.keyCode === '46';
 				});
-				
+
 				ctrl.$formatters.push(function formatter(value) {
 					if (ctrl.$isEmpty(value)) {
 						return value;
