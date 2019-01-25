@@ -14,7 +14,7 @@ module.exports = maskFactory({
 		if (cleanValue.length === 0) {
 			return cleanValue;
 		}
-		if (cleanValue[0] == '8')
+		if (cleanValue[0] === '8')
 			return tributoBancarioMask.apply(cleanValue).replace(/[^0-9]$/, '');
 		return boletoBancarioMask.apply(cleanValue).replace(/[^0-9]$/, '');
 	},
