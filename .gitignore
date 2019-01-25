@@ -10,3 +10,4 @@ releases
 *.swp
 .idea
 *.iml
+/.vs
