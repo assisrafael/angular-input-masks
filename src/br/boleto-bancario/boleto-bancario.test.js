@@ -14,6 +14,15 @@ describe('ui-br-boleto-bancario-mask', function() {
 		expect(model.$viewValue).toBe('34958.72340 51623.045486 23240.917012 5 93348590495345');
 	});
 
+	it('should format initial model values to tax bank slip number', function () {
+		var input = TestUtil.compile('<input ng-model="model" ui-br-boleto-bancario-mask>', {
+			model: '858100000021280003281907210720190118389990980104'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('85810000002-1 28000328190-7 21072019011-8 38999098010-4');
+	});
+
 	it('should ignore non digits', function() {
 		var input = TestUtil.compile('<input ng-model="model" ng-model-options="{allowInvalid:true}"'+
 			' ui-br-boleto-bancario-mask>');
