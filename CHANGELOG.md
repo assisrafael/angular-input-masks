@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.3.0"></a>
+# [4.3.0](https://github.com/assisrafael/angular-input-masks/compare/v4.2.1...v4.3.0) (2019-01-25)
+
+
+### Features
+
+* **brPhoneMask:** allow mode (simple, areaCode, countryCode) configuration ([#336](https://github.com/assisrafael/angular-input-masks/issues/336)) ([cad705a](https://github.com/assisrafael/angular-input-masks/commit/cad705a))
+* **uiBrBoletoBancarioMask:** allow 48 characters length format ([eed6383](https://github.com/assisrafael/angular-input-masks/commit/eed6383))
+
+
+
 <a name="4.2.1"></a>
 ## [4.2.1](https://github.com/assisrafael/angular-input-masks/compare/v4.2.0...v4.2.1) (2018-06-18)
 
