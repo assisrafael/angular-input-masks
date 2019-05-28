@@ -143,6 +143,16 @@
 <input type="text" name="field" ng-model="initializedCpfCnpj1" ui-br-cpfcnpj-mask>
 ```
 
+## ui-br-numero-beneficio-mask ##
+
+ - Example:
+
+```html
+<input type="text" name="field" ng-model="initializedNumeroBeneficio" ui-br-numero-beneficio-mask>
+```
+
+ - Máscara o número do benefício do INSS que segue o formato 999.999.999-9. 
+
 
 ## ui-br-ie-mask ##
 ```html
