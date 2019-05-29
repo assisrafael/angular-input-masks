@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="4.4.0"></a>
+# [4.4.0](https://github.com/assisrafael/angular-input-masks/compare/v4.3.0...v4.4.0) (2019-05-29)
+
+
+### Features
+
+* **uiBrNumeroBeneficioMask:** mask for BR social security benefit number. ([#351](https://github.com/assisrafael/angular-input-masks/issues/351)) ([0648cd5](https://github.com/assisrafael/angular-input-masks/commit/0648cd5))
+
+
+
 <a name="4.3.0"></a>
 # [4.3.0](https://github.com/assisrafael/angular-input-masks/compare/v4.2.1...v4.3.0) (2019-01-25)
 
