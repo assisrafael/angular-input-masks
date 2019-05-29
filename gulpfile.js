@@ -18,7 +18,8 @@ const plugins = loadPlugins({
 
 const pkg = require('./package.json');
 
-const header = ['/**',
+const header = [
+	'/**',
 	' * <%= pkg.name %>',
 	' * <%= pkg.description %>',
 	' * @version v<%= pkg.version %>',
@@ -28,7 +29,23 @@ const header = ['/**',
 	''
 ].join('\n');
 
-gulp.task('build-dependencies', function() {
+exports.build = gulp.series(buildDependencies, build);
+
+exports.default = gulp.series(build, function() {
+	gulp.watch('src/**/*.js', build);
+});
+
+exports.serve = gulp.series(build, function(done) {
+	var server = require('./server');
+
+	const PORT = process.env.PORT || 9090;
+	server.listen(PORT, function() {
+		console.log(`Server running in port ${PORT}`);
+		done();
+	});
+});
+
+function buildDependencies() {
 	return browserify()
 		.require('string-mask', {
 			expose: 'string-mask'
@@ -50,44 +67,54 @@ gulp.task('build-dependencies', function() {
 		.pipe(buffer())
 		.pipe(gulp.dest('./releases/'))
 		.pipe(plugins.uglify())
-		.pipe(plugins.rename({
-			extname: '.min.js'
-		}))
+		.pipe(
+			plugins.rename({
+				extname: '.min.js'
+			})
+		)
 		.pipe(gulp.dest('./releases/'));
-});
+}
 
-gulp.task('build', ['build-dependencies'], function() {
-	var files = [{
-		fileName: 'angular-input-masks.js',
-		debug: false,
-		bundleExternal: false
-	}, {
-		fileName: 'angular-input-masks.br.js',
-		debug: false,
-		bundleExternal: false
-	}, {
-		fileName: 'angular-input-masks.ch.js',
-		debug: false,
-		bundleExternal: false
-	}, {
-		fileName: 'angular-input-masks.fr.js',
-		debug: false,
-		bundleExternal: false
-	}, {
-		fileName: 'angular-input-masks.us.js',
-		debug: false,
-		bundleExternal: false
-	}, {
-		fileName: 'angular-input-masks.js',
-		outputFileName: 'angular-input-masks-standalone.js',
-		debug: false,
-		bundleExternal: true
-	}, {
-		fileName: 'angular-input-masks.js',
-		outputFileName: 'angular-input-masks-debug.js',
-		debug: true,
-		bundleExternal: true
-	}];
+function build() {
+	var files = [
+		{
+			fileName: 'angular-input-masks.js',
+			debug: false,
+			bundleExternal: false
+		},
+		{
+			fileName: 'angular-input-masks.br.js',
+			debug: false,
+			bundleExternal: false
+		},
+		{
+			fileName: 'angular-input-masks.ch.js',
+			debug: false,
+			bundleExternal: false
+		},
+		{
+			fileName: 'angular-input-masks.fr.js',
+			debug: false,
+			bundleExternal: false
+		},
+		{
+			fileName: 'angular-input-masks.us.js',
+			debug: false,
+			bundleExternal: false
+		},
+		{
+			fileName: 'angular-input-masks.js',
+			outputFileName: 'angular-input-masks-standalone.js',
+			debug: false,
+			bundleExternal: true
+		},
+		{
+			fileName: 'angular-input-masks.js',
+			outputFileName: 'angular-input-masks-debug.js',
+			debug: true,
+			bundleExternal: true
+		}
+	];
 
 	var tasks = files.map(function(entry) {
 		return browserify({
@@ -95,33 +122,21 @@ gulp.task('build', ['build-dependencies'], function() {
 			detectGlobals: false,
 			basedir: './src/',
 			debug: entry.debug,
-			bundleExternal: entry.bundleExternal,
+			bundleExternal: entry.bundleExternal
 		})
 			.bundle()
 			.pipe(source(entry.outputFileName || entry.fileName))
 			.pipe(buffer())
-			.pipe(plugins.header(header, {pkg: pkg}))
+			.pipe(plugins.header(header, { pkg: pkg }))
 			.pipe(gulp.dest('./releases/'))
 			.pipe(plugins.uglify())
-			.pipe(plugins.rename({
-				extname: '.min.js'
-			}))
+			.pipe(
+				plugins.rename({
+					extname: '.min.js'
+				})
+			)
 			.pipe(gulp.dest('./releases/'));
 	});
 
 	return mergeStream(tasks);
-});
-
-gulp.task('default', ['build'], function() {
-	gulp.watch('src/**/*.js', ['build']);
-});
-
-gulp.task('serve', ['build'], function(done) {
-	var server = require('./server');
-
-	const PORT = process.env.PORT || 9090;
-	server.listen(PORT, function() {
-		console.log(`Server running in port ${PORT}`);
-		done();
-	});
-});
+}
