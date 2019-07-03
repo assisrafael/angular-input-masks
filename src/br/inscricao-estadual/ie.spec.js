@@ -56,7 +56,7 @@ describe('uiBrIeMask', function() {
 		{uf:'MA', option: 10, modelValue: '120000385', viewValue: '120000385'},
 		{uf:'MG', option: 11, modelValue: '0623079040081', viewValue: '062.307.904/0081'},
 		{uf:'MS', option: 12, modelValue: '285730383', viewValue: '285730383'},
-		{uf:'MT', option: 13, modelValue: '00130000019', viewValue: '0013000001-9'},
+		{uf:'MT', option: 13, modelValue: '00130000019', viewValue: '0013000001-9', viewValue2: '13.737.133-0'},
 		{uf:'PA', option: 14, modelValue: '159999995', viewValue: '15-999999-5'},
 		{uf:'PB', option: 15, modelValue: '060000015', viewValue: '06000001-5'},
 		{uf:'PE', option: 16, modelValue: '03214184023459', viewValue: '0321418-40', viewValue2: '03.2.141.8402345-9'},

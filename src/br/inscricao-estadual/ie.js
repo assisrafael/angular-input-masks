@@ -16,7 +16,7 @@ var ieMasks = {
 	'MA': [{mask: new StringMask('000000000')}],
 	'MG': [{mask: new StringMask('000.000.000/0000')}],
 	'MS': [{mask: new StringMask('000000000')}],
-	'MT': [{mask: new StringMask('0000000000-0')}],
+	'MT': [{mask: new StringMask('0000000000-0')}, {chars: 9, mask: new StringMask('00.000.000-0')}],
 	'PA': [{mask: new StringMask('00-000000-0')}],
 	'PB': [{mask: new StringMask('00000000-0')}],
 	'PE': [{chars: 9, mask: new StringMask('0000000-00')}, {mask: new StringMask('00.0.000.0000000-0')}],
