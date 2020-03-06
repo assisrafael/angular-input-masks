@@ -127,7 +127,7 @@ function build() {
 			.bundle()
 			.pipe(source(entry.outputFileName || entry.fileName))
 			.pipe(buffer())
-			.pipe(plugins.header(header, { pkg: pkg }))
+			.pipe(plugins.header(header, {pkg: pkg}))
 			.pipe(gulp.dest('./releases/'))
 			.pipe(plugins.uglify())
 			.pipe(

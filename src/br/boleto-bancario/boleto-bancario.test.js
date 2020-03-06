@@ -14,7 +14,7 @@ describe('ui-br-boleto-bancario-mask', function() {
 		expect(model.$viewValue).toBe('34958.72340 51623.045486 23240.917012 5 93348590495345');
 	});
 
-	it('should format initial model values to tax bank slip number', function () {
+	it('should format initial model values to tax bank slip number', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-br-boleto-bancario-mask>', {
 			model: '858100000021280003281907210720190118389990980104'
 		});
