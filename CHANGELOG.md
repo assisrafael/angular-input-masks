@@ -2,6 +2,76 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [5.0.0](https://github.com/assisrafael/angular-input-masks/compare/v2.5.0...v5.0.0) (2020-03-06)
+
+
+### Bug Fixes
+
+* **maskFactory:** convert input values to string before running the clearValue function ([191a73f](https://github.com/assisrafael/angular-input-masks/commit/191a73f)), closes [#264](https://github.com/assisrafael/angular-input-masks/issues/264)
+* **uiBrCepMask:** fix validation when handling numbers ([#282](https://github.com/assisrafael/angular-input-masks/issues/282)) ([3854362](https://github.com/assisrafael/angular-input-masks/commit/3854362))
+* **uiBrPhoneNumberMask:** rename directive to "ui-br-phone-number-mask" ([4bac387](https://github.com/assisrafael/angular-input-masks/commit/4bac387))
+* **uiChPhoneNumber:** rename directive to "ui-ch-phone-number-mask" ([7095c3d](https://github.com/assisrafael/angular-input-masks/commit/7095c3d))
+* **uiCreditCardMask:** rename "uiCreditCard" to "uiCreditCardMask" ([48ca80d](https://github.com/assisrafael/angular-input-masks/commit/48ca80d))
+* **uiDateMask:** lock date-fns version (2.0.0-alpha.7) and fix date mask tests ([a785dc9](https://github.com/assisrafael/angular-input-masks/commit/a785dc9))
+* **uiDateMask:** return null should handle corner cases ([#295](https://github.com/assisrafael/angular-input-masks/issues/295)) ([a8a0e04](https://github.com/assisrafael/angular-input-masks/commit/a8a0e04))
+* **uiFrPhoneNumberMask:** rename directive to "ui-fr-phone-number-mask" ([43230ff](https://github.com/assisrafael/angular-input-masks/commit/43230ff))
+* **uiMoneyMask:** fix money masking result when field is empty ([dbfe5ff](https://github.com/assisrafael/angular-input-masks/commit/dbfe5ff))
+* **uiPercentageMask:** fix value update when using dynamic decimals ([4543e0e](https://github.com/assisrafael/angular-input-masks/commit/4543e0e))
+* convert input value to string before replacing invalid characters ([42fe06c](https://github.com/assisrafael/angular-input-masks/commit/42fe06c)), closes [#273](https://github.com/assisrafael/angular-input-masks/issues/273)
+* stop running webdriver update on npm postinstall ([9c36d17](https://github.com/assisrafael/angular-input-masks/commit/9c36d17)), closes [#304](https://github.com/assisrafael/angular-input-masks/issues/304) [#303](https://github.com/assisrafael/angular-input-masks/issues/303)
+* **uiMoneyMask:** return null should handle corner cases ([#293](https://github.com/assisrafael/angular-input-masks/issues/293)) ([6cfc724](https://github.com/assisrafael/angular-input-masks/commit/6cfc724))
+* **uiNumberMask:** fix numberWithoutGrupoSep spelling ([1a9dacb](https://github.com/assisrafael/angular-input-masks/commit/1a9dacb))
+* **uiPercentageMask:** honor ui-hide-space when view value change to model update from controller ([#260](https://github.com/assisrafael/angular-input-masks/issues/260)) ([3f51cad](https://github.com/assisrafael/angular-input-masks/commit/3f51cad))
+* **uiUsPhoneNumberMask:** rename directive to "ui-us-phone-number-mask" ([0ed0116](https://github.com/assisrafael/angular-input-masks/commit/0ed0116))
+
+
+### chore
+
+* remove bower build ([5f71048](https://github.com/assisrafael/angular-input-masks/commit/5f71048))
+
+
+### Features
+
+* **brPhoneMask:** allow mode (simple, areaCode, countryCode) configuration ([#336](https://github.com/assisrafael/angular-input-masks/issues/336)) ([cad705a](https://github.com/assisrafael/angular-input-masks/commit/cad705a))
+* **uiBrBoletoBancarioMask:** allow 48 characters length format ([eed6383](https://github.com/assisrafael/angular-input-masks/commit/eed6383))
+* **uiBrIeMask:** allow alternative pattern for mask of 'MT' ([bfbdc79](https://github.com/assisrafael/angular-input-masks/commit/bfbdc79))
+* **uiBrNumeroBeneficioMask:** mask for BR social security benefit number. ([#351](https://github.com/assisrafael/angular-input-masks/issues/351)) ([0648cd5](https://github.com/assisrafael/angular-input-masks/commit/0648cd5))
+* support more locales for date mask ([#323](https://github.com/assisrafael/angular-input-masks/issues/323)) ([8951f3b](https://github.com/assisrafael/angular-input-masks/commit/8951f3b))
+* **br-phone-number:** allow numbers without DDD ([8a5c5cd](https://github.com/assisrafael/angular-input-masks/commit/8a5c5cd))
+* **uiBrPhoneNumber:** include support for country code ([#299](https://github.com/assisrafael/angular-input-masks/issues/299)) ([2560af9](https://github.com/assisrafael/angular-input-masks/commit/2560af9))
+* **uiDateMaks:** add en-us date format ([2612693](https://github.com/assisrafael/angular-input-masks/commit/2612693)), closes [#134](https://github.com/assisrafael/angular-input-masks/issues/134)
+* **uiDateMask:** add ru locale to date mask ([4b05575](https://github.com/assisrafael/angular-input-masks/commit/4b05575))
+* **uiDateMask:** enable custom date masks and support for non-Date models ([#244](https://github.com/assisrafael/angular-input-masks/issues/244)) ([1996e11](https://github.com/assisrafael/angular-input-masks/commit/1996e11))
+* **uiFrPhoneMask:** implement french phone number format ([6c1b450](https://github.com/assisrafael/angular-input-masks/commit/6c1b450))
+* **uiMoneyMask:** add support for custom decimal and thousands delimiters ([#272](https://github.com/assisrafael/angular-input-masks/issues/272)) ([7fdcd8e](https://github.com/assisrafael/angular-input-masks/commit/7fdcd8e))
+* **uiMoneyMask:** add the option to set the currency prefix. ([14b38cc](https://github.com/assisrafael/angular-input-masks/commit/14b38cc)), closes [#175](https://github.com/assisrafael/angular-input-masks/issues/175)
+* **uiMoneyMask:** allow currency simble after value ([#275](https://github.com/assisrafael/angular-input-masks/issues/275)) ([4f5c2de](https://github.com/assisrafael/angular-input-masks/commit/4f5c2de))
+* **uiMoneyMask:** format and parse integer models ([6609f19](https://github.com/assisrafael/angular-input-masks/commit/6609f19))
+* **uiPercentageMask:** allow negative numbers with ui-negative-number attribute ([#300](https://github.com/assisrafael/angular-input-masks/issues/300)) ([1762cf1](https://github.com/assisrafael/angular-input-masks/commit/1762cf1))
+* **uiPercentageMask:** hide percentage symbol if "ui-hide-percentage-sign" attribute is present ([9d9cf3d](https://github.com/assisrafael/angular-input-masks/commit/9d9cf3d)), closes [#192](https://github.com/assisrafael/angular-input-masks/issues/192)
+* **uiScientificNotationMask:** allow negative exponents ([dd779c3](https://github.com/assisrafael/angular-input-masks/commit/dd779c3))
+* **uiScientificNotationMask:** allow negative numbers with ui-negative-number attribute ([1b94318](https://github.com/assisrafael/angular-input-masks/commit/1b94318))
+
+
+### Tests
+
+* **uiBrIeMask:** test secondary masks ([efb016f](https://github.com/assisrafael/angular-input-masks/commit/efb016f))
+* **uiScientificNotationMask:** include missing unit tests ([ba6ba7e](https://github.com/assisrafael/angular-input-masks/commit/ba6ba7e))
+
+
+### BREAKING CHANGES
+
+* **uiUsPhoneNumberMask:** "ui-us-phone-number" was renamed to "ui-us-phone-number-mask"
+* **uiFrPhoneNumberMask:** "ui-fr-phone-number" was renamed to "ui-fr-phone-number-mask"
+* **uiChPhoneNumber:** "ui-ch-phone-number" was renamed to "ui-ch-phone-number-mask"
+* **uiBrPhoneNumberMask:** "ui-br-phone-number" was renamed to "ui-br-phone-number-mask"
+* **uiCreditCardMask:** the "ui-credit-card" mask was renamed to "ui-credit-card-mask"
+* **uiMoneyMask:** uiMoneyMask used to return the input value when empty now it will return null
+* **uiDateMask:** uiDateMask used to return the input value when empty now it will return null
+* bower builds will not be published anymore
+
+
+
 ### [4.4.1](https://github.com/assisrafael/angular-input-masks/compare/v4.4.0...v4.4.1) (2019-05-29)
 
 
