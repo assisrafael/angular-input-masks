@@ -22,13 +22,22 @@ describe('uiCreditCardMask', function() {
 		expect(maskedModel.$formatters.length).toBe(model.$formatters.length + 1);
 	});
 
-	it('should format initial model values', function() {
+	it('should format non-amex initial model values', function() {
 		var input = TestUtil.compile('<input ng-model="model" ui-credit-card-mask>', {
 			model: '4242424242424242'
 		});
 
 		var model = input.controller('ngModel');
 		expect(model.$viewValue).toBe('4242 4242 4242 4242');
+	});
+	
+	it('should format amex initial model values', function() {
+		var input = TestUtil.compile('<input ng-model="model" ui-credit-card-mask>', {
+			model: '373737373737373'
+		});
+
+		var model = input.controller('ngModel');
+		expect(model.$viewValue).toBe('3737 373737 37373');
 	});
 
 	it('should ignore non digits', function() {
