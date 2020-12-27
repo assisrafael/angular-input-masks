@@ -126,10 +126,10 @@
 		Money: <input type="text" name="field31" ng-model="defaultMoney" ui-currency-after ui-money-mask="mdecimals" currency-symbol="EUR">
 
 		<h2>ui-br-phone-number</h2>
-		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number><br>
+		<input type="text" name="phoneNumber" ng-model="phoneNumber" ui-br-phone-number-mask><br>
 		<span ng-bind="phoneNumber">-</span> - {{form.phoneNumber.$error}}<br>
 		<br>
-		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ui-br-phone-number><br>
+		<input type="text" name="initializedPhoneNumber" ng-model="initializedPhoneNumber" ui-br-phone-number-mask><br>
 		<span ng-bind="initializedPhoneNumber">-</span> - {{form.initializedPhoneNumber.$error}}<br>
 		<br>
 
