@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Phone Spec</title>
+	<script src="/node_modules/angular/angular.min.js"></script>
+	<script src="/releases/angular-input-masks-dependencies.js"></script>
+	<script src="/releases/angular-input-masks.br.js"></script>
+	<script>
+		angular.module('app', ['ui.utils.masks'])
+			.controller('ctrl', function ctrl($scope) {
+				$scope.countries = ['BR','PY',];
+				$scope.fixedCountry = 'BR';
+				$scope.initializedCountry = 'BR';
+				$scope.initializedPhone = '998704050';
+			});
+	</script>
+</head>
+<body ng-app="app">
+	<form name="form" ng-controller="ctrl">
+		<h2>ui-phone-mask</h2>
+		<input type="text" name="field24" ng-model="fixedCountry" ng-model-options="{allowInvalid:true}" ui-phone-mask="'BR'"><br>
+		<span></span>BR: <span ng-bind="fixedCountry"></span> - <span ng-bind="form.field24.$error | json"></span><br>
+		<br>
+		<select ng-model="initializedCountry" ng-options="country for country in countries"></select>
+		<input type="text" name="field19" ng-model="initializedPhone" ng-model-options="{allowInvalid:true}" ui-phone-mask='initializedCountry'><br>
+		<span ng-bind="initializedCountry"></span>: <span ng-bind="initializedPhone"></span> - <span ng-bind="form.field19.$error | json"></span><br>
+		<br>
+		<select ng-model="country" ng-options="country for country in countries">
+			<option value="">--</option>
+		</select>
+		<input type="text" name="field20" ng-model="phone" ng-model-options="{allowInvalid:true}" ui-phone-mask="country"><br>
+		<span ng-bind="country"></span>: <span ng-bind="phone"></span> - <span ng-bind="form.field20.$error | json"></span><br>
+		<br>
+	</form>
+</body>
+</html>
