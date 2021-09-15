@@ -78,6 +78,12 @@ function PercentageMaskDirective($locale) {
 				var formatedValue = viewMask.apply(valueToFormat) + percentageSymbol;
 				var actualNumber = parseFloat(modelMask.apply(valueToFormat));
 
+				if (isNaN(actualNumber)) {
+					actualNumber = parseFloat(modelMask.apply(value.replace(/[^0-9]/g,'')))
+					valueToFormat = PreFormatters.clearDelimitersAndLeadingZeros(value) || '0'
+					formatedValue = viewMask.apply(valueToFormat) + percentageSymbol;
+				}
+
 				if (angular.isDefined(attrs.uiNegativeNumber)) {
 					var isNegative = (value[0] === '-'),
 						needsToInvertSign = (value.slice(-1) === '-');
